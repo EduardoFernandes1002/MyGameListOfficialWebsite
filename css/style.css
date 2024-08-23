@@ -1,0 +1,117 @@
+body,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+
+  color: white;
+  text-decoration: none;
+  font-family: sans-serif;
+}
+
+a:hover {
+  color: rgba(255, 255, 255, 0.842);
+}
+
+#Home_Link {
+  font-size: 2.0rem;
+  font-weight: bold;
+}
+
+button {
+  font-size: 1rem;
+  color: white;
+  background: transparent;
+  padding: 11px;
+  cursor: pointer;
+  border: none;
+  text-wrap: nowrap;
+}
+
+button:hover {
+  background-color: rgba(255, 255, 255, .2);
+}
+
+#header {
+  box-sizing: border-box;
+  height: 70px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: black;
+}
+
+.container0 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 1400px;
+  margin: 0 auto;
+
+}
+
+.menu {
+  display: flex;
+  gap: 10px;
+}
+
+.nav {
+  display: flex;
+  box-sizing: border-box;
+  display: flex;
+  padding: 1rem;
+  height: 40px;
+
+  background-color: rgb(83, 83, 83);
+}
+
+.container2 {
+  display: flex;
+  align-items: center;
+  width: 1400px;
+}
+
+.links {
+  display: flex;
+  gap: 20px;
+}
+
+.mainSize {
+  display: flex;
+
+}
+
+.releases {
+  padding: 20px;
+  width: 1400px;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+
+.links {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 20px;
+  width: 80%;
+}
+
+#linkes {
+  color: black;
+  background: linear-gradient(180deg, rgba(0, 0, 0, .07), rgba(0, 0, 0, .2));
+  flex: auto 0 0;
+  height: 235px;
+  width: 170px;
+  display: inline-block;
+}
+
+#Search_imp {
+  border-radius: 18px;
+  padding: 5px;
+}
+#Search_btn {
+  align-content: center;
+}
