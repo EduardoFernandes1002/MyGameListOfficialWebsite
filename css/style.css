@@ -34,6 +34,11 @@ button:hover {
   background-color: rgba(255, 255, 255, .2);
 }
 
+.button {
+  text-wrap: nowrap;
+  align-items: center;
+}
+
 #header {
   box-sizing: border-box;
   height: 70px;
@@ -64,17 +69,19 @@ button:hover {
   display: flex;
   padding: 1rem;
   height: 40px;
-
   background-color: rgb(83, 83, 83);
+  justify-content: center;
 }
 
 .container2 {
   display: flex;
   align-items: center;
+  align-content: center;
   width: 1400px;
+  justify-content: space-between;
 }
 
-.links {
+.linkr {
   display: flex;
   gap: 20px;
 }
