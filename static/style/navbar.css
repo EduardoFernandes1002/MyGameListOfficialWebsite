@@ -90,14 +90,6 @@ button:hover {
   display: flex;
 
 }
-
-.releases {
-  padding: 20px;
-  width: 1400px;
-  margin: 0 auto;
-  overflow-x: hidden;
-}
-
 .links {
   display: flex;
   flex-wrap: nowrap;
