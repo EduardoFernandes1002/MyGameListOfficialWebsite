@@ -1,6 +1,7 @@
 html {
   height: 100%;
 }
+
 body {
   background-color: #464d6a;
   background-position: center;
@@ -12,18 +13,19 @@ body {
   align-items: center;
   margin: 0;
 }
+
 #Login {
   justify-content: center;
   align-items: center;
   color: rgb(255, 255, 255);
   word-wrap: break-word;
-  width: calc(100% - 5%);
+  width: calc(100% - 10%);
 }
 
 h3 {
-  font-size: 3rem;
+  font-size: 2.4rem;
   text-align: center;
-  margin: 0;
+  margin: 1rem;
 }
 
 .TelaLogin {
@@ -49,9 +51,9 @@ h3 {
 .Buttons #ButtonLogin {
   background-color: #616088;
   border: none;
-  border-radius: 10px;
+  border-radius: 18px;
   height: 2rem;
-  width: 70%;
+  width: 50%;
 }
 
 .Buttons #ButtonLogin:hover {
@@ -62,7 +64,9 @@ a {
   color: #989baa;
   text-decoration: none;
   margin: 0;
+  font-size: 0.8rem;
 }
+
 input {
   text-align: center;
   border: none;
@@ -70,11 +74,13 @@ input {
   border-radius: 20px;
   height: 25px;
 }
+
 .ControleDeDiv {
   display: flex;
   gap: 20px;
   flex-direction: column;
 }
+
 input::placeholder {
   color: #6e7ca5;
 }

@@ -21,10 +21,10 @@ h3 {
     box-sizing: border-box;
     width: auto;
     height: auto;
-    background-color:#343c53;
+    background-color: #343c53;
     display: flex;
     padding: 1rem;
-    border-radius: 1rem ;
+    border-radius: 1rem;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -38,21 +38,22 @@ h3 {
     flex-direction: column;
 }
 
-#coluna1{
+#coluna1 {
     width: 100%;
     display: grid;
     grid-row: 2;
     gap: 1rem
 }
-#Email {
+
+#e mail {
     width: 100%;
 }
 
-#User {
+#user {
     width: 100%;
 }
 
-#Password {
+#password {
     grid-column: auto;
 }
 
@@ -71,7 +72,7 @@ h3 {
     flex-direction: column;
 }
 
-#Registrar {
+#registrar {
     border: none;
     height: 2rem;
     width: 50%;
@@ -79,7 +80,7 @@ h3 {
     background: #616088;
 }
 
-#Registrar:hover {
+#registrar:hover {
     background: #6c6ba5;
     cursor: pointer;
 }
@@ -97,7 +98,7 @@ a:hover {
 input {
     border: none;
     height: 25px;
-    text-align: center; 
+    text-align: center;
     border-radius: 18px;
     background-color: #2a3144;
 }

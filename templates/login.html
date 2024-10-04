@@ -1,41 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/static/style/login.css">
 </head>
+
 <body>
-<body>
-    <div class="TelaLogin">
-      <form action="loginForm" onsubmit="processarLogin(event)">
-        <div class="ControleDeDiv">
-          <h3 id="Login">SEJA BEM VINDO</h3>
 
-          <input
-            name="User"
-            id="LocalDeLogin"
-            placeholder="Digite seu Usuario ou Email"
-            required
-          />
+    <body>
+        <div class="TelaLogin">
+            <form action="loginForm" onsubmit="processarLogin(event)">
+                <div class="ControleDeDiv">
+                    <h3 id="Login">SEJA BEM VINDO</h3>
 
-          <input
-            type="password"
-            name="Passaword"
-            id="LocalDeLogin2"
-            placeholder="Digite sua Senha"
-            minlength="8"
-            required
-          />
+                    <input name="email_user" id="email_user" placeholder="Digite seu Usuario ou Email" required />
 
-          <div class="Buttons">
-            <button type="submit" id="ButtonLogin">Login</button>
+                    <input type="password" name="password" id="password" placeholder="Digite sua Senha" minlength="8"
+                        required />
 
-            <a href="registro.html">Não Possui uma conta? Registre-se! </a>
-          </div>
+                    <div class="Buttons">
+                        <button type="submit" id="ButtonLogin">Entrar</button>
+
+                        <a href="registro.html">Não Possui conta? Registre-se! </a>
+                    </div>
+                </div>
+            </form>
         </div>
-      </form>
-    </div>
-  </body>
+    <script src="/js/login.js"></script>
+    </body>
+
 </html>
