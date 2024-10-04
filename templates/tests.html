@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/style/tests.css">
+</head>
+
+<body>
+    <div class="janelaRegistro">
+        <h3>REGISTRO</h3>
+        <form action="registerForm" onsubmit="processarRegistro(event)">
+            <div class="controle">
+                <div class="campoDePreenchimento">
+                    <div id="coluna1">
+                    <input type="email" name="Email" id="Email" placeholder="Email" required>
+
+                    <input type="text" name="User" id="User" maxlength="20" minlength="4" placeholder="Nickname"
+                        required>
+                    </div>
+                    <div id="coluna2">
+                    <input type="password" name="Password" id="Password" minlength="8" placeholder="Password" required>
+
+                    <input type="password" name="PasswordConfirm" id="PasswordConfirm" placeholder="Confirm Password"
+                        required>
+                    </div>
+
+                    
+                </div>
+                <div class="Buttons">
+                    <button type="submit" id="Registrar">Registrar</button>
+                    <a href="login.html" id="loginPage">Possui uma conta? Entre!</a>
+                    
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <script src="/js/tests.js"></script>
+</body>
+
+</html>
