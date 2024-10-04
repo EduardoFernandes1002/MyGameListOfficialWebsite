@@ -1,0 +1,80 @@
+html {
+  height: 100%;
+}
+body {
+  background-color: #464d6a;
+  background-position: center;
+  min-height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+}
+#Login {
+  justify-content: center;
+  align-items: center;
+  color: rgb(255, 255, 255);
+  word-wrap: break-word;
+  width: calc(100% - 5%);
+}
+
+h3 {
+  font-size: 3rem;
+  text-align: center;
+  margin: 0;
+}
+
+.TelaLogin {
+  padding: 20px;
+  background-color: #343c53;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: auto;
+  align-items: center;
+  border-radius: 20px;
+  height: auto;
+  font-size: 20px;
+}
+
+.Buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.Buttons #ButtonLogin {
+  background-color: #616088;
+  border: none;
+  border-radius: 10px;
+  height: 2rem;
+  width: 70%;
+}
+
+.Buttons #ButtonLogin:hover {
+  background-color: #585780;
+}
+
+a {
+  color: #989baa;
+  text-decoration: none;
+  margin: 0;
+}
+input {
+  text-align: center;
+  border: none;
+  background-color: #2a3144;
+  border-radius: 20px;
+  height: 25px;
+}
+.ControleDeDiv {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+input::placeholder {
+  color: #6e7ca5;
+}
