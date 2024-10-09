@@ -5,22 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/static/style/registro.css">
+    <link rel="stylesheet" href="/static/style/style.css">
+    </style>
 </head>
 
 <body>
     <div class="janelaRegistro">
         <h3>REGISTRO</h3>
-        <form action="registerForm" onsubmit="processarRegistro(event)">
+        <form onsubmit="processarRegistro(event)">
             <div class="controle">
                 <div class="campoDePreenchimento">
-                    <div id="coluna1">
-                        <input type="email" name="email" id="email" placeholder="Email" required>
+                    <div id="campo1">
+                        <input type="email" name="email" id="email" placeholder="Email" required autocomplete="off">
 
                         <input type="text" name="nickname" id="nickname" maxlength="20" minlength="4"
-                            placeholder="Nickname" required>
+                            placeholder="Apelido" required autocomplete="off">
                     </div>
-                    <div id="coluna2">
+                    <div id="campo2">
                         <input type="password" name="password" id="password" minlength="8" placeholder="Password"
                             required>
 

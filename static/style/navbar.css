@@ -1,14 +1,12 @@
-body,
-ul {
-  margin: 0;
-  padding: 0;
-}
-
 a {
-
   color: white;
   text-decoration: none;
   font-family: sans-serif;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
 }
 
 a:hover {
@@ -46,7 +44,7 @@ button:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: black;
+  background: #343c53;
 }
 
 .container0 {
@@ -69,8 +67,12 @@ button:hover {
   display: flex;
   padding: 1rem;
   height: 40px;
-  background-color: rgb(83, 83, 83);
+  background-color: #616088;
   justify-content: center;
+}
+
+input {
+  border: none;
 }
 
 .container2 {
@@ -110,7 +112,9 @@ button:hover {
 #Search_imp {
   border-radius: 18px;
   padding: 5px;
+  background-color: #2a3144;
 }
 #Search_btn {
   align-content: center;
+
 }

@@ -4,32 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/static/style/login.css">
+    <title>Login</title>
+    <link rel="stylesheet" href="/static/style/style.css">
 </head>
 
 <body>
-
-    <body>
-        <div class="TelaLogin">
-            <form action="loginForm" onsubmit="processarLogin(event)">
-                <div class="ControleDeDiv">
-                    <h3 id="Login">SEJA BEM VINDO</h3>
-
-                    <input name="email_user" id="email_user" placeholder="Digite seu Usuario ou Email" required />
-
-                    <input type="password" name="password" id="password" placeholder="Digite sua Senha" minlength="8"
-                        required />
-
-                    <div class="Buttons">
-                        <button type="submit" id="ButtonLogin">Entrar</button>
-
-                        <a href="registro.html">Não Possui conta? Registre-se! </a>
-                    </div>
+    <div class="janelaLogin">
+        <form onsubmit="processarLogin(event)">
+            <div class="controle">
+                <h3>SEJA BEM VINDO</h3>
+                <input name="email_user" id="email_user" placeholder="Digite seu Apelido ou Email" required autocomplete="off" />
+                <input type="password" name="password" id="password" placeholder="Digite sua Senha" minlength="8" required />
+                <div class="Buttons">
+                    <button type="submit" id="buttonLogin">Entrar</button>
+                    <a href="registro.html">Não possui conta? Registre-se!</a>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
+    </div>
     <script src="/js/login.js"></script>
-    </body>
+</body>
 
 </html>
