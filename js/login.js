@@ -12,6 +12,7 @@ function processarLogin(event) {
 
     // Verifica se o nome ou email predefinidos foram digitados após o botão de submit
     if (emailOrUser === apelidos[0] || emailOrUser === emails[0]) {
+        
         // Define uma senha fixa caso o nome ou email predefinido
         let correctPassword = "12345678";
 
