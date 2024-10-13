@@ -4,8 +4,7 @@ html {
 }
 
 body {
-  background: linear-gradient(30deg, #4c526e, #5c4570);
-  background-position: center;
+  background: #293957e7;
   min-height: 100%;
   box-sizing: border-box;
   display: flex;
@@ -19,7 +18,7 @@ body {
 .janelaLogin,
 .janelaRegistro {
   padding: 20px;
-  background-color: #343c53;
+  background-color: #202438;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -66,7 +65,7 @@ input::placeholder {
 }
 
 .Buttons button {
-  background-color: #616088;
+  background-color: #606b88;
   border: none;
   border-radius: 18px;
   height: 2rem;
