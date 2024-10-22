@@ -1,0 +1,92 @@
+a {
+  color: aliceblue;
+  text-decoration: none;
+  font-family: Arial;
+}
+
+ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  gap: 1vh;
+  text-wrap: nowrap;
+}
+header {
+  width: 100%;
+  background-color: #202438;
+  height: 12vh;
+  overflow: hidden;
+}
+li {
+  list-style: none;
+  font-size: 2vh;
+
+}
+
+.item {
+  padding: 1vh;
+}
+.item:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#logado {
+  font-family: sans-serif;
+}
+
+.container,
+.nav {
+  box-sizing: border-box;
+  width: 100%;
+  height: 12vh;
+}
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 30px;
+}
+.homeSearch {
+  height: 12vh;
+  display: flex;
+  align-items: center;
+  gap: 4vw;
+}
+#Home_Link {
+  font-size: 4vh;
+  font-family: fantasy, sans-serif;
+  padding-right: 3rem;
+  border-right: 0.3vh solid #202c46;
+}
+#inputDiv {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-radius: 18vh;
+  background-color: #191b27;
+}
+#inputDiv input,
+#inputDiv button {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5vh;
+  padding: 1vh;
+  color: aliceblue;
+  outline: none;
+}
+#inputDiv input {
+  border-radius: 0px 18px 18px 0px;
+  caret-color: wheat;
+}
+#inputDiv button {
+  border-radius: 18px 0 0 18px;
+  cursor: pointer;
+}
+#inputDiv:hover {
+  background-color: rgba(0, 0, 0, 0.308);
+}
+
+form {
+  margin: 0;
+  padding: 0;
+}
