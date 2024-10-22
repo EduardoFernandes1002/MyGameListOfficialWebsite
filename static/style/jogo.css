@@ -6,31 +6,39 @@ body {
   min-height: 100%;
   margin: 0;
   padding: 0;
-  background: linear-gradient(30deg, #4c526e, #5c4570);
+  background: #4c526e;
 }
 
 main {
   display: grid;
-  margin: 0.7rem;
+  margin: 0;
 }
 
 .gridGame1 {
-  width: 400px;
+  width: 100%;
+  height: 35vh;
   display: grid;
   grid-template-rows: repeat(2, 1fr);
-  position: relative;
-}
+  position: relative; 
+  background-image: url('/static/images/Rimworld.jpg');
+  background-position: center;
+  background-size: cover;
+  background-blend-mode: multiply; /* Mistura a cor preta com a imagem */
+  background-color: rgba(0, 0, 0, 0.747);
 
+}
 .gameAndNota {
   box-sizing: border-box;
   display: flex;
-  padding: 1rem;
+  padding: 4vh;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   position: absolute;
   bottom: 0;
   width: 100%;
-  box-shadow: inset 0px 10px 30px rgba(0, 0, 0, 1);;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: rgba(255, 255, 255, 0.849);
+
 }
 
 .gameAndNota h3{
@@ -39,6 +47,10 @@ main {
 
 #gameImagem {
   width: 100%;
+  height: 100%;
+  object-position: center;
+  object-fit: contain;
+  object-position: center;
   grid-row-start: 1;
   grid-row-end: 3;
 }
