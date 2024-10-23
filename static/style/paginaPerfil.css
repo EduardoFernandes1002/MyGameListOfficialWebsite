@@ -1,0 +1,54 @@
+html {
+    height: 100%;
+  }
+  
+  body {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #4c526e;
+  }
+
+main{
+    box-sizing: border-box;
+}
+
+.idImagem{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}  
+.idImagem img{
+
+    border-radius: 100%;
+    width: 20vh;
+    margin: 1vh;
+    box-sizing: border-box;
+    border: 0.3vw solid rgb(200, 197, 212);
+
+}
+.textoImagem{
+    display: flex;
+    width: 100%;
+    
+}
+h3{
+    text-align: center;
+    font-size: 2vh;
+    margin: 0.5vh;
+    color: rgba(255, 255, 255, 0.959);
+
+}
+
+.butone{
+  right: 0;
+  position: absolute;
+  margin: 1.5vw;
+  cursor: pointer;
+}
+
+
+
+
+
+
