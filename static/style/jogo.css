@@ -6,7 +6,7 @@ body {
   min-height: 100%;
   margin: 0;
   padding: 0;
-  background: #4c526e;
+  background: #3c4157;
 }
 
 main {
@@ -30,14 +30,15 @@ main {
 .gameAndNota {
   box-sizing: border-box;
   display: flex;
-  padding: 4vh;
+  height: 100%;
   align-items: center;
   justify-content: center;
   position: absolute;
   bottom: 0;
   width: 100%;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  background: linear-gradient(transparent, rgb(0, 0, 0, .8));
   color: rgba(255, 255, 255, 0.849);
+  font-size: 3vh;
 
 }
 
