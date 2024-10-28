@@ -32,11 +32,12 @@ main{
     width: 100%;
     
 }
-h3{
+#NomeUsuario{
     text-align: center;
     font-size: 2vh;
     margin: 0.5vh;
     color: rgba(255, 255, 255, 0.959);
+    font-family: sans-serif;
 
 }
 
@@ -54,6 +55,38 @@ h3{
     cursor: pointer;
 }
 
+.SobrePerfil{
+
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    font-size: 3vh;
+    font-size: 4vh;
+    color: white;
+    font-family: sans-serif;
+
+}
+.SobrePerfil #MinhasListas{
+
+    padding: 10px;
+    border-radius: 5px;
+    background-image: linear-gradient(#202438, #202438), linear-gradient(to right, #c7c5db, #3936cf);
+    padding: 10px;
+    border-radius: 5px;
+    width: 700px;
+    text-align: center; 
+    
+}
+.SobrePerfil #MinhasR{
+    padding: 10px;
+    border-radius: 5px;
+    background-image: linear-gradient(#202438, #202438), linear-gradient(to right, #1b0ced, #3936cf);
+    padding: 10px;
+    border-radius: 5px;
+    width: 700px;
+    text-align: center;
+
+}
 
 
 
