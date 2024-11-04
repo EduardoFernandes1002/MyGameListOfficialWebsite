@@ -1,38 +1,32 @@
-const apelidos = ["Eduardo", "Thiago"];
-const emails = ["duduzebas@gmail.com", "thiagodossantos461@gmail.com"];
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('loginForm');
 
-function processarLogin(event) {
-  event.preventDefault();
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Evita o envio padrão do formulário
 
-  // Pega os valores dos INPUTS
-  let emailOrUser = document.getElementById("email_user").value;
-  let password = document.getElementById("password").value;
+    const login = document.getElementById('email_user').value;
+    const senha = document.getElementById('password').value;
 
-  // Verifica se o nome ou email predefinidos foram digitados após o botão de submit
-  if (emailOrUser === apelidos[0] || emailOrUser === emails[0]) {
-    // Define uma senha fixa caso o nome ou email predefinido
-    let correctPassword = "12345678";
+    try {
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({ login, senha })
+      });
 
-    // Valida se a senha digitada é igual a senha pré-definida
-    if (password != correctPassword) {
-      document.getElementById("password").value = "";
-      alert("Erro: Senha Incorreta");
-      return false;
+      const data = await response.json();
+
+      if (data.sucesso) {
+        alert(data.mensagem);
+        // Redirecionar ou executar outra ação
+      } else {
+        alert(data.mensagem); // Mostra mensagem de erro
+      }
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+      alert('Erro na conexão com o servidor.');
     }
-  } else if (emailOrUser == apelidos[1] || emailOrUser == emails[1]) {
-    // Define uma senha fixa caso o nome ou email pré-definido
-    let correctPassword = "87654321";
-
-    // Valida se a senha digitada é igual a senha pré-definida
-    if (password != correctPassword) {
-      document.getElementById("password").value = "";
-      alert("Erro: Senha Incorreta");
-      return false;
-    }
-  } else {
-    alert("Erro: Email ou Apelido não encontrado");
-    return false;
-  }
-
-  return (window.location.href = "index.html");
-}
+  });
+});
