@@ -1,0 +1,23 @@
+{
+  "name": "mygamelistofficialwebsite",
+  "version": "1.0.0",
+  "main": "database.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/EduardoFernandes1002/MyGameListOfficialWebsite.git"
+  },
+  "author": "Eduardo Fernandes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EduardoFernandes1002/MyGameListOfficialWebsite/issues"
+  },
+  "homepage": "https://github.com/EduardoFernandes1002/MyGameListOfficialWebsite#readme",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^5.1.1"
+  }
+}
