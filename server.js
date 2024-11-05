@@ -33,6 +33,11 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'templates', 'login.html'));
 });
 
+
+app.get('/perfil', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'templates', 'perfil.html'));
+});
+
 app.use(express.urlencoded({ extended: true })); // Adicione isso para processar dados de formulários
 
 
