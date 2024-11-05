@@ -14,17 +14,20 @@ main{
 }
 
 .idImagem{
+    
     width: 100%;
     display: flex;
     justify-content: center;
 }  
 .idImagem img{
 
-    border-radius: 100%;
-    width: 20vh;
-    margin: 1vh;
+    border-radius: 50%; /* Circular */
+    height: 20vh; /* Altura fixa igual à largura */
     box-sizing: border-box;
     border: 0.3vw solid rgb(200, 197, 212);
+    object-fit: cover;
+    width: 20vh;
+    margin: 1vh;
 
 }
 .textoImagem{
@@ -68,26 +71,46 @@ main{
 }
 .SobrePerfil #MinhasListas{
 
-    padding: 10px;
-    border-radius: 5px;
-    background-image: linear-gradient(#202438, #202438), linear-gradient(to right, #c7c5db, #3936cf);
-    padding: 10px;
-    border-radius: 5px;
-    width: 700px;
-    text-align: center; 
-    
+    width: 80vh;       
+    height: 4vh;      
+    padding: 2vh;
+    border-radius: 10vh;
+    background-image: linear-gradient(#202438, #202438), linear-gradient(to right, #d9d910, #3936cf);
+    background-clip: padding-box;
+    color: #ffffff;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    background-image: linear-gradient(#202438, #202438), linear-gradient(to right, #1b0ced, #3936cf);
+    overflow: hidden; 
+
 }
 .SobrePerfil #MinhasR{
-    padding: 10px;
-    border-radius: 5px;
-    background-image: linear-gradient(#202438, #202438), linear-gradient(to right, #1b0ced, #3936cf);
-    padding: 10px;
-    border-radius: 5px;
-    width: 700px;
+
+    width: 80vh;        
+    height: 4vh;  
+    padding: 2vh;
+    border-radius: 10vh;
+    background-image: linear-gradient(#202438, #202438), linear-gradient(to right, #d9d910, #3936cf);
+    background-clip: padding-box;
+    color: #ffffff;
     text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    background-image: linear-gradient(#202438, #202438), linear-gradient(to right, #1b0ced, #3936cf);
+       overflow: hidden; 
 
 }
+.Listas{
 
+    display: flex;
+    
+}
+
+.Barra {
+    display: flex;
+    justify-content: space-around;
+}
 
 
 

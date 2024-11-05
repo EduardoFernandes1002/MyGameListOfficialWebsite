@@ -18,6 +18,8 @@
   "homepage": "https://github.com/EduardoFernandes1002/MyGameListOfficialWebsite#readme",
   "description": "",
   "dependencies": {
-    "bcrypt": "^5.1.1"
+    "bcrypt": "^5.1.1",
+    "express": "^4.21.1",
+    "mysql2": "^3.11.3"
   }
 }
