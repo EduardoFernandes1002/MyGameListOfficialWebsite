@@ -69,49 +69,55 @@ main{
     font-family: sans-serif;
 
 }
-.SobrePerfil #MinhasListas{
 
-    width: 80vh;       
-    height: 4vh;      
-    padding: 2vh;
-    border-radius: 10vh;
-    background-image: linear-gradient(#202438, #202438), linear-gradient(to right, #d9d910, #3936cf);
-    background-clip: padding-box;
-    color: #ffffff;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s, box-shadow 0.3s;
-    background-image: linear-gradient(#202438, #202438), linear-gradient(to right, #1b0ced, #3936cf);
-    overflow: hidden; 
-
-}
-.SobrePerfil #MinhasR{
-
-    width: 80vh;        
-    height: 4vh;  
-    padding: 2vh;
-    border-radius: 10vh;
-    background-image: linear-gradient(#202438, #202438), linear-gradient(to right, #d9d910, #3936cf);
-    background-clip: padding-box;
-    color: #ffffff;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s, box-shadow 0.3s;
-    background-image: linear-gradient(#202438, #202438), linear-gradient(to right, #1b0ced, #3936cf);
-       overflow: hidden; 
-
-}
 .Listas{
-
+    box-sizing: border-box;
     display: flex;
-    
+    height: 5vh;
 }
 
 .Barra {
+    box-sizing: border-box;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    height: 5vh;  
+    align-items: center;
+    border: none;
+
+    
+}
+.Barra button{
+    width: 10vw;
+    background: #202438;
+    color: #ffffff;
+    font-size: 2vh;
+    border: none;
+    cursor: pointer;
+}
+.Listas button:hover{
+    background:#4d547a;
 }
 
+.reviewDiv button{
 
+    width: 15vh;        
+    padding: 1vh;
+    background: #202438;
+    background-clip: padding-box;
+    color: #ffffff;
+    box-shadow: 0 4vh 10vh rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+    font-size: 2vh;
+    border: none;
+    cursor: pointer;
+}
+.reviewDiv button:hover{
+    background:#4d547a;
+}
 
-
+.Listas div {
+    width: max-content;
+    height: max-content;
+    box-sizing: border-box;
+}
