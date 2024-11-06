@@ -71,53 +71,36 @@ main{
 }
 
 .Listas{
-    box-sizing: border-box;
     display: flex;
-    height: 5vh;
+    box-sizing: border-box;
 }
 
 .Barra {
-    box-sizing: border-box;
+    background-color: #202438;
     display: flex;
     justify-content: space-between;
-    height: 5vh;  
     align-items: center;
-    border: none;
-
-    
+    height: 5vh;
 }
 .Barra button{
-    width: 10vw;
-    background: #202438;
-    color: #ffffff;
-    font-size: 2vh;
-    border: none;
-    cursor: pointer;
-}
-.Listas button:hover{
-    background:#4d547a;
-}
-
-.reviewDiv button{
-
-    width: 15vh;        
-    padding: 1vh;
-    background: #202438;
-    background-clip: padding-box;
-    color: #ffffff;
-    box-shadow: 0 4vh 10vh rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s, box-shadow 0.3s;
-    overflow: hidden;
-    font-size: 2vh;
-    border: none;
-    cursor: pointer;
-}
-.reviewDiv button:hover{
-    background:#4d547a;
-}
-
-.Listas div {
-    width: max-content;
-    height: max-content;
+    margin: 1vh ;
+    gap: 1vh;
+    background-color: transparent;
     box-sizing: border-box;
+    display: flex;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    font-size: 2vh;
+    width: 8vw;
+    height: 5vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.Barra button:hover{
+    background:#191c2c;
+}
+.Listas {
+    margin: 1vw;
 }
