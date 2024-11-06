@@ -7,17 +7,30 @@ const bodyParser = require('body-parser'); // Adicione isso para processar dados
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Endpoint para lidar com login
+// Validação do login do usuario
 app.post('/login', (req, res) => {
     const { login, senha } = req.body;
 
-    // Aqui você pode realizar a verificação no banco de dados sem logar a senha
-    connection.query('SELECT * FROM user WHERE (ds_email = ? OR nm_nickname = ?) AND cdSenha = ?', [login, login, senha], (error, results) => {
+    // Consulta no banco para pegar o usuário com o login informado (email ou nickname)
+    connection.query('SELECT * FROM user WHERE ds_email = ? OR nm_nickname = ?', [login, login], (error, results) => {
         if (error) {
             return res.status(500).json({ sucesso: false, mensagem: 'Erro no servidor!' });
         }
+
         if (results.length > 0) {
-            return res.json({ sucesso: true, mensagem: 'Login bem-sucedido!' });
+            const user = results[0];  // Pega o primeiro usuário encontrado
+
+            // Comparação da senha informada com a senha armazenada no banco
+            bcrypt.compare(senha, user.cdSenha, (err, result) => {
+                if (err) {
+                    return res.status(500).json({ sucesso: false, mensagem: 'Erro ao verificar a senha!' });
+                }
+                if (result) {
+                    return res.json({ sucesso: true, mensagem: 'Login bem-sucedido!' });
+                } else {
+                    return res.status(400).json({ sucesso: false, mensagem: 'Credenciais inválidas!' });
+                }
+            });
         } else {
             return res.status(400).json({ sucesso: false, mensagem: 'Credenciais inválidas!' });
         }
