@@ -76,6 +76,7 @@ main{
 }
 
 .Barra {
+    margin: 1vh;
     background-color: #202438;
     display: flex;
     justify-content: space-between;
