@@ -105,3 +105,10 @@ main{
 .Listas {
     margin: 1vw;
 }
+#Mensagem{
+
+    display: flex;
+    font-size: 7vh ;
+    text-align: center;
+    justify-content: center;
+}
