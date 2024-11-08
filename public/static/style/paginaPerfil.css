@@ -1,24 +1,25 @@
 html {
     height: 100%;
-  }
-  
-  body {
+}
+
+body {
     min-height: 100%;
     margin: 0;
     padding: 0;
     background: #4c526e;
-  }
+}
 
-main{
+main {
     box-sizing: border-box;
 }
 
-.idImagem{
+.idImagem {
     width: 100%;
     display: flex;
     justify-content: center;
-}  
-.idImagem img{
+}
+
+.idImagem img {
 
     border-radius: 100%;
     width: 20vh;
@@ -27,12 +28,14 @@ main{
     border: 0.3vw solid rgb(200, 197, 212);
 
 }
-.textoImagem{
+
+.textoImagem {
     display: flex;
     width: 100%;
-    
+
 }
-#NomeUsuario{
+
+#NomeUsuario {
     text-align: center;
     font-size: 2vh;
     margin: 0.5vh;
@@ -41,7 +44,7 @@ main{
 
 }
 
-.butone{
+.butone {
     box-sizing: border-box;
     display: flex;
     justify-content: end;
@@ -55,7 +58,7 @@ main{
     cursor: pointer;
 }
 
-.SobrePerfil{
+.SobrePerfil {
 
     height: 100%;
     display: flex;
@@ -66,7 +69,8 @@ main{
     font-family: sans-serif;
 
 }
-.SobrePerfil #MinhasListas{
+
+.SobrePerfil #MinhasListas {
 
     padding: 10px;
     border-radius: 5px;
@@ -74,10 +78,11 @@ main{
     padding: 10px;
     border-radius: 5px;
     width: 700px;
-    text-align: center; 
-    
+    text-align: center;
+
 }
-.SobrePerfil #MinhasR{
+
+.SobrePerfil #MinhasR {
     padding: 10px;
     border-radius: 5px;
     background-image: linear-gradient(#202438, #202438), linear-gradient(to right, #1b0ced, #3936cf);
@@ -87,8 +92,3 @@ main{
     text-align: center;
 
 }
-
-
-
-
-
