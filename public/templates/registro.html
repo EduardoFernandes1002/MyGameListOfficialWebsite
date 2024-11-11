@@ -6,18 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
     <link rel="stylesheet" href="/static/style/loginRegister.css">
-    
+
     </style>
 </head>
 
 <body>
-
     <div id="navbar-placeholder"></div>
-
-
     <div class="janelaRegistro">
         <h3>REGISTRO</h3>
-        <form onsubmit="processarRegistro(event)">
+        <form id="registroForm">
             <div class="controle">
                 <div class="campoDePreenchimento">
                     <div id="campo1">
@@ -38,14 +35,14 @@
                 </div>
                 <div class="Buttons">
                     <button type="submit" id="registrar">Registrar</button>
-                    <a href="login.html" id="loginPage">Possui conta? Entre!</a>
+                    <a href="/login" id="loginPage">Possui conta? Entre!</a>
                 </div>
             </div>
         </form>
     </div>
 
 
-    <script src="/js/registro.js"></script>
+    <script src="../js/registro.js"></script>
 </body>
 
 </html>

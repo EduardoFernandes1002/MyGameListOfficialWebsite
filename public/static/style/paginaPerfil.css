@@ -1,15 +1,15 @@
 html {
     height: 100%;
-  }
-  
-  body {
+}
+
+body {
     min-height: 100%;
     margin: 0;
     padding: 0;
     background: #4c526e;
-  }
+}
 
-main{
+main {
     box-sizing: border-box;
 }
 
@@ -18,8 +18,9 @@ main{
     width: 100%;
     display: flex;
     justify-content: center;
-}  
-.idImagem img{
+}
+
+.idImagem img {
 
     border-radius: 50%; /* Circular */
     height: 20vh; /* Altura fixa igual à largura */
@@ -30,12 +31,14 @@ main{
     margin: 1vh;
 
 }
-.textoImagem{
+
+.textoImagem {
     display: flex;
     width: 100%;
-    
+
 }
-#NomeUsuario{
+
+#NomeUsuario {
     text-align: center;
     font-size: 2vh;
     margin: 0.5vh;
@@ -44,7 +47,7 @@ main{
 
 }
 
-.butone{
+.butone {
     box-sizing: border-box;
     display: flex;
     justify-content: end;
@@ -58,7 +61,7 @@ main{
     cursor: pointer;
 }
 
-.SobrePerfil{
+.SobrePerfil {
 
     height: 100%;
     display: flex;

@@ -1,32 +1,24 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('loginForm');
+document.getElementById("loginForm").addEventListener("submit", async function (event) {
+    event.preventDefault();
 
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Evita o envio padrão do formulário
-
-    const login = document.getElementById('email_user').value;
-    const senha = document.getElementById('password').value;
+    const login = document.getElementById("email_user").value;
+    const senha = document.getElementById("password").value;
 
     try {
-      const response = await fetch('/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({ login, senha })
-      });
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ login, senha })
+        });
 
-      const data = await response.json();
-
-      if (data.sucesso) {
-        alert(data.mensagem);
-        // Redirecionar ou executar outra ação
-      } else {
-        alert(data.mensagem); // Mostra mensagem de erro
-      }
+        const data = await response.json();
+        if (data.sucesso) {
+            alert(data.mensagem);
+            window.location.href = "/";
+        } else {
+            alert(data.mensagem);
+        }
     } catch (error) {
-      console.error('Erro na requisição:', error);
-      alert('Erro na conexão com o servidor.');
+        alert("Erro no servidor. Tente novamente mais tarde.");
     }
-  });
 });

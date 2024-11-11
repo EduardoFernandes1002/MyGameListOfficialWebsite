@@ -23,9 +23,11 @@ main {
   background-image: url("/static/images/Rimworld.jpg");
   background-position: center;
   background-size: cover;
-  background-blend-mode: multiply; /* Mistura a cor preta com a imagem */
+  background-blend-mode: multiply;
+  /* Mistura a cor preta com a imagem */
   background-color: rgba(0, 0, 0, 0.747);
 }
+
 .game {
   box-sizing: border-box;
   display: flex;
