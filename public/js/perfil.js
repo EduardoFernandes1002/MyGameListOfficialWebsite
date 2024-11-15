@@ -8,9 +8,26 @@ function atualizarMensagem(novaMensagem) {
     event.preventDefault();
   }
   // Adiciona event listeners aos botões
-  document.getElementById('btnTudo').addEventListener('click', function(event) {
+  document.getElementById('btnTudo').addEventListener('click', async function(event) {
     evitarEnvioFormulario(event);
-    atualizarMensagem('Todos Os Meus Jogos');
+    try {
+      const response = await fetch('/perfil', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ jogoJSON })
+      });
+      const data = await response.json();
+        if (data.sucesso) {
+            alert(data.mensagem);
+            document.getElementById(response).innerHTML;
+        } else {
+            alert(data.mensagem);
+        }
+    } catch (error) {
+        alert("Erro no servidor. Tente novamente mais tarde.");
+    }
+
+
   });
   
   document.getElementById('btnDesejo').addEventListener('click', function(event) {

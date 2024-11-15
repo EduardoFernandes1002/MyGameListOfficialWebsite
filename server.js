@@ -11,7 +11,7 @@ app.use(express.json());
 
 // Caminho das paginas
 
-app.get('/', verificarToken, (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'templates', 'index.html'));
 });
 
@@ -19,7 +19,7 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'templates', 'login.html'));
 });
 
-app.get('/info',verificarToken, (req, res) => {
+app.get('/info', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'templates', 'infoJogos.html'));
 });
 
@@ -27,7 +27,7 @@ app.get('/registro', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'templates', 'registro.html'));
 });
 
-app.get('/perfil', verificarToken, (req, res) => {
+app.get('/perfil', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'templates', 'perfil.html'));
 });
 
@@ -90,20 +90,26 @@ app.post('/registro', async (req, res) => {
     }
 });
 
-function verificarToken(req, res, next) {
-    const token = req.headers['authorization']?.split(' ')[1];
-    if (!token) res.status(403).json({ sucesso: false, mensagem: 'Token não fornecido!' });
+app.post('/perfil', async(req, res)=> {
 
-    jwt.verify(token, secretKey, (err, decoded) => {
-        if (err) res.status(403).json({ sucesso: false, mensagem: 'Token inválido!' });
+    const jogoJSON = req.body
 
-        req.userId = decoded.id; // Salva o ID do usuário na requisição
-        next();
+    connection.query("SELECT nm_jogo FROM t_jogo;", (error, results) => {
+        if (error) {
+            return res.status(500).json({ sucesso: false, mensagem: 'Erro no servidor!' });
+        }
+
+        if(results.length > 0) {
+            jogoJSON = results;
+        }
     });
-}
+
+});
+
 
 // Iniciando servidor
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
+
