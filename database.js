@@ -4,7 +4,7 @@ const connection = db.createConnection({
     user: 'root',
     password: '',
     port: 3306,
-    database: 'MyGameList'
+    database: 'GameList'
 });
 
 connection.connect((err) => {

@@ -14,6 +14,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
         const data = await response.json();
         if (data.sucesso) {
             alert(data.mensagem);
+            localStorage.setItem('token', data.token);
             window.location.href = "/";
         } else {
             alert(data.mensagem);

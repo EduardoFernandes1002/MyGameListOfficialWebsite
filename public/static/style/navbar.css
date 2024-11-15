@@ -11,7 +11,7 @@ ul {
   gap: 1vh;
   text-wrap: nowrap;
 }
-header {
+.header {
   width: 100%;
   background-color: #202438;
   height: 12vh;
