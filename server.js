@@ -19,9 +19,32 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'templates', 'login.html'));
 });
 
-app.get('/info', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'templates', 'infoJogos.html'));
+// Rota para informações de um jogo específico
+app.get('/info/:gameId', (req, res) => {
+    const gameId = req.params.gameId;  // Pega o ID do jogo da URL
+
+    // Consulta SQL para pegar as informações do jogo com base no ID
+    connection.query(
+        'SELECT id_jogo, nm_jogo, ds_imagem, nr_nota, ds_sinopse, dt_lancamento FROM T_Jogo WHERE id_jogo = ?',
+        [gameId],
+        (error, results) => {
+            if (error) {
+                // Se houver erro na consulta, envia a resposta de erro apenas uma vez
+                return res.status(500).json({ sucesso: false, mensagem: 'Erro no servidor!' });
+            }
+
+            // Verifique se há resultados antes de tentar acessar
+            if (results.length > 0) {
+                // Envia os dados do jogo como resposta, apenas uma vez
+                return res.json({ sucesso: true, jogo: results });
+            } else {
+                // Caso não encontre o jogo, envia resposta de erro apenas uma vez
+                return res.status(404).json({ sucesso: false, mensagem: 'Jogo não encontrado!' });
+            }
+        }
+    );
 });
+
 
 app.get('/registro', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'templates', 'registro.html'));
@@ -29,6 +52,26 @@ app.get('/registro', (req, res) => {
 
 app.get('/perfil', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'templates', 'perfil.html'));
+});
+
+// Rota para buscar jogos ordenados pela maior nota, sem filtrar por st_game
+app.get('/jogos', (req, res) => {
+    // Consulta SQL ajustada para pegar os 4 jogos com maior nota, sem considerar o st_game
+    connection.query(
+        'SELECT id_jogo, nm_jogo, ds_imagem, nr_nota FROM T_Jogo ORDER BY nr_nota DESC LIMIT 4;',
+        (error, results) => {
+            if (error) {
+                return res.status(500).json({ sucesso: false, mensagem: 'Erro no servidor!' });
+            }
+
+            if (results.length > 0) {
+                // Envia os 4 jogos com maior nota
+                res.json({ sucesso: true, jogos: results });
+            } else {
+                res.status(404).json({ sucesso: false, mensagem: 'Nenhum jogo encontrado!' });
+            }
+        }
+    );
 });
 
 

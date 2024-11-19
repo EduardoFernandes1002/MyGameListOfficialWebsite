@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/static/style/jogo.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
 
-    <title>MGL, </title>
+    <title>MGL - Informações do Jogo</title>
 </head>
 <body>
 
@@ -16,38 +16,34 @@
     <main>
         <section class="gridGame"></section>
         <div class="gridGame1">
-            <img id="gameImagem" src="/static/images/Rimworld.jpg" alt="Rimworld">
-
+            <img id="gameImagem" src="" alt="Imagem do jogo">
             <div class="game">
-                <h3 id="nomeJogo">Rimworld</h3>
+                <h3 id="nomeJogo">Nome do Jogo</h3>
+            </div>
+        </div>
+
+        <section class="Informacoes">
+            <div class="notas">
+                <div class="notaTotal">
+                    <span id="nota">#</span>
+                </div>
+                <div class="notaPessoal">
+                    <span id="notaP">#</span>
+                    <button id="notaPessoalEditar">
+                        <i class="fa-solid fa-marker"></i>
+                    </button>
+                </div>
             </div>
 
-        </div>
-    </section>
-    <section class="Informacoes">
-        <div class="notas">
-            <div class="notaTotal">
-                <span id="nota">#</span>
+            <div class="InfoMain">
+                <p id="sinopseJogo">Sinopse do jogo será exibida aqui.</p>
             </div>
-            <div class="notaPessoal">
-                <span id="notaP">#</span>
-                <button id="notaPessoalEditar">
-                    <i class="fa-solid fa-marker"></i>
-                </button>
+
+            <div class="categoria">
+                <!-- Aqui você pode adicionar categorias ou tags do jogo, caso tenha esse dado -->
             </div>
-        </div>
-        <div class="InfoMain">
-            
-        </div  >
-        <div class="categoria">
-        </div>
-        <div>
-            
-        </div>
-    </section>
+        </section>
     </main>
-    
+
     <script src="../js/navegation_bar.js"></script>
     <script src="../js/info.js"></script>
-</body>
-</html>

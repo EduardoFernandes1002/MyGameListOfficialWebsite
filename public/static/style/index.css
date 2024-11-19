@@ -13,3 +13,23 @@ body {
   display: flex;
   height: 2vh;
 }
+
+.JogosRecomendados img{
+
+  display: flex;
+  height: 35vh;
+  width: 30vh;
+  justify-content: space-between;
+}
+.main{
+   display: flex;
+   border: 10vh;
+   margin: 10vh;
+}
+img{
+  display: flex;
+  justify-content: space-between;
+  margin: 6vh;
+  border-radius: 2vh;
+  outline: 0.4vh solid #202438;
+}
