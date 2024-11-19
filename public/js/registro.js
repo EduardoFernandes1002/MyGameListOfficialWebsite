@@ -6,6 +6,18 @@
     const password = document.getElementById("password").value;
     const passwordConfirm = document.getElementById("passwordConfirm").value;
 
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+        alert("O e-mail inserido não é válido.");
+        return;
+    }
+
+    const nicknameRegex = /^[a-zA-Z_]+$/;
+    if (!nicknameRegex.test(nickname)) {
+        alert("O nickname deve conter apenas caracteres validos.");
+        return;
+    }
+
     if (password !== passwordConfirm) {
         alert("As senhas não coincidem.");
         return;
