@@ -19,12 +19,17 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'templates', 'login.html'));
 });
 
-// Rota para informações de um jogo específico
+// Rota para enviar o HTML
 app.get('/info/:gameId', (req, res) => {
-    const gameId = req.params.gameId; 
+    res.sendFile(path.join(__dirname, 'public', 'templates', 'infoJogos.html'));
+});
+
+// Rota para retornar os dados do jogo
+app.get('/api/jogo/:gameId', (req, res) => {
+    const gameId = req.params.gameId;
 
     connection.query(
-        'SELECT id_jogo, nm_jogo, ds_imagem, nr_nota, FROM T_Jogo WHERE id_jogo = ?',
+        'SELECT id_jogo, nm_jogo, ds_imagem, nr_nota, ds_sinopse FROM T_Jogo WHERE id_jogo = ?',
         [gameId],
         (error, results) => {
             if (error) {
@@ -32,8 +37,10 @@ app.get('/info/:gameId', (req, res) => {
             }
 
             if (results.length > 0) {
-                res.sendFile(path.join(__dirname, 'public', 'templates', 'infoJogos.html'));
-                return results
+                return res.json({
+                    sucesso: true,
+                    jogo: results[0], // Retorna o primeiro (e único) jogo encontrado
+                });
             } else {
                 return res.status(404).json({ sucesso: false, mensagem: 'Jogo não encontrado!' });
             }
