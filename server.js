@@ -24,7 +24,7 @@ app.get('/info/:gameId', (req, res) => {
     const gameId = req.params.gameId; 
 
     connection.query(
-        'SELECT id_jogo, nm_jogo, ds_imagem, nr_nota, ds_sinopse, dt_lancamento FROM T_Jogo WHERE id_jogo = ?',
+        'SELECT id_jogo, nm_jogo, ds_imagem, nr_nota, FROM T_Jogo WHERE id_jogo = ?',
         [gameId],
         (error, results) => {
             if (error) {
