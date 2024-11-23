@@ -29,7 +29,7 @@ app.get('/info/:gameId', (req, res) => {
 });
 
 // Rota para retornar os dados do jogo
-app.get('/jogo/:gameId', (req, res) => {
+app.get('/api/jogo/:gameId', (req, res) => {
     const gameId = req.params.gameId;
 
     connection.query(
@@ -229,6 +229,9 @@ app.post('/avaliacao', async (req, res) => {
     }
 });
 
+
+
+        
 // Iniciando servidor
 const PORT = 3000;
 app.listen(PORT, () => {
