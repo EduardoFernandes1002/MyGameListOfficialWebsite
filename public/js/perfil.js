@@ -27,7 +27,7 @@ async function exibirJogosPorLista(idLista) {
     jogoImagem.alt = jogo.nm_jogo;
     
     // Cria o nome do jogo
-    const jogoNome = document.createElement('h4');
+    const jogoNome = document.createElement('h3');
     jogoNome.textContent = jogo.nm_jogo;
     
     // Adiciona a imagem e o nome ao item de lista

@@ -19,6 +19,10 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'templates', 'login.html'));
 });
 
+app.get('/rank', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'templates', 'rank.html'));
+});
+
 // Rota para enviar o HTML
 app.get('/info/:gameId', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'templates', 'infoJogos.html'));
@@ -77,59 +81,7 @@ app.get('/jogos', (req, res) => {
     );
 });
 
-app.get('/jogos', (req, res) => {
-    // Consulta SQL ajustada para pegar os 4 jogos com maior nota, sem considerar o st_game
-    connection.query(
-        'SELECT id_jogo, nm_jogo, ds_imagem, nr_nota FROM T_Jogo ORDER BY nr_nota DESC LIMIT 4;',
-        (error, results) => {
-            if (error) {
-                return res.status(500).json({ sucesso: false, mensagem: 'Erro no servidor!' });
-            }
 
-            if (results.length > 0) {
-                // Envia os 4 jogos com maior nota
-                res.json({ sucesso: true, jogos: results });
-            } else {
-                res.status(404).json({ sucesso: false, mensagem: 'Nenhum jogo encontrado!' });
-            }
-        }
-    );
-});
-
-
-app.get('/jogo', async (req, res) => {
-    try {
-        const [jogos] = await connection.promise().query("SELECT id_jogo, nm_jogo, ds_sinopse, st_game FROM t_jogo");
-        res.json(jogos);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ sucesso: false, mensagem: 'Erro ao buscar jogos' });
-    }
-});
-
-// Backend: Exemplo de rota para buscar jogos por lista
-app.get('/jogo/:id_usuario/:id_lista', async (req, res) => {
-    const { id_usuario, id_lista } = req.params;
-    
-    try {
-      // Query para buscar os jogos com base no id_lista e id_usuario
-      const query = `
-        SELECT j.ds_imagem, j.nm_jogo
-        FROM t_jogo j
-        INNER JOIN t_jogo_adicionado ja ON j.id_jogo = ja.id_jogo
-        INNER JOIN t_lista l ON ja.id_lista = l.id_lista
-        WHERE l.id_lista = ? AND l.id_usuario = ?
-      `;
-      
-      const [jogos] = await connection.promise().query(query, [id_lista, id_usuario]);
-      res.json(jogos);  // Retorna os jogos encontrados em formato JSON
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Erro ao buscar jogos.1');
-    }
-  });
-  
-  
 
 // Validação do login do usuario
 app.post('/login', async (req, res) => {
@@ -147,7 +99,7 @@ app.post('/login', async (req, res) => {
             // Comparar a senha informada com a senha armazenada do banco
             if (senha === user.ds_senha) {
                 const token = jwt.sign({ id: user.id_usuario }, secretKey, { expiresIn: '1h' });
-                return res.json({ sucesso: true, mensagem: 'Login bem-sucedido!', token });
+                return res.json({ sucesso: true, mensagem: 'Login bem-sucedido!', token});
             } else {
                 return res.status(400).json({ sucesso: false, mensagem: 'Credenciais inválidas!' });
             }
@@ -188,9 +140,97 @@ app.post('/registro', async (req, res) => {
     }
 });
 
+app.post('/perfil', async(req, res)=> {
+
+    const jogoJSON = req.body
+
+    connection.query("SELECT nm_jogo FROM t_jogo;", (error, results) => {
+        if (error) {
+            return res.status(500).json({ sucesso: false, mensagem: 'Erro no servidor!' });
+        }
+
+        if(results.length > 0) {
+            jogoJSON = results;
+        }
+    });
+
+});
+
+app.post('/avaliacao', async (req, res) => {
+    const { nota, data, jogoId } = req.body;
+    console.log(`Recebido: nota=${nota}, data=${data}, jogoId=${jogoId}`); // Verifique se o gameId está correto
+
+    if (!nota || !data || !jogoId) {
+        return res.status(400).json({ error: 'Parâmetros faltando: nota, data ou jogoId.' });
+    }
+
+    try {
+        // Verifica se já existe uma avaliação para o usuário e o jogo
+        const checkQuery = `
+            SELECT COUNT(*) AS count 
+            FROM t_avaliacao 
+            WHERE T_USUARIO_id_usuario = 2 AND T_JOGO_id_jogo = ?;
+        `;
+        
+        const [rows] = await connection.promise().query(checkQuery, [jogoId]);
+        const count = rows[0].count;
+
+        console.log(`Avaliação existente: ${count > 0 ? 'Sim' : 'Não'}`);
+
+        // Se já existir uma avaliação, faz um UPDATE
+        if (count > 0) {
+            const updateQuery = `
+                UPDATE t_avaliacao 
+                SET nr_usuario_nota = ?, dt_envio = ? 
+                WHERE T_USUARIO_id_usuario = 2 AND T_JOGO_id_jogo = ?;
+            `;
+            await connection.promise().query(updateQuery, [nota, data, jogoId]);
+            console.log('Avaliação atualizada com sucesso!');
+        } else {
+            // Caso contrário, faz um INSERT
+            const insertQuery = `
+                INSERT INTO t_avaliacao (dt_envio, nr_usuario_nota, T_JOGO_id_jogo, T_USUARIO_id_usuario)
+                VALUES (?, ?, ?, 2);
+            `;
+            await connection.promise().query(insertQuery, [data, nota, jogoId]);
+            console.log('Avaliação salva com sucesso!');
+        }
+
+        // Agora, calcula a média das notas do jogo
+        const mediaQuery = `
+            SELECT AVG(nr_usuario_nota) AS media 
+            FROM t_avaliacao 
+            WHERE T_JOGO_id_jogo = ?;
+        `;
+        const [mediaRows] = await connection.promise().query(mediaQuery, [jogoId]);
+        const mediaNota = mediaRows[0].media;
+
+        console.log(`Média calculada: ${mediaNota}`);
+
+        // Atualiza a nota média do jogo
+        const updateGameQuery = `
+            UPDATE t_jogo 
+            SET nr_nota = ? 
+            WHERE id_jogo = ?;
+        `;
+        await connection.promise().query(updateGameQuery, [mediaNota, jogoId]);
+
+        console.log(`Nota média do jogo ${jogoId} atualizada para ${mediaNota}`);
+
+        // Envia a resposta para o cliente apenas uma vez, após todas as operações
+        return res.status(200).json({
+            message: 'Avaliação salva e média do jogo atualizada com sucesso!',
+            media: mediaNota
+        });
+
+    } catch (error) {
+        console.error('Erro ao salvar ou atualizar a avaliação:', error);
+        return res.status(500).json({ error: 'Erro ao salvar ou atualizar a avaliação. Tente novamente mais tarde.' });
+    }
+});
+
 // Iniciando servidor
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
-
