@@ -169,7 +169,7 @@ app.post('/avaliacao', async (req, res) => {
         const checkQuery = `
             SELECT COUNT(*) AS count 
             FROM t_avaliacao 
-            WHERE T_USUARIO_id_usuario = 1 AND T_JOGO_id_jogo = ?;
+            WHERE T_USUARIO_id_usuario = 2 AND T_JOGO_id_jogo = ?;
         `;
         
         const [rows] = await connection.promise().query(checkQuery, [jogoId]);
@@ -182,7 +182,7 @@ app.post('/avaliacao', async (req, res) => {
             const updateQuery = `
                 UPDATE t_avaliacao 
                 SET nr_usuario_nota = ?, dt_envio = ? 
-                WHERE T_USUARIO_id_usuario = 1 AND T_JOGO_id_jogo = ?;
+                WHERE T_USUARIO_id_usuario = 2 AND T_JOGO_id_jogo = ?;
             `;
             await connection.promise().query(updateQuery, [nota, data, jogoId]);
             console.log('Avaliação atualizada com sucesso!');
@@ -190,7 +190,7 @@ app.post('/avaliacao', async (req, res) => {
             // Caso contrário, faz um INSERT
             const insertQuery = `
                 INSERT INTO t_avaliacao (dt_envio, nr_usuario_nota, T_JOGO_id_jogo, T_USUARIO_id_usuario)
-                VALUES (?, ?, ?, 1);
+                VALUES (?, ?, ?, 2);
             `;
             await connection.promise().query(insertQuery, [data, nota, jogoId]);
             console.log('Avaliação salva com sucesso!');
