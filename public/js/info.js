@@ -11,14 +11,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Faz a requisição para pegar os dados do jogo
     try {
-        const response = await fetch(`/api/jogo/${gameId}`);
+        const response = await fetch(`/jogo/${gameId}`);
         if (!response.ok) {
             throw new Error(`Erro HTTP: ${response.status}`);
         }
         
+        //Recebe dados da resposta e adiciona elementos no html. caso contrario ativa um erro
         const data = await response.json();
-        console.log('Dados do jogo:', data); // Log para verificar os dados recebidos
-
         if (data.sucesso) {
             const jogo = data.jogo;
 
@@ -27,8 +26,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             document.getElementById('nomeJogo').textContent = jogo.nm_jogo;
             document.getElementById('nota').textContent = jogo.nr_nota;
             document.getElementById('sinopseJogo').textContent = jogo.ds_sinopse;
-
-            document.getElementById('notaP').textContent = 'Sua nota aqui:';
+            document.getElementById('notaP').textContent = 'Sua nota:';
             document.querySelector('.gridGame1').style.backgroundImage = `url(${jogo.ds_imagem})`;
         } else {
             console.error('Erro ao carregar informações do jogo:', data.mensagem);
