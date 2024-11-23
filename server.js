@@ -10,7 +10,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 // Caminho das paginas
-
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'templates', 'index.html'));
 });
@@ -29,7 +28,7 @@ app.get('/info/:gameId', (req, res) => {
 });
 
 // Rota para retornar os dados do jogo
-app.get('/api/jogo/:gameId', (req, res) => {
+app.get('/jogo/:gameId', (req, res) => {
     const gameId = req.params.gameId;
 
     connection.query(
@@ -80,8 +79,6 @@ app.get('/jogos', (req, res) => {
         }
     );
 });
-
-
 
 // Validação do login do usuario
 app.post('/login', async (req, res) => {
@@ -140,25 +137,10 @@ app.post('/registro', async (req, res) => {
     }
 });
 
-app.post('/perfil', async(req, res)=> {
-
-    const jogoJSON = req.body
-
-    connection.query("SELECT nm_jogo FROM t_jogo;", (error, results) => {
-        if (error) {
-            return res.status(500).json({ sucesso: false, mensagem: 'Erro no servidor!' });
-        }
-
-        if(results.length > 0) {
-            jogoJSON = results;
-        }
-    });
-
-});
-
+// Lógica para avaliação da nota pessoal e media da nota total
 app.post('/avaliacao', async (req, res) => {
     const { nota, data, jogoId } = req.body;
-    console.log(`Recebido: nota=${nota}, data=${data}, jogoId=${jogoId}`); // Verifique se o gameId está correto
+    console.log(`Recebido: nota=${nota}, data=${data}, jogoId=${jogoId}`);
 
     if (!nota || !data || !jogoId) {
         return res.status(400).json({ error: 'Parâmetros faltando: nota, data ou jogoId.' });
@@ -228,10 +210,7 @@ app.post('/avaliacao', async (req, res) => {
         return res.status(500).json({ error: 'Erro ao salvar ou atualizar a avaliação. Tente novamente mais tarde.' });
     }
 });
-
-
-
-        
+     
 // Iniciando servidor
 const PORT = 3000;
 app.listen(PORT, () => {
