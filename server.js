@@ -106,6 +106,27 @@ app.post('/login', async (req, res) => {
     });
 });
 
+app.get('/jogo/:id_usuario/:id_lista', async (req, res) => {
+    const { id_usuario, id_lista } = req.params;
+    
+    try {
+      // Query para buscar os jogos com base no id_lista e id_usuario
+      const query = `
+        SELECT j.ds_imagem, j.nm_jogo
+        FROM t_jogo j
+        INNER JOIN t_jogo_adicionado ja ON j.id_jogo = ja.id_jogo
+        INNER JOIN t_lista l ON ja.id_lista = l.id_lista
+        WHERE l.id_lista = ? AND l.id_usuario = ?
+      `;
+      
+      const [jogos] = await connection.promise().query(query, [id_lista, id_usuario]);
+      res.json(jogos);  // Retorna os jogos encontrados em formato JSON
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Erro ao buscar jogos.1');
+    }
+  });
+
 // Rota para registro de usuário
 app.post('/registro', async (req, res) => {
     const { email, nickname, senha } = req.body;
