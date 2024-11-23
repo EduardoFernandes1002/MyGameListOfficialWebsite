@@ -25,7 +25,7 @@ app.get('/info/:gameId', (req, res) => {
 });
 
 // Rota para retornar os dados do jogo
-app.get('/api/jogo/:gameId', (req, res) => {
+app.get('/jogo/:gameId', (req, res) => {
     const gameId = req.params.gameId;
 
     connection.query(
@@ -77,7 +77,59 @@ app.get('/jogos', (req, res) => {
     );
 });
 
+app.get('/jogos', (req, res) => {
+    // Consulta SQL ajustada para pegar os 4 jogos com maior nota, sem considerar o st_game
+    connection.query(
+        'SELECT id_jogo, nm_jogo, ds_imagem, nr_nota FROM T_Jogo ORDER BY nr_nota DESC LIMIT 4;',
+        (error, results) => {
+            if (error) {
+                return res.status(500).json({ sucesso: false, mensagem: 'Erro no servidor!' });
+            }
 
+            if (results.length > 0) {
+                // Envia os 4 jogos com maior nota
+                res.json({ sucesso: true, jogos: results });
+            } else {
+                res.status(404).json({ sucesso: false, mensagem: 'Nenhum jogo encontrado!' });
+            }
+        }
+    );
+});
+
+
+app.get('/jogo', async (req, res) => {
+    try {
+        const [jogos] = await connection.promise().query("SELECT id_jogo, nm_jogo, ds_sinopse, st_game FROM t_jogo");
+        res.json(jogos);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ sucesso: false, mensagem: 'Erro ao buscar jogos' });
+    }
+});
+
+// Backend: Exemplo de rota para buscar jogos por lista
+app.get('/jogo/:id_usuario/:id_lista', async (req, res) => {
+    const { id_usuario, id_lista } = req.params;
+    
+    try {
+      // Query para buscar os jogos com base no id_lista e id_usuario
+      const query = `
+        SELECT j.ds_imagem, j.nm_jogo
+        FROM t_jogo j
+        INNER JOIN t_jogo_adicionado ja ON j.id_jogo = ja.id_jogo
+        INNER JOIN t_lista l ON ja.id_lista = l.id_lista
+        WHERE l.id_lista = ? AND l.id_usuario = ?
+      `;
+      
+      const [jogos] = await connection.promise().query(query, [id_lista, id_usuario]);
+      res.json(jogos);  // Retorna os jogos encontrados em formato JSON
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Erro ao buscar jogos.1');
+    }
+  });
+  
+  
 
 // Validação do login do usuario
 app.post('/login', async (req, res) => {
@@ -95,7 +147,7 @@ app.post('/login', async (req, res) => {
             // Comparar a senha informada com a senha armazenada do banco
             if (senha === user.ds_senha) {
                 const token = jwt.sign({ id: user.id_usuario }, secretKey, { expiresIn: '1h' });
-                return res.json({ sucesso: true, mensagem: 'Login bem-sucedido!', token});
+                return res.json({ sucesso: true, mensagem: 'Login bem-sucedido!', token });
             } else {
                 return res.status(400).json({ sucesso: false, mensagem: 'Credenciais inválidas!' });
             }
@@ -135,23 +187,6 @@ app.post('/registro', async (req, res) => {
         res.status(500).json({ sucesso: false, mensagem: 'Erro no servidor!' + error });
     }
 });
-
-app.post('/perfil', async(req, res)=> {
-
-    const jogoJSON = req.body
-
-    connection.query("SELECT nm_jogo FROM t_jogo;", (error, results) => {
-        if (error) {
-            return res.status(500).json({ sucesso: false, mensagem: 'Erro no servidor!' });
-        }
-
-        if(results.length > 0) {
-            jogoJSON = results;
-        }
-    });
-
-});
-
 
 // Iniciando servidor
 const PORT = 3000;
