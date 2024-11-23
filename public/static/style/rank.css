@@ -1,0 +1,44 @@
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #4c526e;
+}
+
+img{
+  height: 20vh;
+}
+
+.ranking{
+  display: flex;
+  align-items: column;
+}
+
+ul{
+  font-size: 1vh;
+}
+h1{
+  text-align: center;
+  color: #f8f9fd;
+  font-size: 5vh;
+}
+.rank {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .rank li {
+    background-color: #f0f0f0;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  .rank .rank {
+    font-weight: bold;
+  }

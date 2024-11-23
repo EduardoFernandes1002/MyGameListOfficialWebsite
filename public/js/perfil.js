@@ -1,13 +1,3 @@
-// Função para atualizar o texto da mensagem com base no botão clicado
-function atualizarMensagem(novaMensagem) {
-    const mensagemElement = document.getElementById('Mensagem');
-    mensagemElement.textContent = novaMensagem;
-  }
-  
-  function evitarEnvioFormulario(event) {
-    event.preventDefault();
-  }
-  // Adiciona event listeners aos botões
   document.getElementById('btnTudo').addEventListener('click', async function(event) {
     evitarEnvioFormulario(event);
     try {

@@ -19,6 +19,10 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'templates', 'login.html'));
 });
 
+app.get('/rank', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'templates', 'rank.html'));
+});
+
 // Rota para enviar o HTML
 app.get('/info/:gameId', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'templates', 'infoJogos.html'));
@@ -152,10 +156,84 @@ app.post('/perfil', async(req, res)=> {
 
 });
 
+app.post('/avaliacao', async (req, res) => {
+    const { nota, data, jogoId } = req.body;
+    console.log(`Recebido: nota=${nota}, data=${data}, jogoId=${jogoId}`); // Verifique se o gameId está correto
 
+    if (!nota || !data || !jogoId) {
+        return res.status(400).json({ error: 'Parâmetros faltando: nota, data ou jogoId.' });
+    }
+
+    try {
+        // Verifica se já existe uma avaliação para o usuário e o jogo
+        const checkQuery = `
+            SELECT COUNT(*) AS count 
+            FROM t_avaliacao 
+            WHERE T_USUARIO_id_usuario = 1 AND T_JOGO_id_jogo = ?;
+        `;
+        
+        const [rows] = await connection.promise().query(checkQuery, [jogoId]);
+        const count = rows[0].count;
+
+        console.log(`Avaliação existente: ${count > 0 ? 'Sim' : 'Não'}`);
+
+        // Se já existir uma avaliação, faz um UPDATE
+        if (count > 0) {
+            const updateQuery = `
+                UPDATE t_avaliacao 
+                SET nr_usuario_nota = ?, dt_envio = ? 
+                WHERE T_USUARIO_id_usuario = 1 AND T_JOGO_id_jogo = ?;
+            `;
+            await connection.promise().query(updateQuery, [nota, data, jogoId]);
+            console.log('Avaliação atualizada com sucesso!');
+        } else {
+            // Caso contrário, faz um INSERT
+            const insertQuery = `
+                INSERT INTO t_avaliacao (dt_envio, nr_usuario_nota, T_JOGO_id_jogo, T_USUARIO_id_usuario)
+                VALUES (?, ?, ?, 1);
+            `;
+            await connection.promise().query(insertQuery, [data, nota, jogoId]);
+            console.log('Avaliação salva com sucesso!');
+        }
+
+        // Agora, calcula a média das notas do jogo
+        const mediaQuery = `
+            SELECT AVG(nr_usuario_nota) AS media 
+            FROM t_avaliacao 
+            WHERE T_JOGO_id_jogo = ?;
+        `;
+        const [mediaRows] = await connection.promise().query(mediaQuery, [jogoId]);
+        const mediaNota = mediaRows[0].media;
+
+        console.log(`Média calculada: ${mediaNota}`);
+
+        // Atualiza a nota média do jogo
+        const updateGameQuery = `
+            UPDATE t_jogo 
+            SET nr_nota = ? 
+            WHERE id_jogo = ?;
+        `;
+        await connection.promise().query(updateGameQuery, [mediaNota, jogoId]);
+
+        console.log(`Nota média do jogo ${jogoId} atualizada para ${mediaNota}`);
+
+        // Envia a resposta para o cliente apenas uma vez, após todas as operações
+        return res.status(200).json({
+            message: 'Avaliação salva e média do jogo atualizada com sucesso!',
+            media: mediaNota
+        });
+
+    } catch (error) {
+        console.error('Erro ao salvar ou atualizar a avaliação:', error);
+        return res.status(500).json({ error: 'Erro ao salvar ou atualizar a avaliação. Tente novamente mais tarde.' });
+    }
+});
+
+
+
+        
 // Iniciando servidor
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
-
