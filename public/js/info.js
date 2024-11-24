@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             document.getElementById('nomeJogo').textContent = jogo.nm_jogo;
             document.getElementById('nota').textContent = jogo.nr_nota;
             document.getElementById('sinopseJogo').textContent = jogo.ds_sinopse;
-            document.getElementById('notaP').textContent = 'Sua nota:';
+            document.getElementById('notaP').textContent = 'Nota Pessoal: ';
             document.querySelector('.gridGame1').style.backgroundImage = `url(${jogo.ds_imagem})`;
         } else {
             console.error('Erro ao carregar informações do jogo:', data.mensagem);

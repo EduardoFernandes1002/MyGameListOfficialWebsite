@@ -116,3 +116,14 @@ main {
     text-align: center;
     justify-content: center;
 }
+
+#botoes{
+
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+#Review{
+    justify-content: end;
+}
