@@ -96,6 +96,7 @@ img {
   flex-direction: column;
   margin: 5vh;
   width: 90vw;
+  flex:1;
 }
 
 h2 {
