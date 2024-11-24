@@ -1,129 +1,158 @@
 html {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    min-height: 100%;
-    margin: 0;
-    padding: 0;
-    background: #4c526e;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #4c526e;
 }
 
 main {
-    box-sizing: border-box;
-    flex: 1;
+  box-sizing: border-box;
+  flex: 1;
 }
 
-.idImagem{
-    
-    width: 100%;
-    display: flex;
-    justify-content: center;
+.idImagem {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .idImagem img {
-
-    border-radius: 50%; /* Circular */
-    height: 20vh; /* Altura fixa igual à largura */
-    box-sizing: border-box;
-    border: 0.3vw solid rgb(200, 197, 212);
-    object-fit: cover;
-    width: 20vh;
-    margin: 1vh;
-
+  border-radius: 50%; /* Circular */
+  height: 20vh; /* Altura fixa igual à largura */
+  box-sizing: border-box;
+  border: 0.3vw solid rgb(200, 197, 212);
+  object-fit: cover;
+  width: 20vh;
+  margin: 1vh;
 }
 
 .textoImagem {
-    display: flex;
-    width: 100%;
-
+  display: flex;
+  width: 100%;
 }
 
 #NomeUsuario {
-    text-align: center;
-    font-size: 2vh;
-    margin: 0.5vh;
-    color: rgba(255, 255, 255, 0.959);
-    font-family: sans-serif;
-
+  text-align: center;
+  font-size: 2vh;
+  margin: 0.5vh;
+  color: rgba(255, 255, 255, 0.959);
+  font-family: sans-serif;
 }
 
 .butone {
-    box-sizing: border-box;
-    display: flex;
-    justify-content: end;
-    width: 100%;
-    position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  position: absolute;
 }
 
 .butone a {
-    margin: 1vw;
-    font-size: 3vh;
-    cursor: pointer;
+  margin: 1vw;
+  font-size: 3vh;
+  cursor: pointer;
 }
 
 .SobrePerfil {
-
-    height: 100%;
-    display: flex;
-    justify-content: space-around;
-    font-size: 3vh;
-    font-size: 4vh;
-    color: white;
-    font-family: sans-serif;
-
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  font-size: 3vh;
+  font-size: 4vh;
+  color: white;
+  font-family: sans-serif;
 }
 
-.Listas{
-    display: flex;
-    box-sizing: border-box;
+.Listas {
+  display: flex;
 }
 
 .Barra {
-    margin: 1vh;
-    background-color: #202438;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 5vh;
+  background-color: #202438;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 5vh;
 }
-.Barra button{
-    margin: 1vh ;
-    gap: 1vh;
-    background-color: transparent;
-    box-sizing: border-box;
-    display: flex;
-    color: #ffffff;
-    border: none;
-    cursor: pointer;
-    font-size: 2vh;
-    width: 8vw;
-    height: 5vh;
-    justify-content: center;
-    align-items: center;
+.Barra button {
+  background-color: transparent;
+  box-sizing: border-box;
+  display: flex;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  font-size: 2vh;
+  width: 8vw;
+  height: 5vh;
+  justify-content: center;
+  align-items: center;
 }
 
-.Barra button:hover{
-    background:#191c2c;
+.Barra button:hover {
+  background: #191c2c;
 }
-.Listas {
-    margin: 1vw;
-}
-#Mensagem{
-
-    display: flex;
-    font-size: 7vh ;
-    text-align: center;
-    justify-content: center;
+#Mensagem {
+  display: flex;
+  font-size: 7vh;
+  text-align: center;
+  justify-content: center;
 }
 
-#botoes{
-
-    display: flex;
-    width: 100%;
-    justify-content: space-around;
+.btnListas {
+  display: flex;
 }
 
-#Review{
-    justify-content: end;
+.jogoDiv {
+  box-sizing: border-box;
+  display: flex;
+  gap: 1vw;
+}
+
+.jogoDiv {
+  display: flex;
+  background: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.jogoL:hover .jogoDiv {
+  opacity: 1;
+}
+
+.jogoL span {
+  font-size: 3vh;
+  color: white;
+  align-self: flex-start;
+  right: 5%;
+  top: 5%;
+  position: absolute;
+}
+
+.jogoL a {
+  position: relative;
+  display: flex;
+  border-radius: 2.4vh;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.jogoL img{
+    width: 20vw;
+}
+
+.Lista {
+    margin: 2vh;
+}
+
+.jogoL {
+    padding: 1vh;
+    background-color: #191c2c;
+    border-radius: 1vw;
 }
