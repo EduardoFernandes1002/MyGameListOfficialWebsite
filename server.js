@@ -163,10 +163,15 @@ app.get("/jogo/:id_usuario/:id_lista", async (req, res) => {
   try {
     // Query para buscar os jogos com base no id_lista e id_usuario
     const query = `
-        SELECT j.ds_imagem, j.nm_jogo
+        SELECT 
+          j.id_jogo,
+          j.ds_imagem,
+          j.nm_jogo
         FROM t_jogo j
-        INNER JOIN t_jogo_adicionado ja ON j.id_jogo = ja.id_jogo
-        INNER JOIN t_lista l ON ja.id_lista = l.id_lista
+        INNER JOIN t_jogo_adicionado ja 
+          ON j.id_jogo = ja.id_jogo
+        INNER JOIN t_lista l 
+          ON ja.id_lista = l.id_lista
         WHERE l.id_lista = ? AND l.id_usuario = ?
       `;
 

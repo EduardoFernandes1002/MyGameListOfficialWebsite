@@ -19,22 +19,29 @@ async function exibirJogosPorLista(idLista) {
   jogos.forEach(jogo => {
     // Cria um item de lista (li)
     const jogoLi = document.createElement('li');
-    jogoLi.classList.add('jogo');
+    jogoLi.classList.add('jogoL');
+
+    const link = document.createElement('a');
+    link.href = `/info/${jogo.id_jogo}`;
     
     // Cria a imagem do jogo
     const jogoImagem = document.createElement('img');
     jogoImagem.src = jogo.ds_imagem;
     jogoImagem.alt = jogo.nm_jogo;
     
+
+    const JogoDiv = document.createElement('div');
+    JogoDiv.classList.add('jogoDiv');
+
     // Cria o nome do jogo
-    const jogoNome = document.createElement('h3');
+    const jogoNome = document.createElement('span');
     jogoNome.textContent = jogo.nm_jogo;
     
     // Adiciona a imagem e o nome ao item de lista
-    jogoLi.appendChild(jogoImagem);
-    jogoLi.appendChild(jogoNome);
-    
-    // Adiciona o item de lista à lista de jogos na página
+    jogoLi.appendChild(link);
+    link.appendChild(jogoImagem);
+    link.appendChild(JogoDiv);
+    JogoDiv.appendChild(jogoNome);
     listaElement.appendChild(jogoLi);
   });
 }
@@ -47,25 +54,25 @@ document.getElementById("btnTudo").addEventListener("click", function (event) {
 
 document.getElementById("btnDesejo").addEventListener("click", function (event) {
   event.preventDefault();
-  exibirJogosPorLista(1);  // Passa o ID da lista "Desejo" para o backend (substitua o ID conforme necessário)
+  exibirJogosPorLista(1);  // Passa o ID da lista "Desejo" para o backend
 });
 
 document.getElementById("btnJogando").addEventListener("click", function (event) {
   event.preventDefault();
-  exibirJogosPorLista(2);  // Passa o ID da lista "Jogando" para o backend (substitua o ID conforme necessário)
+  exibirJogosPorLista(2);  // Passa o ID da lista "Jogando" para o backend
 });
 
 document.getElementById("btnCompleto").addEventListener("click", function (event) {
   event.preventDefault();
-  exibirJogosPorLista(3);  // Passa o ID da lista "Completo" para o backend (substitua o ID conforme necessário)
+  exibirJogosPorLista(3);  // Passa o ID da lista "Completo" para o backend
 });
 
 document.getElementById("btnPausado").addEventListener("click", function (event) {
   event.preventDefault();
-  exibirJogosPorLista(4);  // Passa o ID da lista "Pausado" para o backend (substitua o ID conforme necessário)
+  exibirJogosPorLista(4);  // Passa o ID da lista "Pausado" para o backend
 });
 
 document.getElementById("btnAbandonado").addEventListener("click", function (event) {
   event.preventDefault();
-  exibirJogosPorLista(5);  // Passa o ID da lista "Abandonado" para o backend (substitua o ID conforme necessário)
+  exibirJogosPorLista(5);  // Passa o ID da lista "Abandonado" para o backend
 });
