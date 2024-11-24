@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (!response.ok) {
             throw new Error(`Erro HTTP: ${response.status}`);
         }
-        
-        //Recebe dados da resposta e adiciona elementos no html. caso contrario ativa um erro
+
+        // Recebe dados da resposta e adiciona elementos no HTML. Caso contrário, ativa um erro
         const data = await response.json();
         if (data.sucesso) {
             const jogo = data.jogo;
@@ -36,66 +36,112 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.error('Erro ao carregar as informações do jogo:', error.message);
         alert('Erro ao carregar as informações do jogo. Tente novamente mais tarde.');
     }
-});
 
-// Selecionando elementos
-const notaPessoalEditar = document.getElementById("notaPessoalEditar");
-const notaModal = document.getElementById("notaModal");
-const notaSlider = document.getElementById("notaSlider");
-const notaDinamica = document.getElementById("notaDinamica");
-const salvarNota = document.getElementById("salvarNota");
-const fecharModal = document.getElementById("fecharModal");
-const notaP = document.getElementById("notaP");
-const dataH = new Date().toISOString().split('T')[0]; // Formato de data SQL
+    // Gerenciamento de Tabs (Sinopse, Avaliações, Categorias)
+    const btnSinopse = document.getElementById("btnSinopse");
+    const btnAvaliacoes = document.getElementById("btnAvaliacoes");
+    const btnCategorias = document.getElementById("btnCategorias");
+    const sinopse = document.getElementById("sinopse");
+    const avaliacoes = document.getElementById("avaliacoes");
+    const categorias = document.getElementById("categorias");
 
-// Abrir modal
-notaPessoalEditar.addEventListener("click", () => {
-    notaModal.style.display = "flex"; // Exibe o modal
-    notaModal.classList.remove("hidden");
-});
+    // Função para mostrar a seção correta
+    function showTab(tab) {
+        // Remove a classe 'visible' de todas as seções
+        sinopse.classList.remove("visible");
+        avaliacoes.classList.remove("visible");
+        categorias.classList.remove("visible");
 
-// Atualizar nota dinamicamente
-notaSlider.addEventListener("input", () => {
-    notaDinamica.textContent = notaSlider.value;
-});
+        // Adiciona a classe 'visible' para a aba selecionada
+        if (tab === 'sinopse') {
+            sinopse.classList.add("visible");
+        } else if (tab === 'avaliacoes') {
+            avaliacoes.classList.add("visible");
+        } else if (tab === 'categorias') {
+            categorias.classList.add("visible");
+        }
 
-// Salvar nota
-salvarNota.addEventListener("click", async function () {
-    // Atualiza a nota pessoal exibida
-    notaP.textContent = notaSlider.value;
-    document.querySelector('.data').innerHTML = dataH;  // Atualiza a data exibida
+        // Remove a classe 'active' de todos os botões
+        btnSinopse.classList.remove("active");
+        btnAvaliacoes.classList.remove("active");
+        btnCategorias.classList.remove("active");
 
-    // Verifica se o gameId está disponível
-    const gameId = window.location.pathname.split('/').pop();  // Recuperando novamente o gameId
-    if (!gameId) {
-        alert("Erro: gameId não encontrado.");
-        return; // Se gameId estiver ausente, não continua
+        // Adiciona a classe 'active' ao botão da aba selecionada
+        if (tab === 'sinopse') {
+            btnSinopse.classList.add("active");
+        } else if (tab === 'avaliacoes') {
+            btnAvaliacoes.classList.add("active");
+        } else if (tab === 'categorias') {
+            btnCategorias.classList.add("active");
+        }
     }
+    // Event listeners para os botões de tabs
+    btnSinopse.addEventListener("click", () => showTab('sinopse'));
+    btnAvaliacoes.addEventListener("click", () => showTab('avaliacoes'));
+    btnCategorias.addEventListener("click", () => showTab('categorias'));
 
-    console.log(`Enviando avaliação para o jogo ${gameId} com nota ${notaSlider.value} e data ${dataH}`);
+    // Inicializa a primeira aba visível (Sinopse)
+    showTab('sinopse');
 
-    // Realiza a requisição para salvar a nota
-    try {
-        const response = await fetch('/avaliacao', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ data: dataH, nota: notaSlider.value, jogoId: gameId })
-        });
+    // Modal de Avaliação
+    const notaPessoalEditar = document.getElementById("notaPessoalEditar");
+    const notaModal = document.getElementById("notaModal");
+    const notaSlider = document.getElementById("notaSlider");
+    const notaDinamica = document.getElementById("notaDinamica");
+    const salvarNota = document.getElementById("salvarNota");
+    const fecharModal = document.getElementById("fecharModal");
+    const notaP = document.getElementById("notaP");
+    const dataH = new Date().toISOString().split('T')[0]; // Formato de data SQL
 
-        const result = await response.json();
-        console.log('Resultado da requisição de avaliação:', result); // Log para verificar a resposta do servidor
+    // Abrir modal
+    notaPessoalEditar.addEventListener("click", () => {
+        notaModal.style.display = "flex"; // Exibe o modal
+        notaModal.classList.remove("hidden");
+    });
 
-    } catch (error) {
-        alert("Erro no servidor. Tente novamente mais tarde.");
-        console.error("Erro ao registrar:", error);
-    }
+    // Atualizar nota dinamicamente
+    notaSlider.addEventListener("input", () => {
+        notaDinamica.textContent = notaSlider.value;
+    });
 
-    // Fecha o modal após salvar
-    notaModal.style.display = "none";
-    notaModal.classList.add("hidden");
-});
+    // Salvar nota
+    salvarNota.addEventListener("click", async function () {
+        // Atualiza a nota pessoal exibida
+        notaP.textContent = notaSlider.value;
+        document.querySelector('.data').innerHTML = dataH;  // Atualiza a data exibida
 
-// Fechar modal
-fecharModal.addEventListener("click", () => {
-    notaModal.style.display = "none";
+        // Verifica se o gameId está disponível
+        const gameId = window.location.pathname.split('/').pop();  // Recuperando novamente o gameId
+        if (!gameId) {
+            alert("Erro: gameId não encontrado.");
+            return; // Se gameId estiver ausente, não continua
+        }
+
+        console.log(`Enviando avaliação para o jogo ${gameId} com nota ${notaSlider.value} e data ${dataH}`);
+
+        // Realiza a requisição para salvar a nota
+        try {
+            const response = await fetch('/avaliacao', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ data: dataH, nota: notaSlider.value, jogoId: gameId })
+            });
+
+            const result = await response.json();
+            console.log('Resultado da requisição de avaliação:', result); // Log para verificar a resposta do servidor
+
+        } catch (error) {
+            alert("Erro no servidor. Tente novamente mais tarde.");
+            console.error("Erro ao registrar:", error);
+        }
+
+        // Fecha o modal após salvar
+        notaModal.style.display = "none";
+        notaModal.classList.add("hidden");
+    });
+
+    // Fechar modal
+    fecharModal.addEventListener("click", () => {
+        notaModal.style.display = "none";
+    });
 });

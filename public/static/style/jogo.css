@@ -2,6 +2,10 @@ html {
   height: 100%;
 }
 
+*{
+  box-sizing: border-box;
+}
+
 body {
   min-height: 100%;
   margin: 0;
@@ -82,3 +86,52 @@ main {
 input[type="range"] {
   width: 100%;
 }
+
+.Informacoes {
+  margin: 0 auto;
+  width: 90vw;
+}
+
+.secao {
+  padding: 0.3vh 3vh 0.3vh 3vh;
+  margin: 0 auto; /* Centraliza e cria espaçamento */
+  background-color: #202438; /* Fundo semitransparente */
+  color: white; /* Texto claro */
+  border-radius: 1vh;
+  text-align: justify; /* Alinhamento para leitura */
+  margin-bottom: 6vh;
+}
+
+
+.botoes-container {
+  margin-left: 1vw;
+  display: flex;
+  gap: 0.3vh;
+  margin-bottom: 0; /* Adiciona espaço abaixo dos botões */
+}
+
+.botao {
+  padding: 1vh 1vw;
+  cursor: pointer;
+  background-color: #272c44;
+  color: white;
+  border: none;
+  border-radius: 1vh 1vh 0 0;
+}
+
+.botao:hover {
+  background-color: #202438;
+  transition: 0.2s ease-in; /* Efeito hover para os botões */
+}
+
+.botao.active {
+  background-color: #202438; /* Cor ativa para o botão selecionado */
+}
+
+#sinopse, #avaliacoes, #categorias {
+  display: none; /* Todas as seções começam ocultas */
+}
+
+#sinopse.visible, #avaliacoes.visible, #categorias.visible {
+  display: block; /* Exibe a seção quando a classe 'visible' for aplicada */
+} 

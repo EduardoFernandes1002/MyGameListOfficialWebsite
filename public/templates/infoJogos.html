@@ -24,7 +24,7 @@
         </div>
         </section>
 
-        <section class="Informacoes">
+        <section class="Notas">
             <div class="notas">
                 <div class="notaTotal">
                     <span id="nota"></span>
@@ -38,23 +38,24 @@
                 </div>
             </div>
 
-            <div class="InfoMain">
-                <p id="sinopseJogo">Sinopse do jogo será exibida aqui.</p>
-            </div>
-
-            <div class="categoria">
-                <!-- Aqui você pode adicionar categorias ou tags do jogo, caso tenha esse dado -->
-            </div>
-        </section>
+            <section class="Informacoes">
+                <div class="botoes-container">
+                    <button id="btnSinopse" class="botao">Sinopse</button>
+                    <button id="btnAvaliacoes" class="botao">Avaliações</button>
+                    <button id="btnCategorias" class="botao">Categorias</button>
+                </div>
+                
+                <div id="sinopse" class="secao">
+                    <p id="sinopseJogo">Descrição do jogo...</p>
+                </div>
+                <div id="avaliacoes" class="secao hidden">
+                    <p>Avaliações detalhadas do jogo...</p>
+                </div>
+                <div id="categorias" class="secao hidden">
+                    <p>Lista de categorias do jogo...</p>
+                </div>
+            </section>
         <section>
-            <div class="avaliacoes">
-            <div class="UA">
-                <textarea placeholder="Digite um Comentario" name="textarea" id="area">
-
-                </textarea>
-            </div>
-            </div>
-        </section>
         <div id="notaModal" class="modal hidden">
             <div class="modal-content">
                 <h3 >Avalie o Jogo</h3>
