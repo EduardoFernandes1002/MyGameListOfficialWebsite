@@ -1,12 +1,11 @@
 .footer {
     width: 100%;
     background-color: #202438;
-    height: 10vh;
     overflow: hidden;
     display: flex;
     align-items: center;
-    justify-content: center;
     margin-top: 10vh;
+    bottom: 0;
   }
   
   .footer-nav {

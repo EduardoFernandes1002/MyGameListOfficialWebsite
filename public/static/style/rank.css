@@ -28,6 +28,7 @@ img {
   width: 100%;
   gap: 0.8vw;
 }
+
 .jogo {
   display: flex;
   background-color: #343c53; /* Cor de destaque ao passar o mouse */
@@ -35,15 +36,19 @@ img {
   border-radius: 2vw;
   padding: 1.4vh;
 }
+
 .jogo:hover {
   background-color: #292f42; /* Cor de destaque ao passar o mouse */
 }
 
 .rank {
   list-style-type: none;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Garante 2 itens por linha */
+  gap: 2vw; /* Espaçamento entre os itens */
   align-items: center;
+  justify-items: center;
+  padding: 2vw;
 }
 
 .posicao {
@@ -66,6 +71,7 @@ img {
   text-wrap: wrap;
   width: 20vw;
 }
+
 .jogo .info {
   display: flex;
   align-items: start;
