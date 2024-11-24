@@ -12,14 +12,17 @@ document.getElementById("loginForm").addEventListener("submit", async function (
         });
 
         const data = await response.json();
+
         if (data.sucesso) {
-            alert(data.mensagem);
+            // Se login for bem-sucedido, armazene o token
             localStorage.setItem('token', data.token);
-            window.location.href = "/";
+            window.location.href = "/";  // Redireciona para a página principal
         } else {
+            // Se a resposta for um erro, mostra o alerta
             alert(data.mensagem);
         }
     } catch (error) {
+        // Caso haja um erro com a requisição
         alert("Erro no servidor. Tente novamente mais tarde.");
     }
 });
