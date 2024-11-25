@@ -1,7 +1,14 @@
 document.addEventListener("DOMContentLoaded", async function () {
-    // Obtém o ID do jogo da URL
+    const token = localStorage.getItem('token');
+    let idUsuario = '';
+    if (token) {
+        const decodedToken = JSON.parse(atob(token.split(".")[1]));
+        idUsuario = decodedToken.id; // Pega o idUsuario do payload
+        console.log("ID do usuário:", idUsuario);
+    }
+
+
     const gameId = window.location.pathname.split('/').pop(); // A variável gameId agora é global
-    console.log('Game ID:', gameId); // Log para verificar o gameId
 
     if (!gameId) {
         console.error('Erro: gameId não encontrado na URL');
@@ -123,13 +130,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         try {
             const response = await fetch('/avaliacao', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ data: dataH, nota: notaSlider.value, jogoId: gameId })
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ data: dataH, nota: notaSlider.value, idUsuario: idUsuario, jogoId: gameId }),
             });
-
             const result = await response.json();
-            console.log('Resultado da requisição de avaliação:', result); // Log para verificar a resposta do servidor
-
+            console.log('Resultado da requisição de avaliação:', result);
         } catch (error) {
             alert("Erro no servidor. Tente novamente mais tarde.");
             console.error("Erro ao registrar:", error);
