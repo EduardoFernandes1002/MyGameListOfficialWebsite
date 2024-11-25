@@ -31,8 +31,7 @@ async function exibirJogosPorLista(idLista) {
     
 
     const JogoDiv = document.createElement('div');
-    JogoDiv.classList.add('jogoDiv');
-
+    JogoDiv.className.add('jogoDiv')
     // Cria o nome do jogo
     const jogoNome = document.createElement('span');
     jogoNome.textContent = jogo.nm_jogo;

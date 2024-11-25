@@ -10,6 +10,7 @@ ul {
   padding: 0;
   gap: 1vh;
   text-wrap: nowrap;
+  align-items: center;
 }
 .header {
   width: 100%;
@@ -94,3 +95,19 @@ form {
   padding: 0;
 }
 
+
+#deslogar {
+  color: aliceblue;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
+  font-size: 2vh;
+  padding: 1vw;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+}
+
+#deslogar:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
