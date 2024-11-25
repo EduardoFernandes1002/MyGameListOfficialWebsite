@@ -1,31 +1,33 @@
 document.addEventListener("DOMContentLoaded", function () {
   const urlParams = new URLSearchParams(window.location.search);
-  const idUsuario = urlParams.get('id_usuario');
-  let idLista = '1'; // Default id_lista é "Desejo" com ID 1
+  const token = urlParams.get('token');
 
-  if (!idUsuario) {
-    alert("ID do usuário não encontrado na URL.");
+  if (!token) {
+    alert("Token não encontrado na URL.");
     return;
   }
+
+  const decodedToken = JSON.parse(atob(token.split('.')[1]));
+  const idUsuario = decodedToken.id;
+  let idLista = '1'; // Lista padrão ao carregar pagina
 
   const botoes = document.querySelectorAll('.btnListas button');
   botoes.forEach(botao => {
     botao.addEventListener('click', function (event) {
       event.preventDefault();
       idLista = this.id.replace('btn', ''); // Atualiza o id_lista com base no botão clicado
-      fetchPerfil(); // Recarrega os dados do perfil com a nova lista
+      fetchPerfil();
     });
   });
 
   document.getElementById('btnReview').addEventListener('click', function (event) {
     event.preventDefault();
-    showReviews(); // Exibe a mensagem de que não há reviews
+    showReviews();
   });
 
   async function fetchPerfil() {
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`/perfil/${idUsuario}/${idLista}`, {
+      const response = await fetch(`/perfil/${idLista}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

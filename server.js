@@ -7,6 +7,8 @@ const jwt = require("jsonwebtoken");
 const secretKey = "N&3!5P@d92q4z7Yb#fR8^uL1%$xVsG0w";
 
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public", "templates")));
+
 app.use(express.json());
 
 // Caminho das paginas
@@ -59,25 +61,26 @@ app.get("/registro", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "templates", "registro.html"));
 });
 
-app.get('/perfil', (req, res) => {
+app.get('/perfil_redirect', (req, res) => {
   res.sendFile(path.join(__dirname, "public", "templates", "perfil.html"));
 });
 
 app.get('/perfil_redirect', verificarToken, (req, res) => {
-  const idUsuario = req.userId;
-
-  res.redirect(`/perfil.html?id_usuario=${idUsuario}`);
+  const token = req.headers.authorization.split(" ")[1]; // Extrai o token do header
+  res.redirect(`/perfil.html?token=${token}`);
 });
 
 
 
-app.get("/perfil/:id_usuario/:id_lista", verificarToken, async (req, res) => {
-  const { id_usuario, id_lista } = req.params;
+
+app.get("/perfil/:id_lista", verificarToken, async (req, res) => {
+  const idUsuario = req.userId; // Pega o ID do usuário do token
+  const { id_lista } = req.params; // Pega o ID da lista da URL
 
   try {
-    const query = `
+    // Query para buscar os jogos com base no id_lista e o apelido do usuário pelo idUsuario
+    const queryJogos = `
       SELECT 
-        u.nm_apelido, 
         j.id_jogo,
         j.ds_imagem,
         j.nm_jogo
@@ -86,19 +89,26 @@ app.get("/perfil/:id_usuario/:id_lista", verificarToken, async (req, res) => {
         ON j.id_jogo = ja.id_jogo
       INNER JOIN t_lista l 
         ON ja.id_lista = l.id_lista
-      INNER JOIN t_usuario u
-        ON l.id_usuario = u.id_usuario
       WHERE l.id_lista = ? AND l.id_usuario = ?
     `;
 
-    const [result] = await connection.promise().query(query, [id_lista, id_usuario]);
+    const queryApelido = `
+      SELECT nm_apelido FROM t_usuario WHERE id_usuario = ?
+    `;
 
-    if (result.length === 0) {
-      return res.status(404).json({ mensagem: "Usuário ou lista não encontrados" });
+    const [resultJogos] = await connection.promise().query(queryJogos, [id_lista, idUsuario]);
+    const [resultApelido] = await connection.promise().query(queryApelido, [idUsuario]);
+
+    if (resultJogos.length === 0) {
+      return res.status(404).json({ mensagem: "Nenhum jogo encontrado na lista" });
     }
 
-    const nm_apelido = result[0].nm_apelido;
-    const jogos = result.map(row => ({
+    if (resultApelido.length === 0) {
+      return res.status(404).json({ mensagem: "Usuário não encontrado" });
+    }
+
+    const nm_apelido = resultApelido[0].nm_apelido;
+    const jogos = resultJogos.map(row => ({
       id_jogo: row.id_jogo,
       ds_imagem: row.ds_imagem,
       nm_jogo: row.nm_jogo
@@ -110,6 +120,7 @@ app.get("/perfil/:id_usuario/:id_lista", verificarToken, async (req, res) => {
     res.status(500).send("Erro ao buscar informações do perfil.");
   }
 });
+
 
 
 // algo especifico para ranks por agora
@@ -399,8 +410,6 @@ function verificarToken(req, res, next) {
     next();
   });
 }
-
-
 
 // Iniciando servidor
 const PORT = 3000;

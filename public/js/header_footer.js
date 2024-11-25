@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (token) {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        const idUsuario = decodedToken.id;
 
         perfilLink.style.display = "inline-block";
         deslogarButton.style.display = "inline-block";
@@ -23,8 +22,8 @@ document.addEventListener("DOMContentLoaded", function () {
         loginLink.style.display = "none";
         registroLink.style.display = "none";
 
-        // Atualizar o link de perfil com o id_usuario
-        perfilLink.href = `/perfil?id_usuario=${idUsuario}`;
+        // Atualizar o link de perfil com o token
+        perfilLink.href = `/perfil.html?token=${token}`;
       } else {
         loginLink.style.display = "inline-block";
         registroLink.style.display = "inline-block";
