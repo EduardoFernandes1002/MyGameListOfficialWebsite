@@ -59,10 +59,15 @@ app.get("/registro", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "templates", "registro.html"));
 });
 
-app.get("/perfil", verificarToken, (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "templates", "perfil.html"));
+app.get('/perfil', (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "templates", "perfil.html"))
 });
 
+app.get("/perfil", verificarToken, (req, res) => {
+  const idUsuario = req.userId;
+
+  res.redirect(`/perfil.html?id_usuario=${idUsuario}`)
+});
 
 // algo especifico para ranks por agora
 app.get("/jogos/rank", (req, res) => {

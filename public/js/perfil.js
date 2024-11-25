@@ -1,77 +1,66 @@
-async function exibirJogosPorLista(idLista) {
-  const id_usuario = 1;
+document.addEventListener("DOMContentLoaded", function () {
+  const urlParams = new URLSearchParams(window.location.search);
+  const idUsuario = urlParams.get('id_usuario');
+  let idLista = '1'; // Default id_lista é "Desejo" com ID 1
 
-  // Chama o backend para buscar os jogos dessa lista (usando id_lista)
-  const responseJogos = await fetch(`/jogo/${id_usuario}/${idLista}`);
-  
-  if (!responseJogos.ok) {
-    alert("Erro ao buscar jogos.");
+  if (!idUsuario) {
+    alert("ID do usuário não encontrado na URL.");
     return;
   }
-  const jogos = await responseJogos.json();
 
-  // Acesse o primeiro elemento com a classe "Lista"
-  const listaElement = document.getElementsByClassName("Lista")[0];
-  
-  // Limpa o conteúdo anterior
-  listaElement.innerHTML = "";
-
-  jogos.forEach(jogo => {
-    // Cria um item de lista (li)
-    const jogoLi = document.createElement('li');
-    jogoLi.classList.add('jogoL');
-
-    const link = document.createElement('a');
-    link.href = `/info/${jogo.id_jogo}`;
-    
-    // Cria a imagem do jogo
-    const jogoImagem = document.createElement('img');
-    jogoImagem.src = jogo.ds_imagem;
-    jogoImagem.alt = jogo.nm_jogo;
-    
-
-    const JogoDiv = document.createElement('div');
-    JogoDiv.className.add('jogoDiv')
-    // Cria o nome do jogo
-    const jogoNome = document.createElement('span');
-    jogoNome.textContent = jogo.nm_jogo;
-    
-    // Adiciona a imagem e o nome ao item de lista
-    jogoLi.appendChild(link);
-    link.appendChild(jogoImagem);
-    link.appendChild(JogoDiv);
-    JogoDiv.appendChild(jogoNome);
-    listaElement.appendChild(jogoLi);
+  const botoes = document.querySelectorAll('.btnListas button');
+  botoes.forEach(botao => {
+    botao.addEventListener('click', function (event) {
+      event.preventDefault();
+      idLista = this.id.replace('btn', ''); // Atualiza o id_lista com base no botão clicado
+      fetchPerfil(); // Recarrega os dados do perfil com a nova lista
+    });
   });
-}
 
+  document.getElementById('btnReview').addEventListener('click', function (event) {
+    event.preventDefault();
+    showReviews(); // Exibe a mensagem de que não há reviews
+  });
 
-// Adicionando eventos aos botões para carregar jogos de diferentes listas
-document.getElementById("btnTudo").addEventListener("click", function (event) {
-  event.preventDefault();
-});
+  async function fetchPerfil() {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/perfil/${idUsuario}/${idLista}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
 
-document.getElementById("btnDesejo").addEventListener("click", function (event) {
-  event.preventDefault();
-  exibirJogosPorLista(1);  // Passa o ID da lista "Desejo" para o backend
-});
+      const data = response.ok ? await response.json() : { jogos: [] };
 
-document.getElementById("btnJogando").addEventListener("click", function (event) {
-  event.preventDefault();
-  exibirJogosPorLista(2);  // Passa o ID da lista "Jogando" para o backend
-});
+      document.getElementById("NomeUsuario").innerText = `Olá, ${data.apelido || 'Usuário'}`;
+      const listaElement = document.querySelector(".Lista");
 
-document.getElementById("btnCompleto").addEventListener("click", function (event) {
-  event.preventDefault();
-  exibirJogosPorLista(3);  // Passa o ID da lista "Completo" para o backend
-});
+      if (data.jogos.length === 0) {
+        listaElement.innerHTML = "<p>A lista está vazia.</p>";
+      } else {
+        listaElement.innerHTML = data.jogos.map(jogo => `
+          <li class="jogoL">
+            <a href="/info/${jogo.id_jogo}">
+            <img src="${jogo.ds_imagem}" alt="${jogo.nm_jogo}">
+            <div class= "jogoDiv">
+            <span>${jogo.nm_jogo}</span>
+            </div>
+          </li>
+        `).join('');
+      }
+      
+    } catch (error) {
+      document.querySelector(".Lista").innerHTML = "<p>A lista está vazia.</p>";
+    }
+  }
 
-document.getElementById("btnPausado").addEventListener("click", function (event) {
-  event.preventDefault();
-  exibirJogosPorLista(4);  // Passa o ID da lista "Pausado" para o backend
-});
+  function showReviews() {
+    const listaElement = document.querySelector(".Lista");
+    listaElement.innerHTML = "<p>Não há reviews ainda.</p>";
+  }
 
-document.getElementById("btnAbandonado").addEventListener("click", function (event) {
-  event.preventDefault();
-  exibirJogosPorLista(5);  // Passa o ID da lista "Abandonado" para o backend
+  fetchPerfil(); // Carrega a lista "Desejo" ao carregar a página
 });

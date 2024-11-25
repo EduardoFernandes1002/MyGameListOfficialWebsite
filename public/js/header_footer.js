@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   // Carregar o cabeçalho dinâmico
   fetch("/templates/header.html")
-    .then((response) => response.text())
-    .then((data) => {
+    .then(response => response.text())
+    .then(data => {
       document.getElementById("header-placeholder").innerHTML = data;
 
       const token = localStorage.getItem("token");
@@ -12,25 +12,23 @@ document.addEventListener("DOMContentLoaded", function () {
       const deslogarButton = document.getElementById("deslogar");
       const loginLink = document.getElementById("login");
       const registroLink = document.getElementById("registro");
-      const logadoDiv = document.getElementById("logado");
 
       if (token) {
-        // Mostrar perfil e botão de deslogar
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        const idUsuario = decodedToken.id;
+
         perfilLink.style.display = "inline-block";
         deslogarButton.style.display = "inline-block";
 
-        // Ocultar login e registro
         loginLink.style.display = "none";
         registroLink.style.display = "none";
 
-        // Atualizar o link de perfil com o token
-        perfilLink.href = `/perfil/${token}`;
+        // Atualizar o link de perfil com o id_usuario
+        perfilLink.href = `/perfil?id_usuario=${idUsuario}`;
       } else {
-        // Mostrar login e registro
         loginLink.style.display = "inline-block";
         registroLink.style.display = "inline-block";
 
-        // Ocultar perfil e botão de deslogar
         perfilLink.style.display = "none";
         deslogarButton.style.display = "none";
       }
@@ -50,13 +48,13 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "/";
       });
     })
-    .catch((error) => console.error("Erro ao carregar o header:", error));
+    .catch(error => console.error("Erro ao carregar o header:", error));
 
   // Carregar o rodapé dinâmico
   fetch("/templates/footer.html")
-    .then((response) => response.text())
-    .then((data) => {
+    .then(response => response.text())
+    .then(data => {
       document.getElementById("footer-placeholder").innerHTML = data;
     })
-    .catch((error) => console.error("Erro ao carregar o footer:", error));
+    .catch(error => console.error("Erro ao carregar o footer:", error));
 });
