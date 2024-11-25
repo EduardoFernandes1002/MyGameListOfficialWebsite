@@ -44,10 +44,11 @@ document.addEventListener("DOMContentLoaded", function () {
         listaElement.innerHTML = data.jogos.map(jogo => `
           <li class="jogoL">
             <a href="/info/${jogo.id_jogo}">
-            <img src="${jogo.ds_imagem}" alt="${jogo.nm_jogo}">
-            <div class= "jogoDiv">
-            <span>${jogo.nm_jogo}</span>
-            </div>
+              <img src="${jogo.ds_imagem}" alt="${jogo.nm_jogo}">
+              <div class="jogoDiv">
+                <span>${jogo.nm_jogo}</span>
+              </div>
+            </a>
           </li>
         `).join('');
       }

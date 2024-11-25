@@ -60,14 +60,57 @@ app.get("/registro", (req, res) => {
 });
 
 app.get('/perfil', (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "templates", "perfil.html"))
+  res.sendFile(path.join(__dirname, "public", "templates", "perfil.html"));
 });
 
-app.get("/perfil", verificarToken, (req, res) => {
+app.get('/perfil_redirect', verificarToken, (req, res) => {
   const idUsuario = req.userId;
 
-  res.redirect(`/perfil.html?id_usuario=${idUsuario}`)
+  res.redirect(`/perfil.html?id_usuario=${idUsuario}`);
 });
+
+
+
+app.get("/perfil/:id_usuario/:id_lista", verificarToken, async (req, res) => {
+  const { id_usuario, id_lista } = req.params;
+
+  try {
+    const query = `
+      SELECT 
+        u.nm_apelido, 
+        j.id_jogo,
+        j.ds_imagem,
+        j.nm_jogo
+      FROM t_jogo j
+      INNER JOIN t_jogo_adicionado ja 
+        ON j.id_jogo = ja.id_jogo
+      INNER JOIN t_lista l 
+        ON ja.id_lista = l.id_lista
+      INNER JOIN t_usuario u
+        ON l.id_usuario = u.id_usuario
+      WHERE l.id_lista = ? AND l.id_usuario = ?
+    `;
+
+    const [result] = await connection.promise().query(query, [id_lista, id_usuario]);
+
+    if (result.length === 0) {
+      return res.status(404).json({ mensagem: "Usuário ou lista não encontrados" });
+    }
+
+    const nm_apelido = result[0].nm_apelido;
+    const jogos = result.map(row => ({
+      id_jogo: row.id_jogo,
+      ds_imagem: row.ds_imagem,
+      nm_jogo: row.nm_jogo
+    }));
+
+    res.json({ apelido: nm_apelido, jogos: jogos });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erro ao buscar informações do perfil.");
+  }
+});
+
 
 // algo especifico para ranks por agora
 app.get("/jogos/rank", (req, res) => {
@@ -161,50 +204,6 @@ app.get("/jogos/rank", (req, res) => {
       }
     }
   );
-});
-
-app.get("/perfil/:id_usuario/:id_lista", verificarToken, async (req, res) => {
-  const { id_usuario, id_lista } = req.params;
-
-  try {
-    // Query para buscar o apelido do usuário e os jogos com base no id_lista e id_usuario
-    const query = `
-        SELECT 
-          u.nm_apelido, -- Apelido do usuário
-          j.id_jogo,
-          j.ds_imagem,
-          j.nm_jogo
-        FROM t_jogo j
-        INNER JOIN t_jogo_adicionado ja 
-          ON j.id_jogo = ja.id_jogo
-        INNER JOIN t_lista l 
-          ON ja.id_lista = l.id_lista
-        INNER JOIN t_usuario u
-          ON l.id_usuario = u.id_usuario
-        WHERE l.id_lista = ? AND l.id_usuario = ?
-      `;
-
-    const [result] = await connection.promise().query(query, [id_lista, id_usuario]);
-
-    if (result.length === 0) {
-      return res.status(404).json({ mensagem: "Usuário ou lista não encontrados" });
-    }
-
-    // Obter o apelido do usuário
-    const nm_apelido = result[0].nm_apelido;
-
-    // Obter a lista de jogos
-    const jogos = result.map(row => ({
-      id_jogo: row.id_jogo,
-      ds_imagem: row.ds_imagem,
-      nm_jogo: row.nm_jogo
-    }));
-
-    res.json({ apelido: nm_apelido, jogos: jogos });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Erro ao buscar informações do perfil.");
-  }
 });
 
 
@@ -378,23 +377,29 @@ function gerarToken(userId) {
 
 function verificarToken(req, res, next) {
   const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+  if (!authHeader) {
+    return res.status(401).json({ sucesso: false, mensagem: "Token não fornecido!" });
+  }
+  
+  const tokenParts = authHeader.split(" ");
+  if (tokenParts.length !== 2) {
+    return res.status(401).json({ sucesso: false, mensagem: "Token malformado!" });
+  }
 
+  const token = tokenParts[1];
   if (!token) {
-    next(); // Chama o próximo middleware
-    return;
+    return res.status(401).json({ sucesso: false, mensagem: "Token ausente!" });
   }
 
   jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
-      return res
-        .status(403)
-        .json({ sucesso: false, mensagem: "Token inválido ou expirado!" });
+      return res.status(403).json({ sucesso: false, mensagem: "Token inválido ou expirado!" });
     }
     req.userId = decoded.id; // ID do usuário está no token
     next();
   });
 }
+
 
 
 // Iniciando servidor
