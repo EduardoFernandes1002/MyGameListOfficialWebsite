@@ -78,7 +78,7 @@ app.get("/perfil/:id_lista", verificarToken, async (req, res) => {
   const { id_lista } = req.params; // Pega o ID da lista da URL
 
   try {
-    // Query para buscar os jogos com base no id_lista e o apelido do usuário pelo idUsuario
+    // Query para buscar os jogos do usuario com base no id_lista e o apelido do usuário pelo idUsuario
     const queryJogos = `
       SELECT 
         j.id_jogo,
