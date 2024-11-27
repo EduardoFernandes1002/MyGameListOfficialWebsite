@@ -34,7 +34,7 @@ app.get("/jogo/:gameId", (req, res) => {
     const gameId = req.params.gameId;
 
     connection.query(
-        "SELECT id_jogo, nm_jogo, ds_imagem, nr_nota, ds_sinopse FROM T_Jogo WHERE id_jogo = ?",
+        "SELECT id_jogo, nm_jogo, ds_imagem, nr_nota, ds_sinopse FROM t_jogo WHERE id_jogo = ?",
         [gameId],
         (error, results) => {
             if (error) {
@@ -135,7 +135,6 @@ app.get("/jogos/rank", (req, res) => {
       ORDER BY j.nr_nota DESC;
     `;
 
-    // Executar a consulta sem limite
     connection.query(queryJogosGerais, (error, resultadosGerais) => {
         if (error) {
             return res
@@ -143,7 +142,6 @@ app.get("/jogos/rank", (req, res) => {
                 .json({ sucesso: false, mensagem: "Erro ao buscar jogos gerais!" });
         }
 
-        // Retornar todos os jogos gerais
         res.json({
             sucesso: true,
             jogosGerais: resultadosGerais,
@@ -151,7 +149,6 @@ app.get("/jogos/rank", (req, res) => {
     });
 });
 
-// Rota para buscar jogos gerais e jogos de ação e outros seguindo logica QueryJogosAcao
 app.get("/jogos", (req, res) => {
     const queryJogosGerais = `SELECT 
         j.id_jogo,
@@ -197,7 +194,7 @@ app.get("/jogos", (req, res) => {
 app.get("/jogos/rank", (req, res) => {
     // Consulta SQL ajustada para pegar os 4 jogos com maior nota, sem considerar o st_game
     connection.query(
-        "SELECT id_jogo, nm_jogo, ds_imagem, nr_nota FROM T_Jogo ORDER BY nr_nota DESC;",
+        "SELECT id_jogo, nm_jogo, ds_imagem, nr_nota FROM t_jogo ORDER BY nr_nota DESC;",
         (error, results) => {
             if (error) {
                 return res
@@ -224,7 +221,7 @@ app.post("/login", async (req, res) => {
 
     // Consulta no banco para pegar o usuário com o login digitado (email/nickname)
     connection.query(
-        "SELECT * FROM T_USUARIO WHERE ds_email = ? OR nm_apelido = ?",
+        "SELECT * FROM t_usuario WHERE ds_email = ? OR nm_apelido = ?",
         [login, login],
         (error, results) => {
             if (error) {
@@ -268,7 +265,7 @@ app.post("/registro", async (req, res) => {
         // Verificar se já existe um usuário com o mesmo email ou apelido
         const [existingUser] = await connection
             .promise()
-            .query("SELECT * FROM T_USUARIO WHERE ds_email = ? OR nm_apelido = ?", [
+            .query("SELECT * FROM t_usuario WHERE ds_email = ? OR nm_apelido = ?", [
                 email,
                 nickname,
             ]);
@@ -287,7 +284,7 @@ app.post("/registro", async (req, res) => {
         await connection
             .promise()
             .query(
-                "INSERT INTO T_USUARIO (ds_email, nm_apelido, ds_senha, id_permissao) VALUES (?, ?, ?, ?)",
+                "INSERT INTO t_usuario (ds_email, nm_apelido, ds_senha, id_permissao) VALUES (?, ?, ?, ?)",
                 [email, nickname, senha, 1]
             );
 
@@ -316,7 +313,7 @@ app.post("/avaliacao", async (req, res) => {
         const checkQuery = `
             SELECT COUNT(*) AS count 
             FROM t_avaliacao 
-            WHERE T_USUARIO_id_usuario = ? AND T_JOGO_id_jogo = ?;
+            WHERE id_usuario = ? AND id_jogo = ?;
         `;
 
         const [rows] = await connection.promise().query(checkQuery, [idUsuario, jogoId]);
@@ -329,14 +326,14 @@ app.post("/avaliacao", async (req, res) => {
             const updateQuery = `
                 UPDATE t_avaliacao 
                 SET nr_usuario_nota = ?, dt_envio = ? 
-                WHERE T_USUARIO_id_usuario = ? AND T_JOGO_id_jogo = ?;
+                WHERE id_usuario = ? AND id_jogo = ?;
             `;
             await connection.promise().query(updateQuery, [nota, data, idUsuario, jogoId]);
             console.log("Avaliação atualizada com sucesso!");
         } else {
             // Caso contrário, faz um INSERT
             const insertQuery = `
-                INSERT INTO t_avaliacao (dt_envio, nr_usuario_nota, T_JOGO_id_jogo, T_USUARIO_id_usuario)
+                INSERT INTO t_avaliacao (dt_envio, nr_usuario_nota, id_jogo, id_usuario)
                 VALUES (?, ?, ?, ?);
             `;
             await connection.promise().query(insertQuery, [data, nota, jogoId, idUsuario]);
@@ -347,7 +344,7 @@ app.post("/avaliacao", async (req, res) => {
         const mediaQuery = `
             SELECT AVG(nr_usuario_nota) AS media 
             FROM t_avaliacao 
-            WHERE T_JOGO_id_jogo = ?;
+            WHERE id_jogo = ?;
         `;
         const [mediaRows] = await connection.promise().query(mediaQuery, [jogoId]);
         const mediaNota = mediaRows[0].media;
@@ -382,7 +379,7 @@ app.post("/avaliacao", async (req, res) => {
 
 
 function gerarToken(userId) {
-    const token = jwt.sign({ id: userId }, secretKey, { expiresIn: '1h' });
+    const token = jwt.sign({ id: userId }, secretKey, { expiresIn: '30d' });
     return token;
 }
 
