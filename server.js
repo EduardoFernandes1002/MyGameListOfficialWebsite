@@ -221,7 +221,7 @@ app.post("/login", async (req, res) => {
         // Comparar a senha informada com a senha armazenada do banco
         if (senha === user.ds_senha) {
           const token = jwt.sign({ id: user.id_usuario }, secretKey, {
-            expiresIn: "1h",
+            expiresIn: "30d",
           });
           return res.json({
             sucesso: true,
@@ -292,7 +292,7 @@ app.post("/avaliacao", async (req, res) => {
   if (!nota || !data || !jogoId || !idUsuario) {
     return res
       .status(400)
-      .json({ error: "Parâmetros faltando: nota, data ou jogoId." });
+      .json({ error: "Parâmetros faltando: nota, data, jogoId e idUsuario." });
   }
 
   try {
