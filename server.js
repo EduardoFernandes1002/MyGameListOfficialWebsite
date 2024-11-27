@@ -3,33 +3,29 @@ const app = express();
 const path = require("path");
 const connection = require("./database");
 const jwt = require("jsonwebtoken");
-
-const secretKey = "N&3!5P@d92q4z7Yb#fR8^uL1%$xVsG0w";
+const chaveSecreta = "N&3!5P@d92q4z7Yb#fR8^uL1%$xVsG0w";
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "public", "templates")));
-
 app.use(express.json());
 
 // Caminho das paginas
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "templates", "index.html"));
+const serverPagina = (res, pagina) => {
+  res.sendFile(path.join(__dirname, 'public', 'templates', pagina))
+}
+
+// Paginas
+app.get("/", verificarToken, (req, res) => serverPagina(res, "index.html"));
+app.get("/login", (req, res) => serverPagina(res, "login.html"));
+app.get("/registro", (req, res) => serverPagina(res, "registro.html"));
+app.get("/rank", (req, res) => serverPagina(res, "rank.html"));
+app.get("/info/:gameId", (req, res) => serverPagina(res, "infoJogos.html"));
+app.get("/perfil_redirect", verificarToken, (req, res) => {
+  const token = req.headers.authorization.split(" ")[1]; // Extrai o token do header
+  res.redirect(`/perfil.html?token=${token}`);
 });
 
-app.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "templates", "login.html"));
-});
-
-app.get("/rank", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "templates", "rank.html"));
-});
-
-// Rota para enviar o HTML
-app.get("/info/:gameId", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "templates", "infoJogos.html"));
-});
-
-// Rota para retornar os dados do jogo
+// Rota para retornar as informações do jogo
 app.get("/jogo/:gameId", (req, res) => {
   const gameId = req.params.gameId;
 
@@ -42,7 +38,6 @@ app.get("/jogo/:gameId", (req, res) => {
           .status(500)
           .json({ sucesso: false, mensagem: "Erro no servidor!" });
       }
-
       if (results.length > 0) {
         return res.json({
           sucesso: true,
@@ -55,19 +50,6 @@ app.get("/jogo/:gameId", (req, res) => {
       }
     }
   );
-});
-
-app.get("/registro", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "templates", "registro.html"));
-});
-
-app.get("/perfil_redirect", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "templates", "perfil.html"));
-});
-
-app.get("/perfil_redirect", verificarToken, (req, res) => {
-  const token = req.headers.authorization.split(" ")[1]; // Extrai o token do header
-  res.redirect(`/perfil.html?token=${token}`);
 });
 
 app.get("/lista/:idLista", verificarToken, (req, res) => {
@@ -220,7 +202,7 @@ app.post("/login", async (req, res) => {
 
         // Comparar a senha informada com a senha armazenada do banco
         if (senha === user.ds_senha) {
-          const token = jwt.sign({ id: user.id_usuario }, secretKey, {
+          const token = jwt.sign({ id: user.id_usuario }, chaveSecreta, {
             expiresIn: "30d",
           });
           return res.json({
@@ -368,11 +350,6 @@ app.post("/avaliacao", async (req, res) => {
   }
 });
 
-function gerarToken(userId) {
-  const token = jwt.sign({ id: userId }, secretKey, { expiresIn: "30d" });
-  return token;
-}
-
 function verificarToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   if (!authHeader) {
@@ -381,19 +358,19 @@ function verificarToken(req, res, next) {
       .json({ sucesso: false, mensagem: "Token não fornecido!" });
   }
 
-  const tokenParts = authHeader.split(" ");
-  if (tokenParts.length !== 2) {
+  const partesToken = authHeader.split(" ");
+  if (partesToken.length !== 2) {
     return res
       .status(401)
       .json({ sucesso: false, mensagem: "Token malformado!" });
   }
 
-  const token = tokenParts[1];
+  const token = partesToken[1];
   if (!token) {
     return res.status(401).json({ sucesso: false, mensagem: "Token ausente!" });
   }
 
-  jwt.verify(token, secretKey, (err, decoded) => {
+  jwt.verify(token, chaveSecreta, (err, decoded) => {
     if (err) {
       return res
         .status(403)
