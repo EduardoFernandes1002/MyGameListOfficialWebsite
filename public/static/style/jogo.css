@@ -78,7 +78,7 @@ main {
 }
 
 .modal-content {
-  background-color: white;
+  background-color:#272c44;
   padding: 20px;
   border-radius: 10px;
   text-align: center;
@@ -117,7 +117,7 @@ input[type="range"] {
   padding: 1vh 1vw;
   cursor: pointer;
   background-color: #272c44;
-  color: white;
+  color: rgb(255, 255, 255);
   border: none;
   border-radius: 1vh 1vh 0 0;
 }
@@ -137,4 +137,119 @@ input[type="range"] {
 
 #sinopse.visible, #avaliacoes.visible, #categorias.visible {
   display: block; /* Exibe a seção quando a classe 'visible' for aplicada */
-} 
+}
+.notas{
+
+  display: flex;
+}
+.notaPessoal{
+
+  display: flex;
+  font-size: 3vh;
+  margin: 2vh;
+  color: white;
+
+}
+#notaPessoalEditar{
+  display: flex;
+  background-color: #f39c12;
+  font-size: 3vh;
+  width: 5vh;
+  border-radius: 1vh;
+}
+.notaTotal{
+  display: flex;
+  position: absolute;
+  justify-self: flex-end;
+  justify-self: end;
+  font-size: 3vh;
+  margin-left: 97%;
+  color: #f39c12;
+}
+
+#salvarNota {
+  background-color: #5d975d; /* Verde suave */
+  color: white; /* Texto branco */
+  border: none; /* Remove a borda padrão */
+  border-radius: 2vh; /* Bordas arredondadas */
+  padding: 1vh 2vh; /* Espaçamento interno */
+  font-size: 2vh; /* Tamanho do texto */
+  font-weight: bold; /* Texto em negrito */
+  cursor: pointer; /* Cursor de ponteiro ao passar */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Transições suaves */
+}
+
+#salvarNota:hover {
+  background-color: #4b7d4b; /* Escurece o verde ao passar o mouse */
+  transform: scale(1.05); /* Aumenta ligeiramente o botão */
+}
+
+#fecharModal {
+  background-color: #a56363; /* Vermelho suave */
+  color: white; /* Texto branco */
+  border: none; /* Remove a borda padrão */
+  border-radius: 2vh; /* Bordas arredondadas */
+  padding: 1vh 2vh; /* Espaçamento interno */
+  font-size: 2vh; /* Tamanho do texto */
+  font-weight: bold; /* Texto em negrito */
+  cursor: pointer; /* Cursor de ponteiro ao passar */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Transições suaves */
+}
+
+#fecharModal:hover {
+  background-color: #8c5252; /* Escurece o vermelho ao passar o mouse */
+  transform: scale(1.05); /* Aumenta ligeiramente o botão */
+}
+
+#notaSlider{
+  color: #f39c12;
+}
+[type="range"] {
+  -webkit-appearance: none; /* Remove o estilo padrão */
+  appearance: none;
+  width: 100%; /* Define a largura total do elemento */
+  height: 15px; /* Altura da trilha */
+  background: #3c4157; /* Cor sólida da trilha */
+  border-radius: 6px; /* Borda arredondada na trilha */
+  outline: none; /* Remove o contorno ao focar */
+  cursor: pointer; /* Cursor de interação */
+}
+
+[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Remove o estilo padrão */
+  appearance: none;
+  width: 20px; /* Largura do botão */
+  height: 20px; /* Altura do botão */
+  background: #3c4157; /* Cor sólida do botão */
+  border: 2px solid #ffffff; /* Borda branca ao redor do botão */
+  border-radius: 50%; /* Formato circular */
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3); /* Sombra para efeito 3D */
+  position: relative; /* Permite ajustes visuais */
+  margin-top: -4px; /* Alinha o botão no centro da trilha */
+}
+
+[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #f39c12;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+}
+
+[type="range"]:hover {
+  background: #2e334a; /* Altere a trilha ao passar o mouse */
+}
+
+[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2); /* Amplie o botão ao passar o mouse */
+  background: #494c57; /* Alteração visual ao passar o mouse */
+}
+
+[type="range"]:focus::-webkit-slider-thumb {
+  box-shadow: 0px 0px 10px #fffffe; /* Destaque o botão ao focar */
+}
+
+.modal p , h3{
+  color: #ffffff;
+}
