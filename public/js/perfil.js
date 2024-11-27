@@ -1,76 +1,82 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get("token");
+  // Recupera o token da URL, se disponível
+  let token = new URLSearchParams(window.location.search).get("token");
 
   if (!token) {
-    alert("Token não encontrado na URL.");
+    // Caso não encontre na URL, tenta pegar no localStorage
+    token = localStorage.getItem("token");
+  }
+
+  if (!token) {
+    alert("Token não encontrado.");
     return;
   }
 
   const decodedToken = JSON.parse(atob(token.split(".")[1]));
-  const idUsuario = decodedToken.id;
-  let idLista = "1"; // Lista padrão ao carregar pagina
+  const idUsuario = decodedToken.id; // ID do usuário extraído do token
+  let idLista = "1"; // ID padrão ao carregar a página
 
   const botoes = document.querySelectorAll(".btnListas button");
-  botoes.forEach((botao) => {
-    botao.addEventListener("click", function (event) {
-      event.preventDefault();
-      idLista = this.id.replace("btn", ""); // Atualiza o id_lista com base no botão clicado
-      fetchPerfil();
-    });
-  });
+  const listaElement = document.querySelector(".Lista");
 
-  document
-    .getElementById("btnReview")
-    .addEventListener("click", function (event) {
-      event.preventDefault();
-      showReviews();
-    });
-
-  async function fetchPerfil() {
+  // Função para carregar a lista
+  async function carregarLista(idLista) {
     try {
-      const response = await fetch(`/perfil/${idLista}`, {
+      const response = await fetch(`/lista/${idLista}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // Passando o token no cabeçalho
         },
       });
 
-      const data = response.ok ? await response.json() : { jogos: [] };
+      if (!response.ok) {
+        throw new Error("Erro ao carregar a lista.");
+      }
 
-      document.getElementById("NomeUsuario").innerText = `Olá, ${
-        data.apelido || "Usuário"
-      }`;
-      const listaElement = document.querySelector(".Lista");
+      const jogos = await response.json();
 
-      if (data.jogos.length === 0) {
+      if (jogos.length === 0) {
         listaElement.innerHTML = "<p>A lista está vazia.</p>";
       } else {
-        listaElement.innerHTML = data.jogos
+        listaElement.innerHTML = jogos
           .map(
             (jogo) => `
-          <li class="jogoL">
-            <a href="/info/${jogo.id_jogo}">
-              <img src="${jogo.ds_imagem}" alt="${jogo.nm_jogo}">
-              <div class="jogoDiv">
-                <span>${jogo.nm_jogo}</span>
-              </div>
-            </a>
-          </li>
-        `
+            <li class="jogoL">
+              <a href="/info/${jogo.id_jogo}">
+                <img src="${jogo.ds_imagem}" alt="${jogo.nm_jogo}">
+                <div class="jogoDiv">
+                  <span>${jogo.nm_jogo}</span>
+                </div>
+              </a>
+            </li>
+          `
           )
           .join("");
       }
     } catch (error) {
-      document.querySelector(".Lista").innerHTML = "<p>A lista está vazia.</p>";
+      console.error(error);
+      listaElement.innerHTML = "<p>Lista vazia.</p>";
     }
   }
 
-  function showReviews() {
-    const listaElement = document.querySelector(".Lista");
-    listaElement.innerHTML = "<p>Não há reviews ainda.</p>";
-  }
+  // Adiciona eventos de clique para alternar entre as listas
+  botoes.forEach((botao) => {
+    botao.addEventListener("click", function (event) {
+      event.preventDefault();
+      idLista = botao.value; // Usa o value do botão diretamente
+      carregarLista(idLista);
+    });
+  });
 
-  fetchPerfil(); // Carrega a lista "Desejo" ao carregar a página
+  // Carrega a lista padrão ao carregar a página
+  carregarLista(idLista);
+
+  // Exibe reviews quando o botão correspondente é clicado
+  document
+    .getElementById("btnReview")
+    .addEventListener("click", function (event) {
+      event.preventDefault();
+      listaElement.innerHTML = "<p>Não há reviews ainda.</p>";
+    });
 });
