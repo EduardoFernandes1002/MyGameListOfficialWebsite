@@ -10,7 +10,10 @@ body {
   min-height: 100%;
   margin: 0;
   padding: 0;
-  background: #3c4157;
+  background: #4c526e;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
 }
 
 main {
