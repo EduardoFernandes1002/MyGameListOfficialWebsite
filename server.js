@@ -26,7 +26,9 @@ app.get("/perfil_redirect", verificarToken, (req, res) => {
 });
 
 // Rota para retornar as informações do jogo
-app.get("/jogo/:gameId", (req, res) => {
+app.get("/jogo/:gameId", (req, res) => BuscarInfoJogos(req, res));
+
+function BuscarInfoJogos(req, res) {
   const gameId = req.params.gameId;
 
   connection.query(
@@ -50,7 +52,7 @@ app.get("/jogo/:gameId", (req, res) => {
       }
     }
   );
-});
+}
 
 app.get("/lista/:idLista", verificarToken, (req, res) => {
   const idUsuario = req.userId; // Pega o ID do usuário do token
