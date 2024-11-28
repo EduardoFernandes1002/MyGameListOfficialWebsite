@@ -1,46 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/style/header.css">
-    <link rel="stylesheet" href="../static/style/adm.css">
-    <link rel="stylesheet" href="../static/style/footer.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/style/header.css" />
+    <link rel="stylesheet" href="../static/style/adm.css" />
+    <link rel="stylesheet" href="../static/style/footer.css" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <header id="header-placeholder"></header>
 
     <main>
-        <div class="controle">
-            <div class="botoesTroca">
-                <button id="btnAddJogo">Cadastrar Jogo</button>
-                <button id="btnAddGenero">Cadastrar Genero</button>
-                <button id="btnAddDesenvolvedora">Cadastrar Desenvolvedora</button>
-                <button id="btnAddDistribuidora">Cadastrar Distribuidora</button>
-            </div>
-
-            <div class="addJogo">
-                <form id="CadastrarJogo">
-
-                </form>
-            </div>
-            <div class="addGenero">
-                <form id="CadastrarGenero">
-
-                </form>
-            </div>
-            <div class="addDesenvolvedora">
-                <form id="CadastrarGenero">
-                    
-                </form>
-            </div>
-            <div class="addDistribuidora">
-                <form id="CadastrarDistribuidora">
-                    
-                </form>
-            </div>
+      <div class="controle">
+        <div class="botoesTroca">
+          <button id="btnAddJogo">Cadastrar Jogo</button>
+          <button id="btnAddGenero">Cadastrar Genero</button>
+          <button id="btnAddDesenvolvedora">Cadastrar Desenvolvedora</button>
+          <button id="btnAddDistribuidora">Cadastrar Distribuidora</button>
         </div>
+
+        <div class="addJogo">
+          <form id="CadastrarJogo">
+            <label for="nomeJogo">Jogo</label>
+            <input
+              name="nomeJogo"
+              type="text"
+              placeholder="Nome do Jogo"
+              id="nomeJogo"
+            />
+
+            <label for="sinopse">Sinopse</label>
+            <textarea
+              name="sinopse"
+              placeholder="Sinopse do Jogo"
+              id="sinopse"
+            ></textarea>
+
+            <label for="linkImagem">Imagem</label>
+            <input
+              name="linkImagem"
+              type="text"
+              placeholder="URL da imagem"
+              id="linkImagem"
+            />
+
+            <label for="previewImagem"></label>
+            <img name="previewImagem" src="" alt="" />
+
+            <label for="statusJogo">Status</label>
+            <select name="statusJogo" id="statusJogo">
+              <option value="1">Lançado</option>
+              <option value="1">Jogo como Serviço</option>
+              <option value="3">Acesso Antecipado</option>
+              <option value="4">Anunciado</option>
+              <option value="5">Beta</option>
+              <option value="6">Alpha</option>
+              <option value="7">Outro (Antes que Alpha)</option>
+            </select>
+
+            <label for="plataforma">Plataforma</label>
+            <select name="plataforma" id="plataforma" value=""></select>
+
+            <label for="desenvolvedora">Desenvolvedora</label>
+            <select name="desenvolvedora" id="desenvolvedora" value=""></select>
+
+            <label for="distribuidora">Distribidora</label>
+            <select name="distribuidora" id="distribuidora" value=""></select>
+
+            <label for="modoJogo">Modo de Jogo</label>
+            <select name="modoJogo" id="modoJogo" value=""></select>
+
+            <label for="genero">Genero do Jogo</label>
+            <select name="genero" id="genero" value=""></select>
+
+            <button type="submit">Cadastrar</button>
+          </form>
+        </div>
+        <div class="addGenero">
+          <form id="CadastrarGenero">
+
+            <label for="Genero">Genero do Jogo</label>
+            <input type="text" name="Genero" id="Genero" placeholder="Genero">
+
+            <button type="submit">Cadastrar</button>
+
+          </form>
+        </div>
+        <div class="addDesenvolvedora">
+          <form id="Desenvolvedora">
+            <label for="Desenvolvedora">Genero do Jogo</label>
+            <input type="text" name="Desenvolvedora" id="Desenvolvedora" placeholder="Desenvolvedora">
+
+            <button type="submit">Cadastrar</button>
+          </form>
+        </div>
+        <div class="addDistribuidora">
+          <form id="CadastrarDistribuidora">
+            <label for="Distribuidora">Distribuidora do Jogo</label>
+            <input type="text" name="Distribuidora" id="Distribuidora" placeholder="Nome Distribuidora">
+
+            <button type="submit">Cadastrar</button>
+          </form>
+        </div>
+      </div>
     </main>
 
     <footer id="footer-placeholder"></footer>
@@ -48,5 +111,5 @@
     <script src="../js/search.js"></script>
     <script src="../js/index.js"></script>
     <script src="../js/header_footer.js"></script>
-</body>
+  </body>
 </html>

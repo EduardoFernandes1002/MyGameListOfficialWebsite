@@ -87,7 +87,7 @@ li {
   cursor: pointer;
 }
 #inputDiv:hover {
-  background-color: rgba(0, 0, 0, 0.408);
+  background-color: #00000068;
 }
 
 form {

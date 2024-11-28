@@ -11,8 +11,8 @@ app.use(express.json());
 
 // Caminho das paginas
 const serverPagina = (res, pagina) => {
-    res.sendFile(path.join(__dirname, 'public', 'templates', pagina))
-}
+  res.sendFile(path.join(__dirname, "public", "templates", pagina));
+};
 
 // Paginas
 app.get("/", verificarToken, (req, res) => serverPagina(res, "index.html"));
@@ -21,17 +21,19 @@ app.get("/registro", (req, res) => serverPagina(res, "registro.html"));
 app.get("/rank", (req, res) => serverPagina(res, "rank.html"));
 app.get("/info/:gameId", (req, res) => serverPagina(res, "infoJogos.html"));
 app.get("/perfil_redirect", verificarToken, (req, res) => {
-    const token = req.headers.authorization.split(" ")[1]; // Extrai o token do header
-    res.redirect(`/perfil.html?token=${token}`);
+  const token = req.headers.authorization.split(" ")[1]; // Extrai o token do header
+  res.redirect(`/perfil.html?token=${token}`);
 });
 app.get("/adm_redirect", verificarToken, (req, res) => {
-    const token = req.headers.authorization.split(" ")[1]; // Extrai o token do header
-    res.redirect(`/adm.html?token=${token}`);
-})
+  const token = req.headers.authorization.split(" ")[1]; // Extrai o token do header
+  res.redirect(`/adm.html?token=${token}`);
+});
 
 // Rota para retornar as informações
 app.get("/jogo/:gameId", (req, res) => BuscarInfoJogos(req, res));
-app.get("/lista/:idLista", verificarToken, (req, res) => BuscarJogosLista(req, res));
+app.get("/lista/:idLista", verificarToken, (req, res) =>
+  BuscarJogosLista(req, res)
+);
 app.get("/jogos", (req, res) => BuscarJogos(req, res));
 app.get("/jogos/rank", (req, res) => BuscarJogosRankeados(req, res));
 
@@ -39,12 +41,12 @@ app.get("/jogos/rank", (req, res) => BuscarJogosRankeados(req, res));
 app.post("/login", async (req, res) => Login(req, res));
 app.post("/registro", async (req, res) => Registro(req, res));
 app.post("/avalicao", async (req, res) => Avaliacao(req, res));
-app.post("/cadastros", async (req, res) => CadastroJGDD(req, res)); // Cadastros para jogos/generos/distribuidoras/desenvolvedoras
+app.post("/admin/cadastrosJGDD", async (req, res) => CadastroJGDD(req, res)); // Cadastros para jogos/generos/distribuidoras/desenvolvedoras
 
 function BuscarInfoJogos(req, res) {
-    const gameId = req.params.gameId;
+  const gameId = req.params.gameId;
 
-    const queryLista = `
+  const queryLista = `
         SELECT
             id_jogo,
             nm_jogo,
@@ -54,31 +56,30 @@ function BuscarInfoJogos(req, res) {
         FROM t_jogo WHERE id_jogo = ?;
         `;
 
-    connection.query(queryLista, [gameId], (error, results) => {
-        if (error) {
-            return res
-                .status(500)
-                .json({ sucesso: false, mensagem: "Erro no servidor!" });
-        }
-        if (results.length > 0) {
-            return res.json({
-                sucesso: true,
-                jogo: results[0],
-            });
-        } else {
-            return res
-                .status(404)
-                .json({ sucesso: false, mensagem: "Jogo não encontrado!" });
-        }
+  connection.query(queryLista, [gameId], (error, results) => {
+    if (error) {
+      return res
+        .status(500)
+        .json({ sucesso: false, mensagem: "Erro no servidor!" });
     }
-    );
+    if (results.length > 0) {
+      return res.json({
+        sucesso: true,
+        jogo: results[0],
+      });
+    } else {
+      return res
+        .status(404)
+        .json({ sucesso: false, mensagem: "Jogo não encontrado!" });
+    }
+  });
 }
 
 function BuscarJogosLista(req, res) {
-    const idUsuario = req.userId; // Pega o ID do usuário do token
-    const idLista = req.params.idLista; // Obtém o ID da lista da URL
+  const idUsuario = req.userId; // Pega o ID do usuário do token
+  const idLista = req.params.idLista; // Obtém o ID da lista da URL
 
-    const queryJogos = `
+  const queryJogos = `
       SELECT 
           j.id_jogo,
           j.nm_jogo, 
@@ -95,21 +96,22 @@ function BuscarJogosLista(req, res) {
           l.id_lista = ? AND lu.id_usuario = ?;
   `;
 
-    connection.query(queryJogos, [idLista, idUsuario], (err, resultados) => {
-        if (err) {
-            console.error("Erro ao buscar jogos:", err);
-            return res.status(500).json({ message: "Erro interno ao buscar jogos." });
-        }
-        if (resultados.length === 0) {
-            return res.status(404).json({ message: "Nenhum jogo encontrado para esta lista." });
-        }
-        res.json(resultados);
-    });
+  connection.query(queryJogos, [idLista, idUsuario], (err, resultados) => {
+    if (err) {
+      console.error("Erro ao buscar jogos:", err);
+      return res.status(500).json({ message: "Erro interno ao buscar jogos." });
+    }
+    if (resultados.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Nenhum jogo encontrado para esta lista." });
+    }
+    res.json(resultados);
+  });
 }
 
 function BuscarJogos(req, res) {
-
-    const queryJogosGerais = `
+  const queryJogosGerais = `
     SELECT 
         j.id_jogo,
         j.nm_jogo,
@@ -118,7 +120,7 @@ function BuscarJogos(req, res) {
     FROM t_jogo j
     ORDER BY j.nr_nota DESC LIMIT 10;`;
 
-    const queryJogosAcao = `
+  const queryJogosAcao = `
         SELECT j.id_jogo, j.nm_jogo, j.ds_imagem, j.nr_nota 
         FROM t_jogo j
         JOIN t_genero_do_jogo gj ON j.id_jogo = gj.id_jogo
@@ -127,33 +129,32 @@ function BuscarJogos(req, res) {
         LIMIT 10;
     `;
 
-    // Executar as duas consultas paralelamente
-    connection.query(queryJogosGerais, (errorGerais, resultadosGerais) => {
-        if (errorGerais) {
-            return res
-                .status(500)
-                .json({ sucesso: false, mensagem: "Erro ao buscar jogos gerais!" });
-        }
+  // Executar as duas consultas paralelamente
+  connection.query(queryJogosGerais, (errorGerais, resultadosGerais) => {
+    if (errorGerais) {
+      return res
+        .status(500)
+        .json({ sucesso: false, mensagem: "Erro ao buscar jogos gerais!" });
+    }
 
-        connection.query(queryJogosAcao, (errorAcao, resultadosAcao) => {
-            if (errorAcao) {
-                return res
-                    .status(500)
-                    .json({ sucesso: false, mensagem: "Erro ao buscar jogos de ação!" });
-            }
+    connection.query(queryJogosAcao, (errorAcao, resultadosAcao) => {
+      if (errorAcao) {
+        return res
+          .status(500)
+          .json({ sucesso: false, mensagem: "Erro ao buscar jogos de ação!" });
+      }
 
-            res.json({
-                sucesso: true,
-                jogosGerais: resultadosGerais,
-                jogosAcao: resultadosAcao,
-            });
-        });
+      res.json({
+        sucesso: true,
+        jogosGerais: resultadosGerais,
+        jogosAcao: resultadosAcao,
+      });
     });
+  });
 }
 
 function BuscarJogosRankeados(req, res) {
-
-    const queryJogos = `
+  const queryJogos = `
         SELECT 
             id_jogo, 
             nm_jogo, 
@@ -163,74 +164,73 @@ function BuscarJogosRankeados(req, res) {
         ORDER BY nr_nota DESC;
     `;
 
-    connection.query(queryJogos, (error, results) => {
-        if (error) {
-            return res
-                .status(500)
-                .json({ sucesso: false, mensagem: "Erro no servidor!" });
-        }
-        if (results.length > 0) {
-            res.json({ sucesso: true, jogos: results });
-        } else {
-            res
-                .status(404)
-                .json({ sucesso: false, mensagem: "Nenhum jogo encontrado!" });
-        }
-    });
+  connection.query(queryJogos, (error, results) => {
+    if (error) {
+      return res
+        .status(500)
+        .json({ sucesso: false, mensagem: "Erro no servidor!" });
+    }
+    if (results.length > 0) {
+      res.json({ sucesso: true, jogos: results });
+    } else {
+      res
+        .status(404)
+        .json({ sucesso: false, mensagem: "Nenhum jogo encontrado!" });
+    }
+  });
 }
 
 async function Login(req, res) {
-    const { login, senha } = req.body;
+  const { login, senha } = req.body;
 
-    const queryUser = `
-    SELECT * FROM t_usuario 
-    WHERE ds_email = ? OR nm_apelido = ?;
-    `
-
-    // Consulta no banco para pegar o usuário com o login digitado (email/nickname)
-    connection.query(queryUser, [login, login], (error, results) => {
-        if (error) {
-            return res
-                .status(500)
-                .json({ sucesso: false, mensagem: "Erro no servidor!" });
-        }
-
-        if (results.length > 0) {
-            const user = results[0];
-
-            // Comparar a senha informada com a senha armazenada do banco
-            if (senha === user.ds_senha) {
-                const token = jwt.sign({ id: user.id_usuario }, chaveSecreta, {
-                    expiresIn: "30d",
-                });
-                return res.json({
-                    sucesso: true,
-                    mensagem: "Login bem-sucedido!",
-                    token,
-                });
-            } else {
-                return res
-                    .status(400)
-                    .json({ sucesso: false, mensagem: "Credenciais inválidas!" });
-            }
-        } else {
-            return res
-                .status(400)
-                .json({ sucesso: false, mensagem: "Credenciais inválidas!" });
-        }
-    }
-    );
-}
-
-async function Registro(req, res) {
-    const { email, apelido, senha } = req.body;
-
-    const queryExisteUser = `
+  const queryUser = `
     SELECT * FROM t_usuario 
     WHERE ds_email = ? OR nm_apelido = ?;
     `;
 
-    const queryCadastrar = `
+  // Consulta no banco para pegar o usuário com o login digitado (email/nickname)
+  connection.query(queryUser, [login, login], (error, results) => {
+    if (error) {
+      return res
+        .status(500)
+        .json({ sucesso: false, mensagem: "Erro no servidor!" });
+    }
+
+    if (results.length > 0) {
+      const user = results[0];
+
+      // Comparar a senha informada com a senha armazenada do banco
+      if (senha === user.ds_senha) {
+        const token = jwt.sign({ id: user.id_usuario }, chaveSecreta, {
+          expiresIn: "30d",
+        });
+        return res.json({
+          sucesso: true,
+          mensagem: "Login bem-sucedido!",
+          token,
+        });
+      } else {
+        return res
+          .status(400)
+          .json({ sucesso: false, mensagem: "Credenciais inválidas!" });
+      }
+    } else {
+      return res
+        .status(400)
+        .json({ sucesso: false, mensagem: "Credenciais inválidas!" });
+    }
+  });
+}
+
+async function Registro(req, res) {
+  const { email, apelido, senha } = req.body;
+
+  const queryExisteUser = `
+    SELECT * FROM t_usuario 
+    WHERE ds_email = ? OR nm_apelido = ?;
+    `;
+
+  const queryCadastrar = `
     INSERT INTO t_usuario (
         ds_email,
         nm_apelido,
@@ -239,68 +239,76 @@ async function Registro(req, res) {
     ) VALUES (?, ?, ?, 1);
     `;
 
-    try {
-        // Verificar se já existe um usuário com o mesmo email ou apelido
-        const [existeUser] = await connection.promise().query(queryExisteUser, [email, apelido]);
+  try {
+    // Verificar se já existe um usuário com o mesmo email ou apelido
+    const [existeUser] = await connection
+      .promise()
+      .query(queryExisteUser, [email, apelido]);
 
-        if (existeUser.length > 0) {
-            const conflitoMensagem =
-                existeUser[0].ds_email === email
-                    ? "Email já está em uso."
-                    : "Apelido já está em uso.";
-            return res
-                .status(400)
-                .json({ sucesso: false, mensagem: conflitoMensagem });
-        }
-
-        // Inserir novo usuário com a senha diretamente e nivel_permissao padrão de 1
-        await connection.promise().query(queryCadastrar, [email, apelido, senha, 1]);
-
-        res.json({ sucesso: true, mensagem: "Registro realizado com sucesso!" });
-    } catch (error) {
-        console.error("Erro ao registrar usuário:", error);
-        res
-            .status(500)
-            .json({ sucesso: false, mensagem: "Erro no servidor!" + error });
+    if (existeUser.length > 0) {
+      const conflitoMensagem =
+        existeUser[0].ds_email === email
+          ? "Email já está em uso."
+          : "Apelido já está em uso.";
+      return res
+        .status(400)
+        .json({ sucesso: false, mensagem: conflitoMensagem });
     }
+
+    // Inserir novo usuário com a senha diretamente e nivel_permissao padrão de 1
+    await connection
+      .promise()
+      .query(queryCadastrar, [email, apelido, senha, 1]);
+
+    res.json({ sucesso: true, mensagem: "Registro realizado com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao registrar usuário:", error);
+    res
+      .status(500)
+      .json({ sucesso: false, mensagem: "Erro no servidor!" + error });
+  }
 }
 
 async function Avaliacao(req, res) {
-    const { nota, data, idUsuario, jogoId } = req.body;
-    console.log(
-        `Recebido: nota=${nota}, id=${idUsuario} data=${data}, jogoId=${jogoId}`
-    );
+  const { nota, data, idUsuario, jogoId } = req.body;
+  console.log(
+    `Recebido: nota=${nota}, id=${idUsuario} data=${data}, jogoId=${jogoId}`
+  );
 
-    if (!nota || !data || !jogoId || !idUsuario) {
-        return res
-            .status(400)
-            .json({ error: "Parâmetros faltando: nota, data, jogoId e idUsuario." });
-    }
+  if (!nota || !data || !jogoId || !idUsuario) {
+    return res
+      .status(400)
+      .json({ error: "Parâmetros faltando: nota, data, jogoId e idUsuario." });
+  }
 
-    try {
-        // Verifica se já existe uma avaliação para o usuário e o jogo
-        const checkQuery = `
+  try {
+    // Verifica se já existe uma avaliação para o usuário e o jogo
+    const checkQuery = `
             SELECT COUNT(*) AS count 
             FROM t_avaliacao 
             WHERE id_usuario = ? AND id_jogo = ?;
         `;
 
-        const [rows] = await connection.promise().query(checkQuery, [idUsuario, jogoId]);
-        const count = rows[0].count;
+    const [rows] = await connection
+      .promise()
+      .query(checkQuery, [idUsuario, jogoId]);
+    const count = rows[0].count;
 
-        console.log(`Avaliação existente: ${count > 0 ? "Sim" : "Não"}`);
+    console.log(`Avaliação existente: ${count > 0 ? "Sim" : "Não"}`);
 
-        // Se já existir uma avaliação, faz um UPDATE
-        if (count > 0) {
-            const updateQuery = `
+    // Se já existir uma avaliação, faz um UPDATE
+    if (count > 0) {
+      const updateQuery = `
                 UPDATE t_avaliacao 
                 SET nr_usuario_nota = ?, dt_envio = ? 
                 WHERE id_usuario = ? AND id_jogo = ?;
             `;
-            await connection.promise().query(updateQuery, [nota, data, idUsuario, jogoId]);
-            console.log("Avaliação atualizada com sucesso!");
-        } else {
-            const queryInsert = `
+      await connection
+        .promise()
+        .query(updateQuery, [nota, data, idUsuario, jogoId]);
+      console.log("Avaliação atualizada com sucesso!");
+    } else {
+      const queryInsert = `
                 INSERT INTO t_avaliacao (
                     dt_envio,
                     nr_usuario_nota,
@@ -308,145 +316,230 @@ async function Avaliacao(req, res) {
                     id_usuario
                 ) VALUES (?, ?, ?, ?);
             `;
-            await connection.promise().query(queryInsert, [data, nota, jogoId, idUsuario]);
-            console.log("Avaliação salva com sucesso!");
-        }
+      await connection
+        .promise()
+        .query(queryInsert, [data, nota, jogoId, idUsuario]);
+      console.log("Avaliação salva com sucesso!");
+    }
 
-        // Agora, calcula a média das notas do jogo
-        const queryMedia = `
+    // Agora, calcula a média das notas do jogo
+    const queryMedia = `
             SELECT AVG(nr_usuario_nota) AS media 
             FROM t_avaliacao 
             WHERE id_jogo = ?;
         `;
 
-        const [mediaRows] = await connection.promise().query(queryMedia, [jogoId]);
-        const mediaNota = mediaRows[0].media;
+    const [mediaRows] = await connection.promise().query(queryMedia, [jogoId]);
+    const mediaNota = mediaRows[0].media;
 
-        console.log(`Média calculada: ${mediaNota}`);
+    console.log(`Média calculada: ${mediaNota}`);
 
-        // Atualiza a nota média do jogo
-        const queryUpdateJogo = `
+    // Atualiza a nota média do jogo
+    const queryUpdateJogo = `
             UPDATE t_jogo 
             SET nr_nota = ? 
             WHERE id_jogo = ?;
         `;
 
-        await connection.promise().query(queryUpdateJogo, [mediaNota, jogoId]);
+    await connection.promise().query(queryUpdateJogo, [mediaNota, jogoId]);
 
-        console.log(`Nota média do jogo ${jogoId} atualizada para ${mediaNota}`);
+    console.log(`Nota média do jogo ${jogoId} atualizada para ${mediaNota}`);
 
-        // Envia a resposta para o cliente apenas uma vez, após todas as operações
-        return res.status(200).json({
-            message: "Avaliação salva e média do jogo atualizada com sucesso!",
-            media: mediaNota,
-        });
-    } catch (error) {
-        console.error("Erro ao salvar ou atualizar a avaliação:", error);
-        return res.status(500).json({
-            error: "Erro ao salvar ou atualizar a avaliação. Tente novamente mais tarde.",
-        });
-    }
+    // Envia a resposta para o cliente apenas uma vez, após todas as operações
+    return res.status(200).json({
+      message: "Avaliação salva e média do jogo atualizada com sucesso!",
+      media: mediaNota,
+    });
+  } catch (error) {
+    console.error("Erro ao salvar ou atualizar a avaliação:", error);
+    return res.status(500).json({
+      error:
+        "Erro ao salvar ou atualizar a avaliação. Tente novamente mais tarde.",
+    });
+  }
 }
 
 async function CadastroJGDD(req, res) {
-    const {
-        idUsuario,
-        idPermissao,
-        idGenero,
-        idModo,
-        idDesenvolvedora,
-        idPlataforma,
-        idDistribuidora,
-        nmGenero,
-        nmModo,
-        nmDesenvolvedora,
-        nmDistribuidora,
-        nmPlataforma,
-        idJogo,
-        nmJogo,
-        dsImagem,
-        dsSinopse,
-        dsDataLancamento,
-        stStatus
-    } = req.body; // Pega todos as informações do jogo
+  try {
+    let {
+      nmGenero,
+      nmModo,
+      nmDesenvolvedora,
+      nmDistribuidora,
+      nmPlataforma,
+      nmJogo,
+      dsImagem,
+      dsSinopse,
+      stStatus,
+      idGenero,
+      idModo,
+      idDistribuidora,
+      idDesenvolvedora,
+      idPlataforma,
+    } = req.body; // Pega todas informações que puder do front
 
-    async function adicionarJogo(jogo) {
-        const queryJogo = `
-            INSERT INTO t_jogo (
-                nm_jogo,
-                ds_sinopse,
-                nr_nota,
-                st_game,
-                ds_imagem,
-                id_distribuidora,
-                id_desenvolvedora,
-                id_plataforma
-            ) VALUES (?, ?, 0.0, ?, ?, ?, ?, ?);`;
-    
-        const params = [
-            jogo.nmJogo,
-            jogo.dsSinopse,
-            jogo.stStatus,
-            jogo.dsImagem,
-            jogo.idDistribuidora,
-            jogo.idDesenvolvedora,
-            jogo.idPlataforma
-        ];
-    
-        await db.execute(queryJogo, params); // Substitua `db.execute` pelo método de execução usado no seu projeto.
-    }
-    
-    async function adicionarGenero(nmGenero) {
-        const queryGenro = `INSERT INTO t_genero (nm_genero) VALUES (?);`;
-        await db.execute(queryGenro, [nmGenero]);
-    }
-    
-    async function adicionarDistribuidora(nmDistribuidora) {
-        const queryDistri = `INSERT INTO t_distribuidora (nm_distribuidora) VALUES (?);`;
-        await db.execute(queryDistri, [nmDistribuidora]);
-    }
-    
-    async function adicionarDesenvolvedora(nmDesenvolvedora) {
-        const queryDev = `INSERT INTO t_desenvolvedora (nm_desenvolvedora) VALUES (?);`;
-        await db.execute(queryDev, [nmDesenvolvedora]);
-    }
-    
+    // Cadastro Genero, Distribuidora, Desenvolvedora
+    if (nmGenero) await CadastrarGenero(nmGenero);
+    if (nmDistribuidora) await CadastrarDistribuidora(nmDistribuidora);
+    if (nmDesenvolvedora) await CadastrarDesenvolvedora(nmDesenvolvedora);
+
+    // Busca os IDs
+    idDesenvolvedora = await BuscarIdPorNome(
+      nmDesenvolvedora,
+      "t_desenvolvedora",
+      "id_desenvolvedora",
+      "nm_desenvolvedora"
+    );
+    idDistribuidora = await BuscarIdPorNome(
+      nmDistribuidora,
+      "t_distribuidora",
+      "id_distribuidora",
+      "nm_distribuidora"
+    );
+    idPlataforma = await BuscarIdPorNome(
+      nmPlataforma,
+      "t_plataforma",
+      "id_plataforma",
+      "nm_plataforma"
+    );
+    idModo = await BuscarIdPorNome(nmModo, "t_modo", "id_modo", "nm_modo");
+    idGenero = await BuscarIdPorNome(
+      nmGenero,
+      "t_genero",
+      "id_genero",
+      "nm_genero"
+    );
+
+    // Cadastro de jogo
+    const idJogo = await CadastrarJogo({
+      nmJogo,
+      dsSinopse,
+      stStatus,
+      dsImagem,
+      idDistribuidora,
+      idDesenvolvedora,
+      idPlataforma,
+    });
+
+    // Cadastro de gênero e modo (agora usando idJogo)
+    if (idGenero) await CadastrarGeneroJogo(idJogo, idGenero);
+    if (idModo) await CadastrarModoJogo(idJogo, idModo);
+
+    res.status(201).json({ message: "Cadastro realizado com sucesso!" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erro ao realizar o cadastro." });
+  }
+
+  async function CadastrarJogo(jogo) {
+    const queryJogo = `
+        INSERT INTO t_jogo (
+          nm_jogo,
+          ds_sinopse,
+          nr_nota,
+          st_game,
+          ds_imagem,
+          id_distribuidora,
+          id_desenvolvedora,
+          id_plataforma
+        ) VALUES (?, ?, 0.0, ?, ?, ?, ?, ?);
+      `;
+
+    const params = [
+      jogo.nmJogo,
+      jogo.dsSinopse,
+      jogo.stStatus,
+      jogo.dsImagem,
+      jogo.idDistribuidora,
+      jogo.idDesenvolvedora,
+      jogo.idPlataforma,
+    ];
+
+    // Executa a query
+    const [result] = await connection.execute(queryJogo, params);
+    return result.insertId; // Retorna o ID do jogo inserido
+  }
+
+  async function CadastrarGeneroJogo(idJogo, idGenero) {
+    const queryGeneroJogo = `
+        INSERT INTO t_genero_do_jogo (
+          id_jogo,
+          id_genero
+        ) VALUES (?, ?);
+      `;
+    await connection.execute(queryGeneroJogo, [idJogo, idGenero]);
+  }
+
+  async function CadastrarModoJogo(idJogo, idModo) {
+    const queryModoJogo = `
+        INSERT INTO t_modo_de_jogo (
+          id_jogo,
+          id_modo
+        ) VALUES (?, ?);
+      `;
+    await connection.execute(queryModoJogo, [idJogo, idModo]);
+  }
+
+  async function CadastrarGenero(nmGenero) {
+    const queryGenero = `INSERT INTO t_genero (nm_genero) VALUES (?);`;
+    await connection.execute(queryGenero, [nmGenero]);
+  }
+
+  async function CadastrarDistribuidora(nmDistribuidora) {
+    const queryDistribuidora = `INSERT INTO t_distribuidora (nm_distribuidora) VALUES (?);`;
+    await connection.execute(queryDistribuidora, [nmDistribuidora]);
+  }
+
+  async function CadastrarDesenvolvedora(nmDesenvolvedora) {
+    const queryDesenvolvedora = `INSERT INTO t_desenvolvedora (nm_desenvolvedora) VALUES (?);`;
+    await connection.execute(queryDesenvolvedora, [nmDesenvolvedora]);
+  }
+
+  async function BuscarIdPorNome(nome, tabela, campoId, campoNome) {
+    const query = `
+        SELECT ${campoId}
+        FROM ${tabela}
+        WHERE ${campoNome} = ?;
+      `;
+    const [rows] = await connection.execute(query, [nome]);
+    return rows[0]?.[campoId] || null;
+  }
 }
 
 // Função para Verificar o Token do Usuario
 function verificarToken(req, res, next) {
-    const authHeader = req.headers["authorization"];
-    if (!authHeader) {
-        return res
-            .status(401)
-            .json({ sucesso: false, mensagem: "Token não fornecido!" });
-    }
+  const authHeader = req.headers["authorization"];
+  if (!authHeader) {
+    return res
+      .status(401)
+      .json({ sucesso: false, mensagem: "Token não fornecido!" });
+  }
 
-    const partesToken = authHeader.split(" ");
-    if (partesToken.length !== 2) {
-        return res
-            .status(401)
-            .json({ sucesso: false, mensagem: "Token malformado!" });
-    }
+  const partesToken = authHeader.split(" ");
+  if (partesToken.length !== 2) {
+    return res
+      .status(401)
+      .json({ sucesso: false, mensagem: "Token malformado!" });
+  }
 
-    const token = partesToken[1];
-    if (!token) {
-        return res.status(401).json({ sucesso: false, mensagem: "Token ausente!" });
-    }
+  const token = partesToken[1];
+  if (!token) {
+    return res.status(401).json({ sucesso: false, mensagem: "Token ausente!" });
+  }
 
-    jwt.verify(token, chaveSecreta, (err, decoded) => {
-        if (err) {
-            return res
-                .status(403)
-                .json({ sucesso: false, mensagem: "Token inválido ou expirado!" });
-        }
-        req.userId = decoded.id; // ID do usuário está no token
-        next();
-    });
+  jwt.verify(token, chaveSecreta, (err, decoded) => {
+    if (err) {
+      return res
+        .status(403)
+        .json({ sucesso: false, mensagem: "Token inválido ou expirado!" });
+    }
+    req.userId = decoded.id; // ID do usuário está no token
+    next();
+  });
 }
 
 // Iniciando servidor
 const PORT = 3000;
 app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
