@@ -24,6 +24,10 @@ app.get("/perfil_redirect", verificarToken, (req, res) => {
     const token = req.headers.authorization.split(" ")[1]; // Extrai o token do header
     res.redirect(`/perfil.html?token=${token}`);
 });
+app.get("/adm_redirect", verificarToken, (req, res) => {
+    const token = req.headers.authorization.split(" ")[1]; // Extrai o token do header
+    res.redirect(`/adm.html?token=${token}`);
+})
 
 // Rota para retornar as informações
 app.get("/jogo/:gameId", (req, res) => BuscarInfoJogos(req, res));
@@ -33,8 +37,9 @@ app.get("/jogos/rank", (req, res) => BuscarJogosRankeados(req, res));
 
 //Rotas Registro, Login, Avaliação e AdicionarNaLista
 app.post("/login", async (req, res) => Login(req, res));
-app.post("/registro", async (req,res) => Registro(req, res));
+app.post("/registro", async (req, res) => Registro(req, res));
 app.post("/avalicao", async (req, res) => Avaliacao(req, res));
+app.post("/cadastros", async (req, res) => CadastroJGDD(req, res)); // Cadastros para jogos/generos/distribuidoras/desenvolvedoras
 
 function BuscarInfoJogos(req, res) {
     const gameId = req.params.gameId;
@@ -147,7 +152,7 @@ function BuscarJogos(req, res) {
 }
 
 function BuscarJogosRankeados(req, res) {
-    
+
     const queryJogos = `
         SELECT 
             id_jogo, 
@@ -184,40 +189,39 @@ async function Login(req, res) {
 
     // Consulta no banco para pegar o usuário com o login digitado (email/nickname)
     connection.query(queryUser, [login, login], (error, results) => {
-            if (error) {
-                return res
-                    .status(500)
-                    .json({ sucesso: false, mensagem: "Erro no servidor!" });
-            }
+        if (error) {
+            return res
+                .status(500)
+                .json({ sucesso: false, mensagem: "Erro no servidor!" });
+        }
 
-            if (results.length > 0) {
-                const user = results[0];
+        if (results.length > 0) {
+            const user = results[0];
 
-                // Comparar a senha informada com a senha armazenada do banco
-                if (senha === user.ds_senha) {
-                    const token = jwt.sign({ id: user.id_usuario }, chaveSecreta, {
-                        expiresIn: "30d",
-                    });
-                    return res.json({
-                        sucesso: true,
-                        mensagem: "Login bem-sucedido!",
-                        token,
-                    });
-                } else {
-                    return res
-                        .status(400)
-                        .json({ sucesso: false, mensagem: "Credenciais inválidas!" });
-                }
+            // Comparar a senha informada com a senha armazenada do banco
+            if (senha === user.ds_senha) {
+                const token = jwt.sign({ id: user.id_usuario }, chaveSecreta, {
+                    expiresIn: "30d",
+                });
+                return res.json({
+                    sucesso: true,
+                    mensagem: "Login bem-sucedido!",
+                    token,
+                });
             } else {
                 return res
                     .status(400)
                     .json({ sucesso: false, mensagem: "Credenciais inválidas!" });
             }
+        } else {
+            return res
+                .status(400)
+                .json({ sucesso: false, mensagem: "Credenciais inválidas!" });
         }
+    }
     );
 }
 
-// Rota para registro de usuário
 async function Registro(req, res) {
     const { email, apelido, senha } = req.body;
 
@@ -339,11 +343,77 @@ async function Avaliacao(req, res) {
     } catch (error) {
         console.error("Erro ao salvar ou atualizar a avaliação:", error);
         return res.status(500).json({
-            error:"Erro ao salvar ou atualizar a avaliação. Tente novamente mais tarde.",
+            error: "Erro ao salvar ou atualizar a avaliação. Tente novamente mais tarde.",
         });
     }
 }
 
+async function CadastroJGDD(req, res) {
+    const {
+        idUsuario,
+        idPermissao,
+        idGenero,
+        idModo,
+        idDesenvolvedora,
+        idPlataforma,
+        idDistribuidora,
+        nmGenero,
+        nmModo,
+        nmDesenvolvedora,
+        nmDistribuidora,
+        nmPlataforma,
+        idJogo,
+        nmJogo,
+        dsImagem,
+        dsSinopse,
+        dsDataLancamento,
+        stStatus
+    } = req.body; // Pega todos as informações do jogo
+
+    async function adicionarJogo(jogo) {
+        const queryJogo = `
+            INSERT INTO t_jogo (
+                nm_jogo,
+                ds_sinopse,
+                nr_nota,
+                st_game,
+                ds_imagem,
+                id_distribuidora,
+                id_desenvolvedora,
+                id_plataforma
+            ) VALUES (?, ?, 0.0, ?, ?, ?, ?, ?);`;
+    
+        const params = [
+            jogo.nmJogo,
+            jogo.dsSinopse,
+            jogo.stStatus,
+            jogo.dsImagem,
+            jogo.idDistribuidora,
+            jogo.idDesenvolvedora,
+            jogo.idPlataforma
+        ];
+    
+        await db.execute(queryJogo, params); // Substitua `db.execute` pelo método de execução usado no seu projeto.
+    }
+    
+    async function adicionarGenero(nmGenero) {
+        const queryGenro = `INSERT INTO t_genero (nm_genero) VALUES (?);`;
+        await db.execute(queryGenro, [nmGenero]);
+    }
+    
+    async function adicionarDistribuidora(nmDistribuidora) {
+        const queryDistri = `INSERT INTO t_distribuidora (nm_distribuidora) VALUES (?);`;
+        await db.execute(queryDistri, [nmDistribuidora]);
+    }
+    
+    async function adicionarDesenvolvedora(nmDesenvolvedora) {
+        const queryDev = `INSERT INTO t_desenvolvedora (nm_desenvolvedora) VALUES (?);`;
+        await db.execute(queryDev, [nmDesenvolvedora]);
+    }
+    
+}
+
+// Função para Verificar o Token do Usuario
 function verificarToken(req, res, next) {
     const authHeader = req.headers["authorization"];
     if (!authHeader) {
