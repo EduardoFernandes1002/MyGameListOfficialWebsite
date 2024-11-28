@@ -10,7 +10,7 @@ body {
   min-height: 100%;
   margin: 0;
   padding: 0;
-  background: #4c526e;
+  background: #3c4157;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
@@ -19,6 +19,7 @@ body {
 main {
   display: grid;
   margin: 0;
+  flex: 1;
 }
 
 .gridGame1 {

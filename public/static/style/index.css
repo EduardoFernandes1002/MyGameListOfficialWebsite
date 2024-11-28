@@ -6,7 +6,7 @@ body {
   min-height: 100%;
   margin: 0;
   padding: 0;
-  background: #4c526e;
+  background: #3c4157;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
@@ -114,7 +114,7 @@ h2 {
   display: flex;
   margin: 10vh;
   max-width: 100vw;
-  flex:1;
+  flex: 1;
 }
 
 .jogoDiv a {
