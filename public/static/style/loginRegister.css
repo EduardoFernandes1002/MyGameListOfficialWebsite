@@ -38,17 +38,17 @@ h3 {
 input {
   text-align: center;
   border: none;
-  background-color: #2a3144;
+  background-color: #7a839c;
   border-radius: 1vw;
   height: 4vh;
   margin: 1vh 0;
   padding: 0 1vh;
-  color: #000000;
+  color: #ffffff;
   font-size: 1vw;
 }
 
 input::placeholder {
-  color: #6e7ca5;
+  color: #ffffff;
 }
 
 .controle {
@@ -67,17 +67,18 @@ input::placeholder {
 
 .Buttons button {
   font-size: 1.1vw;
-  background-color: #606b88;
+  background-color: #476881;
   border: none;
   border-radius: 2vh;
   height: 1.8vw;
-  width: 50%;
-  color: #0c2225;
+  width: 100%;
+  color: #ffffff;
   cursor: pointer;
+  font-weight: 600;
 }
 
 .Buttons button:hover {
-  background-color: #585780;
+  background-color: #476881b0;
 }
 
 a {

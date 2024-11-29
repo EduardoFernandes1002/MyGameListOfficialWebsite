@@ -40,7 +40,7 @@ app.get("/jogos/rank", (req, res) => BuscarJogosRankeados(req, res));
 //Rotas Registro, Login, Avaliação e AdicionarNaLista
 app.post("/login", async (req, res) => Login(req, res));
 app.post("/registro", async (req, res) => Registro(req, res));
-app.post("/avalicao", async (req, res) => Avaliacao(req, res));
+app.post("/avaliacao", async (req, res) => Avaliacao(req, res));
 app.post("/admin/cadastrosJogo", async (req, res) => CadastroJogo(req, res));
 app.post("/admin/cadastroGenero", async (req, res) => CadastrarGenero(req, res));
 app.post("/admin/cadastroDistribuidora", async (req, res) => CadastrarDistribuidora(req, res));
