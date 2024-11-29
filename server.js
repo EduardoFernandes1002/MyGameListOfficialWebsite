@@ -34,8 +34,8 @@ app.get("/jogo/:gameId", (req, res) => BuscarInfoJogos(req, res));
 app.get("/lista/:idLista", verificarToken, (req, res) =>BuscarJogosLista(req, res));
 app.get("/jogos", (req, res) => BuscarJogos(req, res));
 app.get("/jogos/rank", (req, res) => BuscarJogosRankeados(req, res));
-app.get("/adm/modos", (req, res) => BuscarPlataformas(req, res));
-app.get("/adm/plataformas", (req, res) => BuscarModos(req, res));
+app.get("/adm/modos", (req, res) => BuscarModos(req, res));
+app.get("/adm/plataformas", (req, res) => BuscarPlataformas(req, res));
 
 //Rotas Registro, Login, Avaliação e AdicionarNaLista
 app.post("/login", async (req, res) => Login(req, res));
@@ -401,13 +401,34 @@ async function CadastroJogo(req, res) {
       "id_plataforma",
       "nm_plataforma"
     );
-    const idModo = await BuscarIdPorNome(nmModo, "t_modo", "id_modo", "nm_modo");
+    const idModo = await BuscarIdPorNome(
+      nmModo,
+      "t_modo",
+      "id_modo",
+      "nm_modo"
+    );
     const idGenero = await BuscarIdPorNome(
       nmGenero,
       "t_genero",
       "id_genero",
       "nm_genero"
     );
+
+    const idsGeneros = [];
+    for (const genero of nmGenero) {
+      const idGenero = await BuscarIdPorNome(
+        genero,
+        "t_genero",
+        "id_genero",
+        "nm_genero"
+      );
+      if (idGenero) idsGeneros.push(idGenero);
+    }
+    if (idsGeneros.length === 0) {
+      return res.status(400).json({
+        message: "Pelo menos um gênero é obrigatório.",
+      });
+    }
 
     const idJogo = await CadastrarJogo({
       nmJogo,
@@ -419,17 +440,20 @@ async function CadastroJogo(req, res) {
       idPlataforma,
     });
 
-    const generoCadastrado = idGenero
-      ? await CadastrarGeneroJogo(idJogo, idGenero)
-      : false;
+    // Associa os gêneros ao jogo
+    for (const idGenero of idsGeneros) {
+      await CadastrarGeneroJogo(idJogo, idGenero);
+    }
+
+    // Associa o modo ao jogo
     const modoCadastrado = idModo
       ? await CadastrarModoJogo(idJogo, idModo)
       : false;
 
-    if (!generoCadastrado && !modoCadastrado) {
+    if (!modoCadastrado) {
       await ExcluirJogo(idJogo);
       return res.status(400).json({
-        message: "Jogo não pode ser cadastrado sem gênero e modo.",
+        message: "Jogo não pode ser cadastrado sem um modo válido.",
       });
     }
 
