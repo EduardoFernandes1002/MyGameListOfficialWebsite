@@ -367,8 +367,8 @@ async function Avaliacao(req, res) {
   }
 }
 
-async function AdicionarNaLista{
-  
+async function AdicionarNaLista(req, res){
+
 }
 
 async function CadastroJogo(req, res) {
