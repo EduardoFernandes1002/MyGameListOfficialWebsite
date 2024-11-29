@@ -46,7 +46,6 @@ app.post("/admin/cadastroGenero", async (req, res) => CadastrarGenero(req, res))
 app.post("/admin/cadastroDistribuidora", async (req, res) => CadastrarDistribuidora(req, res));
 app.post("/admin/cadastroDesenvolvedora", async (req, res) => CadastrarDesenvolvedora(req, res));
 
-
 function BuscarInfoJogos(req, res) {
   const gameId = req.params.gameId;
 
@@ -268,8 +267,8 @@ async function Registro(req, res) {
   } catch (error) {
     console.error("Erro ao registrar usuário:", error);
     res
-      .status(500)
-      .json({ sucesso: false, mensagem: "Erro no servidor!" + error });
+    .status(500)
+    .json({ sucesso: false, mensagem: "Erro no servidor!" + error });
   }
 }
 
@@ -362,11 +361,6 @@ async function Avaliacao(req, res) {
     });
   }
 }
-
-
-
-
-
 
 async function CadastroJogo(req, res) {
   try {
@@ -469,21 +463,21 @@ async function CadastroJogo(req, res) {
       if (!nmJogo) {
         return res.status(400).json({ message: "Nome do jogo é obrigatório." });
       }
-  
+
       // Query para verificar se o jogo existe
       const queryJogoExistente = `
         SELECT * 
         FROM t_jogo
         WHERE nm_jogo = ?;
       `;
-  
+
       const [result] = await connection.query(queryJogoExistente, [nmJogo]);
-  
+
       if (result.length > 0) {
         // Retorna uma mensagem se o jogo já existir
         return res.status(200).json({ message: "Jogo já cadastrado.", nmJogo: result[0] });
       }
-      
+
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Erro ao verificar jogo." });
@@ -535,7 +529,7 @@ async function CadastroJogo(req, res) {
       return false; // Retorna falha
     }
   }
-  
+
   async function CadastrarModoJogo(idJogo, idModo) {
     try {
       const queryModoJogo = `
@@ -561,48 +555,44 @@ async function CadastroJogo(req, res) {
   }
 }
 
-
-
 async function CadastrarGenero(req, res) {
   try {
-  const { nmGenero } = req.body;
+    const { nmGenero } = req.body;
 
-  if (!nmGenero) {
-    return res.status(400).json({ message: "Nome da desenvolvedora é obrigatório." });
-  }
+    if (!nmGenero) {
+      return res.status(400).json({ message: "Nome da desenvolvedora é obrigatório." });
+    }
 
-  const queryDistribuidora = `INSERT INTO t_genero (nm_genero) VALUES (?);`;
-  await connection.execute(queryDistribuidora, [nmGenero]);
+    const queryGenero = `INSERT INTO t_genero (nm_genero) VALUES (?);`;
+    await connection.execute(queryGenero, [nmGenero]);
 
-  return res.status(201).json({ message: "Genero cadastradado com sucesso!" });
+    return res.status(201).json({ message: "Genero cadastradado com sucesso!" });
   } catch (error) {
     console.error(error);
     // Resposta de erro interno
     return res.status(500).json({ message: "Erro ao cadastrar genero." });
   }
-  
+
 }
-
-
 
 async function CadastrarDistribuidora(req, res) {
   try {
-  const { nmDistribuidora } = req.body;
+    const { nmDistribuidora } = req.body;
 
-  if (!nmDistribuidora) {
-    return res.status(400).json({ message: "Nome da distribuidora é obrigatório." });
-  }
+    if (!nmDistribuidora) {
+      return res.status(400).json({ message: "Nome da distribuidora é obrigatório." });
+    }
 
-  const queryDistribuidora = `INSERT INTO t_distribuidora (nm_distribuidora) VALUES (?);`;
-  await connection.execute(queryDistribuidora, [nmDistribuidora]);
+    const queryDistribuidora = `INSERT INTO t_distribuidora (nm_distribuidora) VALUES (?);`;
+    await connection.execute(queryDistribuidora, [nmDistribuidora]);
 
-  return res.status(201).json({ message: "Distribuidora cadastrada com sucesso!" });
+    return res.status(201).json({ message: "Distribuidora cadastrada com sucesso!" });
   } catch (error) {
     console.error(error);
     // Resposta de erro interno
     return res.status(500).json({ message: "Erro ao cadastrar distribuidora." });
   }
-  
+
 }
 
 async function CadastrarDesenvolvedora(req, res) {
