@@ -1,4 +1,5 @@
 .footer-placeholder{
+    color: aliceblue;
     margin-top: auto;
 }
 .footer {
@@ -8,7 +9,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
 }
 
 .footer-nav {
@@ -50,4 +50,16 @@
     display: flex;
     flex-direction: column;
     gap: 1vh;
+}
+
+.admin-link {
+    position: absolute;
+    right: 1vw;
+    color: red;
+    padding: 1vw;
+    border-radius: 1vw;
+}
+
+.admin-link:hover {
+    background-color: #00000024;
 }

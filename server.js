@@ -42,9 +42,15 @@ app.post("/login", async (req, res) => Login(req, res));
 app.post("/registro", async (req, res) => Registro(req, res));
 app.post("/avaliacao", async (req, res) => Avaliacao(req, res));
 app.post("/admin/cadastrosJogo", async (req, res) => CadastroJogo(req, res));
-app.post("/admin/cadastroGenero", async (req, res) => CadastrarGenero(req, res));
-app.post("/admin/cadastroDistribuidora", async (req, res) => CadastrarDistribuidora(req, res));
-app.post("/admin/cadastroDesenvolvedora", async (req, res) => CadastrarDesenvolvedora(req, res));
+app.post("/admin/cadastroGenero", async (req, res) =>
+  CadastrarGenero(req, res)
+);
+app.post("/admin/cadastroDistribuidora", async (req, res) =>
+  CadastrarDistribuidora(req, res)
+);
+app.post("/admin/cadastroDesenvolvedora", async (req, res) =>
+  CadastrarDesenvolvedora(req, res)
+);
 
 function BuscarInfoJogos(req, res) {
   const gameId = req.params.gameId;
@@ -204,9 +210,13 @@ async function Login(req, res) {
 
       // Comparar a senha informada com a senha armazenada do banco
       if (senha === user.ds_senha) {
-        const token = jwt.sign({ id: user.id_usuario }, chaveSecreta, {
-          expiresIn: "30d",
-        });
+        const token = jwt.sign(
+          { id: user.id_usuario, idPermissao: user.id_permissao },
+          chaveSecreta,
+          {
+            expiresIn: "30d",
+          }
+        );
         return res.json({
           sucesso: true,
           mensagem: "Login bem-sucedido!",
@@ -267,8 +277,8 @@ async function Registro(req, res) {
   } catch (error) {
     console.error("Erro ao registrar usuário:", error);
     res
-    .status(500)
-    .json({ sucesso: false, mensagem: "Erro no servidor!" + error });
+      .status(500)
+      .json({ sucesso: false, mensagem: "Erro no servidor!" + error });
   }
 }
 
@@ -374,49 +384,37 @@ async function CadastroJogo(req, res) {
       dsImagem,
       dsSinopse,
       stStatus,
-      idGenero,
-      idModo,
-      idDistribuidora,
-      idDesenvolvedora,
-      idPlataforma,
-    } = req.body; // Pega todas informações que puder do front
+    } = req.body;
 
     await VerificarJogo(nmJogo);
 
-
     // Busca os IDs com base no nome fornecido no frontend
-    idDesenvolvedora = await BuscarIdPorNome(
+    const idDesenvolvedora = await BuscarIdPorNome(
       nmDesenvolvedora,
       "t_desenvolvedora",
       "id_desenvolvedora",
       "nm_desenvolvedora"
     );
-    idDistribuidora = await BuscarIdPorNome(
+    const idDistribuidora = await BuscarIdPorNome(
       nmDistribuidora,
       "t_distribuidora",
       "id_distribuidora",
       "nm_distribuidora"
     );
-    idPlataforma = await BuscarIdPorNome(
+    const idPlataforma = await BuscarIdPorNome(
       nmPlataforma,
       "t_plataforma",
       "id_plataforma",
       "nm_plataforma"
     );
-    idModo = await BuscarIdPorNome(
-      nmModo,
-      "t_modo",
-      "id_modo",
-      "nm_modo"
-    );
-    idGenero = await BuscarIdPorNome(
+    const idModo = await BuscarIdPorNome(nmModo, "t_modo", "id_modo", "nm_modo");
+    const idGenero = await BuscarIdPorNome(
       nmGenero,
       "t_genero",
       "id_genero",
       "nm_genero"
     );
 
-    // Cadastro de jogo
     const idJogo = await CadastrarJogo({
       nmJogo,
       dsSinopse,
@@ -427,11 +425,13 @@ async function CadastroJogo(req, res) {
       idPlataforma,
     });
 
-    // Cadastro de gênero e modo
-    const generoCadastrado = idGenero ? await CadastrarGeneroJogo(idJogo, idGenero) : false;
-    const modoCadastrado = idModo ? await CadastrarModoJogo(idJogo, idModo) : false;
+    const generoCadastrado = idGenero
+      ? await CadastrarGeneroJogo(idJogo, idGenero)
+      : false;
+    const modoCadastrado = idModo
+      ? await CadastrarModoJogo(idJogo, idModo)
+      : false;
 
-    // Validação pós-cadastro: excluir jogo sem gênero e modo
     if (!generoCadastrado && !modoCadastrado) {
       await ExcluirJogo(idJogo);
       return res.status(400).json({
@@ -451,8 +451,10 @@ async function CadastroJogo(req, res) {
         DELETE FROM t_jogo
         WHERE id_jogo = ?;
       `;
-      await connection.execute(queryExcluirJogo, [idJogo]);
-      console.log(`Jogo com ID ${idJogo} excluído por falta de gênero ou modo.`);
+      await connection.promise().execute(queryExcluirJogo, [idJogo]);
+      console.log(
+        `Jogo com ID ${idJogo} excluído por falta de gênero ou modo.`
+      );
     } catch (error) {
       console.error("Erro ao excluir jogo:", error);
     }
@@ -471,20 +473,23 @@ async function CadastroJogo(req, res) {
         WHERE nm_jogo = ?;
       `;
 
-      const [result] = await connection.query(queryJogoExistente, [nmJogo]);
+      const [result] = await connection
+        .promise()
+        .query(queryJogoExistente, [nmJogo]);
 
       if (result.length > 0) {
         // Retorna uma mensagem se o jogo já existir
-        return res.status(200).json({ message: "Jogo já cadastrado.", nmJogo: result[0] });
+        return res
+          .status(200)
+          .json({ message: "Jogo já cadastrado.", nmJogo: result[0] });
       }
-
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Erro ao verificar jogo." });
     }
   }
 
-  async function CadastrarJogo() {
+  async function CadastrarJogo({nmJogo, dsSinopse,stStatus,dsImagem,idDistribuidora,idDesenvolvedora,idPlataforma,}) {
     const queryJogo = `
         INSERT INTO t_jogo (
           nm_jogo,
@@ -499,22 +504,19 @@ async function CadastroJogo(req, res) {
       `;
 
     const params = [
-      jogo.nmJogo,
-      jogo.dsSinopse,
-      jogo.stStatus,
-      jogo.dsImagem,
-      jogo.idDistribuidora,
-      jogo.idDesenvolvedora,
-      jogo.idPlataforma,
+      nmJogo,
+      dsSinopse,
+      stStatus,
+      dsImagem,
+      idDistribuidora,
+      idDesenvolvedora,
+      idPlataforma,
     ];
 
     // Executa a query
-    const [result] = await connection.execute(queryJogo, params);
+    const [result] = await connection.promise().execute(queryJogo, params);
     return result.insertId; // Retorna o ID do jogo inserido
   }
-
-  const generoCadastrado = idGenero ? await CadastrarGeneroJogo(idJogo, idGenero) : false;
-  const modoCadastrado = idModo ? await CadastrarModoJogo(idJogo, idModo) : false;
 
   async function CadastrarGeneroJogo(idJogo, idGenero) {
     try {
@@ -522,7 +524,7 @@ async function CadastroJogo(req, res) {
         INSERT INTO t_genero_do_jogo (id_jogo, id_genero)
         VALUES (?, ?);
       `;
-      await connection.execute(queryGeneroJogo, [idJogo, idGenero]);
+      await connection.promise().execute(queryGeneroJogo, [idJogo, idGenero]);
       return true; // Retorna sucesso
     } catch (error) {
       console.error("Erro ao associar gênero:", error);
@@ -536,7 +538,7 @@ async function CadastroJogo(req, res) {
         INSERT INTO t_modo_de_jogo (id_jogo, id_modo)
         VALUES (?, ?);
       `;
-      await connection.execute(queryModoJogo, [idJogo, idModo]);
+      await connection.promise().execute(queryModoJogo, [idJogo, idModo]);
       return true; // Retorna sucesso
     } catch (error) {
       console.error("Erro ao associar modo:", error);
@@ -550,29 +552,74 @@ async function CadastroJogo(req, res) {
         FROM ${tabela}
         WHERE ${campoNome} = ?;
       `;
-    const [rows] = await connection.execute(query, [nome]);
+    const [rows] = await connection.promise().execute(query, [nome]);
     return rows[0]?.[campoId] || null;
   }
 }
+
+app.get("/adm/modos-de-jogo", (req, res) => {
+  const queryModo = `SELECT nm_modo FROM t_modo;`;
+
+  connection.query(queryModo, (err, results) => {
+    if (err) {
+      console.error("Erro na consulta ao banco de dados:", err);
+      return res
+        .status(500)
+        .json({ message: "Erro ao buscar modos de jogo", error: err });
+    }
+
+    if (results.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Nenhum modo de jogo encontrado" });
+    }
+
+    // Retorna os modos de jogo em um formato adequado para o frontend
+    return res.json({ modos: results.map((item) => item.nm_modo) });
+  });
+});
+
+app.get("/adm/plataformas", (req, res) => {
+  const queryPlataforma = `SELECT nm_plataforma FROM t_plataforma;`;
+
+  connection.query(queryPlataforma, (err, results) => {
+    if (err) {
+      console.error("Erro na consulta ao banco de dados:", err);
+      return res
+        .status(500)
+        .json({ message: "Erro ao buscar plataformas", error: err });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: "Nenhuma plataforma encontrada" });
+    }
+
+    // Retorna as plataformas em um formato adequado para o frontend
+    return res.json({ plataformas: results.map((item) => item.nm_plataforma) });
+  });
+});
 
 async function CadastrarGenero(req, res) {
   try {
     const { nmGenero } = req.body;
 
     if (!nmGenero) {
-      return res.status(400).json({ message: "Nome da desenvolvedora é obrigatório." });
+      return res
+        .status(400)
+        .json({ message: "Nome da desenvolvedora é obrigatório." });
     }
 
     const queryGenero = `INSERT INTO t_genero (nm_genero) VALUES (?);`;
     await connection.execute(queryGenero, [nmGenero]);
 
-    return res.status(201).json({ message: "Genero cadastradado com sucesso!" });
+    return res
+      .status(201)
+      .json({ message: "Genero cadastradado com sucesso!" });
   } catch (error) {
     console.error(error);
     // Resposta de erro interno
     return res.status(500).json({ message: "Erro ao cadastrar genero." });
   }
-
 }
 
 async function CadastrarDistribuidora(req, res) {
@@ -580,19 +627,24 @@ async function CadastrarDistribuidora(req, res) {
     const { nmDistribuidora } = req.body;
 
     if (!nmDistribuidora) {
-      return res.status(400).json({ message: "Nome da distribuidora é obrigatório." });
+      return res
+        .status(400)
+        .json({ message: "Nome da distribuidora é obrigatório." });
     }
 
     const queryDistribuidora = `INSERT INTO t_distribuidora (nm_distribuidora) VALUES (?);`;
     await connection.execute(queryDistribuidora, [nmDistribuidora]);
 
-    return res.status(201).json({ message: "Distribuidora cadastrada com sucesso!" });
+    return res
+      .status(201)
+      .json({ message: "Distribuidora cadastrada com sucesso!" });
   } catch (error) {
     console.error(error);
     // Resposta de erro interno
-    return res.status(500).json({ message: "Erro ao cadastrar distribuidora." });
+    return res
+      .status(500)
+      .json({ message: "Erro ao cadastrar distribuidora." });
   }
-
 }
 
 async function CadastrarDesenvolvedora(req, res) {
@@ -602,7 +654,9 @@ async function CadastrarDesenvolvedora(req, res) {
 
     // Validação: verificar se o nome da desenvolvedora foi enviado
     if (!nmDesenvolvedora) {
-      return res.status(400).json({ message: "Nome da desenvolvedora é obrigatório." });
+      return res
+        .status(400)
+        .json({ message: "Nome da desenvolvedora é obrigatório." });
     }
 
     // Query para inserir no banco de dados
@@ -610,11 +664,15 @@ async function CadastrarDesenvolvedora(req, res) {
     await connection.execute(queryDesenvolvedora, [nmDesenvolvedora]);
 
     // Resposta de sucesso
-    return res.status(201).json({ message: "Desenvolvedora cadastrada com sucesso!" });
+    return res
+      .status(201)
+      .json({ message: "Desenvolvedora cadastrada com sucesso!" });
   } catch (error) {
     console.error(error);
     // Resposta de erro interno
-    return res.status(500).json({ message: "Erro ao cadastrar desenvolvedora." });
+    return res
+      .status(500)
+      .json({ message: "Erro ao cadastrar desenvolvedora." });
   }
 }
 
