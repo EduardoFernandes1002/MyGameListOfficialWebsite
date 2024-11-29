@@ -47,10 +47,11 @@ document
       nmDesenvolvedora: formData.get("desenvolvedora"),
       nmDistribuidora: formData.get("distribuidora"),
       nmModo: formData.get("modoJogo"),
-      nmGenero: formData.get("genero")
-    .split(",")
-    .map((g) => g.trim()) // Converte para um array, removendo espaços extras
-    .filter((g) => g) // Remove entradas vazias
+      nmGenero: formData
+        .get("genero")
+        .split(",")
+        .map((g) => g.trim()) // Converte para um array, removendo espaços extras
+        .filter((g) => g), // Remove entradas vazias
     };
 
     try {
@@ -75,13 +76,19 @@ document
     }
   });
 
-
-  document
+document
   .getElementById("CadastrarGenero")
   .addEventListener("submit", async function (event) {
     event.preventDefault(); // Evita o comportamento padrão de submissão
 
-    const nmGenero = document.getElementById("Genero").value; // Valor do input
+    const generoInput = document.getElementById("Genero"); // Campo de input
+    const nmGenero = generoInput.value.trim(); // Valor do input (removendo espaços)
+
+    // Verifica se o campo está vazio
+    if (!nmGenero) {
+      alert("É necessário digitar um gênero");
+      return; // Sai da função e não envia a requisição
+    }
 
     try {
       // Envia a requisição POST ao backend
@@ -110,6 +117,43 @@ document
     }
   });
 
+  // Cadastro de Distribuidoras
+document
+.getElementById("CadastrarDistribuidora")
+.addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  const distribuidoraInput = document.getElementById("Distribuidora");
+  const nmDistribuidora = distribuidoraInput.value.trim();
+
+  if (!nmDistribuidora) {
+    alert("É necessário digitar uma distribuidora");
+    return;
+  }
+
+  try {
+    const response = await fetch("/admin/cadastroDistribuidora", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ nmDistribuidora }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      document.getElementById("mensagem").textContent = data.message;
+      distribuidoraInput.value = "";
+    } else {
+      document.getElementById("mensagem").textContent = data.message;
+    }
+  } catch (error) {
+    console.error("Erro ao enviar requisição:", error);
+    document.getElementById("mensagem").textContent =
+      "Erro ao cadastrar distribuidora.";
+  }
+});
 
 async function buscarPlataformas() {
   try {

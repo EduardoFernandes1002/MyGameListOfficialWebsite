@@ -41,6 +41,7 @@ app.get("/adm/plataformas", (req, res) => BuscarPlataformas(req, res));
 app.post("/login", async (req, res) => Login(req, res));
 app.post("/registro", async (req, res) => Registro(req, res));
 app.post("/avaliacao", async (req, res) => Avaliacao(req, res));
+app.post("/add/lista", async (req, res) => AdicionarNaLista(req, res));
 app.post("/admin/cadastrosJogo", async (req, res) => CadastroJogo(req, res));
 app.post("/admin/cadastroGenero", async (req, res) =>CadastrarGenero(req, res));
 app.post("/admin/cadastroDistribuidora", async (req, res) => CadastrarDistribuidora(req, res));
@@ -364,6 +365,10 @@ async function Avaliacao(req, res) {
         "Erro ao salvar ou atualizar a avaliação. Tente novamente mais tarde.",
     });
   }
+}
+
+async function AdicionarNaLista{
+  
 }
 
 async function CadastroJogo(req, res) {
