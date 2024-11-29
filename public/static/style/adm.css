@@ -17,80 +17,6 @@ main {
   flex: 1;
 }
 
-/* Contêiner principal */
-.controle {
-  margin: 2vh auto;
-  width: 90vw;
-}
-
-/* Botoes de navegação */
-.botoesTroca {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.botoesTroca button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #112f12;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-}
-
-.botoesTroca button:hover {
-  background-color: #4560a0;
-}
-
-/* Estilo dos formulários */
-.cadastros {
-  display: none;
-}
-
-.cadastros label {
-  display: block;
-  margin: 10px 0 5px;
-  font-weight: bold;
-}
-
-.cadastros input,
-.cadastros textarea,
-.cadastros select {
-    width: 50%;
-    display: flex;
-    align-items: center;
-    gap: 0;
-    border-radius: 18vh;
-    background-color: #191b27;
-    border: none;
-    padding: 1vh;
-}
-
-.cadastros button {
-  padding: 12px 20px;
-  font-size: 16px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.cadastros button:hover {
-  background-color: #22285b;
-}
-
-/* Imagem de pré-visualização */
-.cadastros img {
-  max-width: 100%;
-  height: auto;
-  margin-top: 10px;
-}
-
 /* Exibir quando ativo */
 .cadastros:not(.hidden) {
   display: block;
@@ -99,10 +25,4 @@ main {
 /* Ocultar elementos */
 .hidden {
   display: none;
-}
-
-.GerenciamentoColunas {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
 }

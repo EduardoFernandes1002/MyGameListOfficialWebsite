@@ -31,26 +31,20 @@ app.get("/adm_redirect", verificarToken, (req, res) => {
 
 // Rota para retornar as informações
 app.get("/jogo/:gameId", (req, res) => BuscarInfoJogos(req, res));
-app.get("/lista/:idLista", verificarToken, (req, res) =>
-  BuscarJogosLista(req, res)
-);
+app.get("/lista/:idLista", verificarToken, (req, res) =>BuscarJogosLista(req, res));
 app.get("/jogos", (req, res) => BuscarJogos(req, res));
 app.get("/jogos/rank", (req, res) => BuscarJogosRankeados(req, res));
+app.get("/adm/modos", (req, res) => BuscarPlataformas(req, res));
+app.get("/adm/plataformas", (req, res) => BuscarModos(req, res));
 
 //Rotas Registro, Login, Avaliação e AdicionarNaLista
 app.post("/login", async (req, res) => Login(req, res));
 app.post("/registro", async (req, res) => Registro(req, res));
 app.post("/avaliacao", async (req, res) => Avaliacao(req, res));
 app.post("/admin/cadastrosJogo", async (req, res) => CadastroJogo(req, res));
-app.post("/admin/cadastroGenero", async (req, res) =>
-  CadastrarGenero(req, res)
-);
-app.post("/admin/cadastroDistribuidora", async (req, res) =>
-  CadastrarDistribuidora(req, res)
-);
-app.post("/admin/cadastroDesenvolvedora", async (req, res) =>
-  CadastrarDesenvolvedora(req, res)
-);
+app.post("/admin/cadastroGenero", async (req, res) =>CadastrarGenero(req, res));
+app.post("/admin/cadastroDistribuidora", async (req, res) => CadastrarDistribuidora(req, res));
+app.post("/admin/cadastroDesenvolvedora", async (req, res) => CadastrarDesenvolvedora(req, res));
 
 function BuscarInfoJogos(req, res) {
   const gameId = req.params.gameId;
@@ -557,7 +551,7 @@ async function CadastroJogo(req, res) {
   }
 }
 
-app.get("/adm/modos-de-jogo", (req, res) => {
+function BuscarModos(req, res) {
   const queryModo = `SELECT nm_modo FROM t_modo;`;
 
   connection.query(queryModo, (err, results) => {
@@ -577,9 +571,9 @@ app.get("/adm/modos-de-jogo", (req, res) => {
     // Retorna os modos de jogo em um formato adequado para o frontend
     return res.json({ modos: results.map((item) => item.nm_modo) });
   });
-});
+}
 
-app.get("/adm/plataformas", (req, res) => {
+function BuscarPlataformas(req, res) {
   const queryPlataforma = `SELECT nm_plataforma FROM t_plataforma;`;
 
   connection.query(queryPlataforma, (err, results) => {
@@ -597,7 +591,7 @@ app.get("/adm/plataformas", (req, res) => {
     // Retorna as plataformas em um formato adequado para o frontend
     return res.json({ plataformas: results.map((item) => item.nm_plataforma) });
   });
-});
+}
 
 async function CadastrarGenero(req, res) {
   try {
@@ -633,7 +627,7 @@ async function CadastrarDistribuidora(req, res) {
     }
 
     const queryDistribuidora = `INSERT INTO t_distribuidora (nm_distribuidora) VALUES (?);`;
-    await connection.execute(queryDistribuidora, [nmDistribuidora]);
+    await connection.promise().execute(queryDistribuidora, [nmDistribuidora]);
 
     return res
       .status(201)
@@ -661,7 +655,7 @@ async function CadastrarDesenvolvedora(req, res) {
 
     // Query para inserir no banco de dados
     const queryDesenvolvedora = `INSERT INTO t_desenvolvedora (nm_desenvolvedora) VALUES (?);`;
-    await connection.execute(queryDesenvolvedora, [nmDesenvolvedora]);
+    await connection.promise().execute(queryDesenvolvedora, [nmDesenvolvedora]);
 
     // Resposta de sucesso
     return res
