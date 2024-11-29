@@ -7,8 +7,24 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.log("ID do usuário:", idUsuario);
     }
 
-
     const gameId = window.location.pathname.split('/').pop(); // A variável gameId agora é global
+
+    const selectElement = document.getElementById('listasSelect');
+
+    // Pega os nomes das listas e preenche o select
+    try {
+        const listas = await pegarNomesListas();
+        if (listas && Array.isArray(listas)) {
+            for (let i = 2; i <= 6; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = listas.find(lista => lista.id_lista === i)?.nm_lista || `Lista ${i}`;
+                selectElement.appendChild(option);
+            }
+        }
+    } catch (error) {
+        console.error('Erro ao preencher o select:', error);
+    }
 
     if (!gameId) {
         console.error('Erro: gameId não encontrado na URL');
@@ -82,6 +98,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             btnCategorias.classList.add("active");
         }
     }
+
     // Event listeners para os botões de tabs
     btnSinopse.addEventListener("click", () => showTab('sinopse'));
     btnAvaliacoes.addEventListener("click", () => showTab('avaliacoes'));
@@ -111,7 +128,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         notaDinamica.textContent = notaSlider.value;
     });
 
-    // Salvar nota
+    // Salvar nota e adicionar jogo à lista
     salvarNota.addEventListener("click", async function () {
         // Atualiza a nota pessoal exibida
         notaP.textContent = notaSlider.value;
@@ -124,9 +141,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             return; // Se gameId estiver ausente, não continua
         }
 
+        // Envia a avaliação para o backend
         console.log(`Enviando avaliação para o jogo ${gameId} com nota ${notaSlider.value} e data ${dataH}`);
-
-        // Realiza a requisição para salvar a nota
         try {
             const response = await fetch('/avaliacao', {
                 method: 'POST',
@@ -143,6 +159,24 @@ document.addEventListener("DOMContentLoaded", async function () {
             console.error("Erro ao registrar:", error);
         }
 
+        // Adiciona o jogo à lista
+        const idLista = selectElement.value;
+        try {
+            const response = await fetch('/add/lista', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ idLista, idUsuario, idJogo: gameId }),
+            });
+            const result = await response.json();
+            console.log('Resultado da requisição de adicionar item:', result);
+        } catch (error) {
+            alert("Erro no servidor. Tente novamente mais tarde.");
+            console.error("Erro ao adicionar item:", error);
+        }
+
         // Fecha o modal após salvar
         notaModal.style.display = "none";
         notaModal.classList.add("hidden");
@@ -153,3 +187,16 @@ document.addEventListener("DOMContentLoaded", async function () {
         notaModal.style.display = "none";
     });
 });
+
+async function pegarNomesListas() {
+    try {
+        const response = await fetch('/nomeListas');
+        if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Erro ao pegar nomes das listas:', error);
+    }
+}

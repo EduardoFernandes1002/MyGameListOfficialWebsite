@@ -367,9 +367,61 @@ async function Avaliacao(req, res) {
   }
 }
 
-async function AdicionarNaLista(req, res){
+async function AdicionarNaLista(req, res) {
+  const { idLista, idUsuario, idJogo } = req.body;
 
+  // Logs para debug
+  console.log(`Recebido: idLista=${idLista}, idUsuario=${idUsuario}, idJogo=${idJogo}`);
+
+  if (!idLista || !idUsuario || !idJogo) {
+    return res
+      .status(400)
+      .json({ error: "Parâmetros faltando: idLista, idUsuario e idJogo." });
+  }
+
+  try {
+    // Adiciona item à lista do usuário
+    const queryInsertListaUsuario = `
+      INSERT INTO t_lista_usuario (
+        id_lista,
+        id_usuario
+      ) VALUES (?, ?)
+      ON DUPLICATE KEY UPDATE id_lista=id_lista;
+    `;
+    await connection.promise().query(queryInsertListaUsuario, [idLista, idUsuario]);
+    console.log(`Lista ${idLista} associada ao usuário ${idUsuario}`);
+
+    // Adiciona o jogo à lista
+    const queryInsertJogoAdicionado = `
+      INSERT INTO t_jogo_adicionado (
+        id_jogo,
+        id_lista
+      ) VALUES (?, ?)
+      ON DUPLICATE KEY UPDATE id_jogo=id_jogo;
+    `;
+    await connection.promise().query(queryInsertJogoAdicionado, [idJogo, idLista]);
+    console.log(`Jogo ${idJogo} adicionado à lista ${idLista}`);
+
+    return res.status(200).json({
+      message: "Jogo adicionado à lista com sucesso!",
+    });
+  } catch (error) {
+    console.error("Erro ao adicionar jogo à lista:", error);
+    return res.status(500).json({
+      error: "Erro ao adicionar jogo à lista. Tente novamente mais tarde.",
+    });
+  }
 }
+
+app.get('/nomeListas', (req, res) => {
+  const query = 'SELECT id_lista, nm_lista FROM t_lista';
+  connection.promise().query(query)
+      .then(([rows]) => res.status(200).json(rows))
+      .catch(error => {
+          console.error('Erro ao buscar nomes das listas:', error);
+          res.status(500).json({ error: 'Erro ao buscar nomes das listas.' });
+      });
+});
 
 async function CadastroJogo(req, res) {
   try {
