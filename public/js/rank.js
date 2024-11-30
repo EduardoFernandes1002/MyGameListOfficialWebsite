@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const data = await response.json();
 
     if (data.sucesso) {
-      jogos = data.jogosGerais;
+      jogos = data.jogos;
       carregarJogos(jogos, paginaAtual); // Carregar os jogos da página 1
     } else {
       console.log('Nenhum jogo encontrado.');
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const inicio = (pagina - 1) * 10; // Ajuste para iniciar da página 1
     const fim = inicio + 10;
-    const jogosPagina = listaDeJogos.slice(inicio, fim); // Pega os 10 jogos da página atual
+    const jogosPagina = listaDeJogos.slice(inicio, fim);
 
     // Renderiza os jogos da página
     jogosPagina.forEach((jogo, index) => {
@@ -69,6 +69,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     } else {
       removerBotaoProximo();
     }
+
+    if (pagina > 1) {
+      mostrarBotaoAnterior();
+    } else {
+      removerBotaoAnterior();
+    }
   }
 
   function mostrarBotaoProximo() {
@@ -81,7 +87,21 @@ document.addEventListener("DOMContentLoaded", async function () {
         paginaAtual++;
         carregarJogos(jogos, paginaAtual); // Carrega a próxima página
       });
-      document.getElementById('rank').appendChild(botaoProximo);
+      document.getElementById('main').appendChild(botaoProximo);
+    }
+  }
+
+  function mostrarBotaoAnterior() {
+    let botaoAnterior = document.getElementById('botao-anterior');
+    if (!botaoAnterior) {
+      botaoAnterior = document.createElement('button');
+      botaoAnterior.id = 'botao-anterior';
+      botaoAnterior.textContent = 'Voltar Página';
+      botaoAnterior.addEventListener('click', () => {
+        paginaAtual--;
+        carregarJogos(jogos, paginaAtual); // Carrega a próxima página
+      });
+      document.getElementById('main').appendChild(botaoAnterior);
     }
   }
 
@@ -89,6 +109,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     const botaoProximo = document.getElementById('botao-proximo');
     if (botaoProximo) {
       botaoProximo.remove();
+    }
+  }
+
+  function removerBotaoAnterior() {
+    const botaoAnterior = document.getElementById('botao-anterior');
+    if (botaoAnterior) {
+      botaoAnterior.remove();
     }
   }
 });

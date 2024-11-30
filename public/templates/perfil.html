@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -7,21 +7,17 @@
     <link rel="stylesheet" href="../static/style/header.css">
     <link rel="stylesheet" href="/static/style/paginaPerfil.css" />
     <link rel="stylesheet" href="../static/style/footer.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
-
     <title>Perfil</title>
   </head>
   <body>
     <header id="header-placeholder"></header>
-
     <main id="Pagina">
-      <div class="butone" >
+      <div class="butone">
         <a id="Opcao" title="Editar Perfil">
           <i class="fa-solid fa-user-pen"></i>
         </a>
       </div>
-
       <div class="idImagem">
         <img
           id="imagemUsuario"
@@ -29,39 +25,29 @@
           alt=""
         />
       </div>
-
       <div class="textoImage">
         <h3 id="NomeUsuario">Olá, Thiago</h3>
       </div>
-      <div class="SobrePerfil">
-
-      </div>
+      <div class="SobrePerfil"></div>
       <div class="Barra">
         <form id="botoes">
-      <div class="Listas">
-        <div class="btnListas">
-          <button id="btnTudo">Tudo</button>
-          <button id="btnDesejo">Desejo</button>
-          <button id="btnJogando">Jogando</button>
-          <button id="btnCompleto">Completo</button>
-          <button id="btnPausado">Pausado</button>
-          <button id="btnAbandonado">Abandonado</button>
-        </div>
-          <button id="btnReview">Review</button>
+          <div class="Listas">
+            <div class="btnListas">
+              <button value="1">Tudo</button>
+              <button value="2">Desejo</button>
+              <button value="3">Jogando</button>
+              <button value="4">Completo</button>
+              <button value="5">Pausado</button>
+              <button value="6">Abandonado</button>
+            </div>
+            <button id="btnReview">Review</button>
+          </div>
+        </form>
       </div>
-    </form>
-    </div>
-
-    
-    <ul class ="Lista">
-    </ul>
+      <ul class="Lista"></ul>
     </main>
     <footer id="footer-placeholder"></footer>
-
-
     <script src="../js/perfil.js"></script>
     <script src="../js/header_footer.js"></script>
-
   </body>
 </html>
-

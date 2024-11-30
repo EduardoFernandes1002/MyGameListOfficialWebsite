@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/style/header.css" />
+    <link rel="stylesheet" href="../static/style/adm.css" />
+    <link rel="stylesheet" href="../static/style/footer.css" />
+    <title>CADASTRO ADM</title>
+  </head>
+
+  <body>
+    <header id="header-placeholder"></header>
+
+    <main>
+      <div class="controle">
+        <div class="botoesTroca">
+          <button id="btnAddJogo">Cadastrar Jogo</button>
+          <button id="btnAddGenero">Cadastrar Gênero</button>
+          <button id="btnAddDesenvolvedora">Cadastrar Desenvolvedora</button>
+          <button id="btnAddDistribuidora">Cadastrar Distribuidora</button>
+        </div>
+
+        <!-- Formulário de Cadastro de Jogo -->
+        <div id="cadastroJogo" class="cadastros">
+          <form id="CadastrarJogo">
+            <label for="nomeJogo">Jogo</label>
+            <input
+              name="nomeJogo"
+              type="text"
+              placeholder="Nome do Jogo"
+              id="nomeJogo"
+            />
+
+            <label for="sinopse">Sinopse</label>
+            <textarea
+              name="sinopse"
+              placeholder="Sinopse do Jogo"
+              id="sinopse"
+            ></textarea>
+
+            <label for="linkImagem">Imagem</label>
+            <input
+              name="linkImagem"
+              type="text"
+              placeholder="URL da imagem"
+              id="linkImagem"
+            />
+
+            <label for="statusJogo">Status</label>
+            <select name="statusJogo" id="statusJogo">
+              <option value="Lançado">Lançado</option>
+              <option value="Jogo como Serviço">Jogo como Serviço</option>
+              <option value="Acesso Antecipado">Acesso Antecipado</option>
+              <option value="Anunciado">Anunciado</option>
+              <option value="Beta">Beta</option>
+              <option value="Alpha">Alpha</option>
+              <option value="Outro">Outro (Antes que Alpha)</option>
+            </select>
+
+            <label for="plataforma">Plataforma</label>
+            <select name="plataforma" id="plataforma"></select>
+
+            <label for="desenvolvedora">Desenvolvedora</label>
+            <input placeholder="Nome da Desenvolvedora" name="desenvolvedora" id="desenvolvedora">
+
+            <label for="distribuidora">Distribuidora</label>
+            <input placeholder="Nome da Distribuidora" name="distribuidora" id="distribuidora"></input>
+
+            <label for="modoJogo">Modo de Jogo</label>
+            <select name="modoJogo" id="modoJogo">
+
+            </select>
+
+            <label for="genero">Gênero do Jogo</label>
+            <input placeholder="Genero"name="genero" id="genero" value=""></input>
+
+            <button type="submit">Cadastrar</button>
+          </form>
+        </div>
+
+        <!-- Formulário de Cadastro de Gênero -->
+        <div id="cadastroGenero" class="cadastros hidden">
+          <form id="CadastrarGenero">
+            <label for="Genero">Gênero do Jogo</label>
+            <input type="text" name="Genero" id="Genero" placeholder="Gênero" />
+            <button type="submit">Cadastrar</button>
+          </form>
+        </div>
+
+        <!-- Formulário de Cadastro de Desenvolvedora -->
+        <div id="cadastroDev" class="cadastros hidden">
+          <form id="CadastrarDesenvolvedora">
+            <label for="Desenvolvedora">Desenvolvedora do Jogo</label>
+            <input
+              type="text"
+              name="Desenvolvedora"
+              id="Desenvolvedora"
+              placeholder="Desenvolvedora"
+            />
+            <button type="submit">Cadastrar</button>
+          </form>
+        </div>
+
+        <!-- Formulário de Cadastro de Distribuidora -->
+        <div id="cadastroDistri" class="cadastros hidden">
+          <form id="CadastrarDistribuidora">
+            <label for="Distribuidora">Distribuidora do Jogo</label>
+            <input
+              type="text"
+              name="Distribuidora"
+              id="Distribuidora"
+              placeholder="Nome Distribuidora"
+            />
+            <button type="submit">Cadastrar</button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer-placeholder"></footer>
+
+    <script src="../js/search.js"></script>
+    <script src="../js/adm.js"></script>
+    <script src="../js/header_footer.js"></script>

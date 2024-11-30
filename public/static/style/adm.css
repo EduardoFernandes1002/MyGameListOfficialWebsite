@@ -1,0 +1,157 @@
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #3c4157;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+main {
+  box-sizing: border-box;
+  flex: 1;
+}
+
+/* Exibir quando ativo */
+.cadastros:not(.hidden) {
+  display: block;
+}
+
+/* Ocultar elementos */
+.hidden {
+  display: none;
+}
+
+.botoesTroca button{
+  padding: 1vh 1vw;
+  cursor: pointer;
+  background-color: #272c44;
+  color: rgb(255, 255, 255);
+  border: none;
+  width: 15vw;
+  height: 5vh;
+  border-radius: 1vh 1vh 0 0;
+}
+.botoesTroca button:hover {
+  background-color: #202438;
+  transition: 0.2s ease-in; /* Efeito hover para os botões */
+}
+.controle{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#CadastrarJogo{
+  display: flex;
+  flex-direction: column;
+
+}
+
+#CadastrarJogo input{
+  border: none;
+  background-color: #7a839c;
+  border-radius: 1vw;
+  height: 4vh;
+  margin: 1vh 0;
+  padding: 0 1vh;
+  color: #ffffff;
+  font-size: 1vw;
+}
+input::placeholder {
+  color: #ffffff;
+}
+
+#CadastrarJogo select{
+  border: none;
+  background-color: #7a839c;
+  border-radius: 1vw;
+  height: 4vh;
+  margin: 1vh 0;
+  padding: 0 1vh;
+  color: #ffffff;
+  font-size: 1vw;
+}
+option{
+ border-radius: 2vh;
+}
+textarea {
+  resize: none; /* Impede o redimensionamento */
+  width: 30vh;
+  height: 5vh;
+  border: none;
+  background-color: #7a839c;
+  border-radius: 1vw;
+  margin: 1vh 0;
+  padding: 0 1vh;
+  color: #ffffff;
+  font-size: 1vw;
+}
+textarea::placeholder{
+  color: white;
+}
+button{
+  border: none;
+  background-color: #65749c;
+  border-radius: 1vw;
+  height: 4vh;
+  margin: 1vh 0;
+  padding: 0 1vh;
+  color: #ffffff;
+  font-size: 1vw;
+}
+button:hover{
+  background-color: #65749c94;
+}
+label{
+  color: #cae5c7;
+}
+
+#CadastrarGenero input{
+  border: none;
+  background-color: #7a839c;
+  border-radius: 1vw;
+  height: 4vh;
+  margin: 1vh 0;
+  padding: 0 1vh;
+  color: #ffffff;
+  font-size: 1vw;
+}
+#CadastrarDesenvolvedora input{
+  border: none;
+  background-color: #7a839c;
+  border-radius: 1vw;
+  height: 4vh;
+  margin: 1vh 0;
+  padding: 0 1vh;
+  color: #ffffff;
+  font-size: 1vw;
+}
+#CadastrarDistribuidora input{
+  border: none;
+  background-color: #7a839c;
+  border-radius: 1vw;
+  height: 4vh;
+  margin: 1vh 0;
+  padding: 0 1vh;
+  color: #ffffff;
+  font-size: 1vw;
+}
+#CadastrarGenero{
+  display: flex;
+  flex-direction: column;
+}
+#CadastrarDesenvolvedora{
+  display: flex;
+  flex-direction: column;
+}
+
+#CadastrarDistribuidora{
+  display: flex;
+  flex-direction: column;
+}

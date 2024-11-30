@@ -1,4 +1,5 @@
 .footer-placeholder{
+    color: aliceblue;
     margin-top: auto;
 }
 .footer {
@@ -8,7 +9,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
 }
 
 .footer-nav {
@@ -20,6 +20,7 @@
 }
 
 .footer-nav ul {
+    color: aliceblue;
     display: flex;
     list-style: none;
     margin: 0;
@@ -30,15 +31,35 @@
 .footer-nav li {
     font-size: 2vh;
     font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
 }
 
 .footer-nav a {
-    color: aliceblue;
     text-decoration: none;
-    padding: 0.5vh 1vw;
+    margin-left: 1vw;
+    padding: 1vh;
 }
 
 .footer-nav a:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.226);
     border-radius: 1vh;
+}
+
+.GithubL {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+.admin-link {
+    position: absolute;
+    right: 1vw;
+    color: red;
+    padding: 1vw;
+    border-radius: 1vw;
+}
+
+.admin-link:hover {
+    background-color: #00000024;
 }

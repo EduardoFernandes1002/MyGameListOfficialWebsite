@@ -62,7 +62,7 @@ li {
   display: flex;
   align-items: center;
   gap: 0;
-  border-radius: 18vh;
+  border-radius: 18vw;
   background-color: #191b27;
 }
 #inputDiv input,
@@ -70,10 +70,8 @@ li {
   background-color: transparent;
   border: none;
   font-size: 2vh;
-  padding-bottom: 1vh;
-  padding-top: 1vh;
-  padding-left: 1vw;
-  padding: 2vh;
+  padding-inline: 0.6vw;
+  padding-block: 1.2vh;
   color: aliceblue;
   outline: none;
 }
@@ -87,7 +85,7 @@ li {
   cursor: pointer;
 }
 #inputDiv:hover {
-  background-color: rgba(0, 0, 0, 0.408);
+  background-color: #00000068;
 }
 
 form {
