@@ -104,16 +104,15 @@ document
 
       if (response.ok) {
         // Exibe mensagem de sucesso
-        document.getElementById("mensagem").textContent = data.message;
+        alert(data.message)
         generoInput.value = ""; // Limpa o campo do formulário
       } else {
         // Exibe mensagem de erro
-        document.getElementById("mensagem").textContent = data.message;
+        alert(data.message)
       }
     } catch (error) {
       console.error("Erro ao enviar requisição:", error);
-      document.getElementById("mensagem").textContent =
-        "Erro ao cadastrar gênero.";
+      alert("Erro ao cadastrar gênero.");
     }
   });
 
@@ -143,15 +142,14 @@ document
       const data = await response.json();
   
       if (response.ok) {
-        document.getElementById("mensagem").textContent = data.message;
+        alert(data.message)
         desenvolvedoraInput.value = "";
       } else {
-        document.getElementById("mensagem").textContent = data.message;
+        alert(data.message)
       }
     } catch (error) {
       console.error("Erro ao enviar requisição:", error);
-      document.getElementById("mensagem").textContent =
-        "Erro ao cadastrar desenvolvedora.";
+      alert( "Erro ao cadastrar desenvolvedora.");
     }
   });
 
@@ -181,15 +179,14 @@ document
     const data = await response.json();
 
     if (response.ok) {
-      document.getElementById("mensagem").textContent = data.message;
+      alert(data.message)
       distribuidoraInput.value = "";
     } else {
-      document.getElementById("mensagem").textContent = data.message;
+      alert(data.message)
     }
   } catch (error) {
     console.error("Erro ao enviar requisição:", error);
-    document.getElementById("mensagem").textContent =
-      "Erro ao cadastrar distribuidora.";
+    alert( "Erro ao cadastrar distribuidora");
   }
 });
 
