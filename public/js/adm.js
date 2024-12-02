@@ -92,7 +92,7 @@ document
 
     try {
       // Envia a requisição POST ao backend
-      const response = await fetch("/admin/cadastroGenero", {
+      const response = await fetch("/adm/cadastroGenero", {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // Tipo de conteúdo enviado

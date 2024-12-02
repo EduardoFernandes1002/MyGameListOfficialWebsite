@@ -426,15 +426,15 @@ app.get('/nomeListas', (req, res) => {
 async function CadastroJogo(req, res) {
   try {
     let {
-      nmGenero,
-      nmModo,
-      nmDesenvolvedora,
-      nmDistribuidora,
-      nmPlataforma,
       nmJogo,
-      dsImagem,
       dsSinopse,
-      stStatus,
+       dsImagem, 
+       stStatus,
+       nmPlataforma ,
+       nmDesenvolvedora,
+       nmDistribuidora,
+       nmModo,
+       nmGenero
     } = req.body;
 
     await VerificarJogo(nmJogo);
@@ -463,12 +463,6 @@ async function CadastroJogo(req, res) {
       "t_modo",
       "id_modo",
       "nm_modo"
-    );
-    const idGenero = await BuscarIdPorNome(
-      nmGenero,
-      "t_genero",
-      "id_genero",
-      "nm_genero"
     );
 
     const idsGeneros = [];
@@ -628,6 +622,7 @@ async function CadastroJogo(req, res) {
         WHERE ${campoNome} = ?;
       `;
     const [rows] = await connection.promise().execute(query, [nome]);
+    console.log(nome);
     return rows[0]?.[campoId] || null;
   }
 }
