@@ -42,10 +42,10 @@ app.post("/login", async (req, res) => Login(req, res));
 app.post("/registro", async (req, res) => Registro(req, res));
 app.post("/avaliacao", async (req, res) => Avaliacao(req, res));
 app.post("/add/lista", async (req, res) => AdicionarNaLista(req, res));
-app.post("/admin/cadastrosJogo", async (req, res) => CadastroJogo(req, res));
-app.post("/admin/cadastroGenero", async (req, res) =>CadastrarGenero(req, res));
-app.post("/admin/cadastroDistribuidora", async (req, res) => CadastrarDistribuidora(req, res));
-app.post("/admin/cadastroDesenvolvedora", async (req, res) => CadastrarDesenvolvedora(req, res));
+app.post("/adm/cadastrosJogo", async (req, res) => CadastroJogo(req, res));
+app.post("/adm/cadastroGenero", async (req, res) =>CadastrarGenero(req, res));
+app.post("/adm/cadastroDistribuidora", async (req, res) => CadastrarDistribuidora(req, res));
+app.post("/adm/cadastroDesenvolvedora", async (req, res) => CadastrarDesenvolvedora(req, res));
 
 function BuscarInfoJogos(req, res) {
   const gameId = req.params.gameId;

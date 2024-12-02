@@ -55,7 +55,7 @@ document
     };
 
     try {
-      const response = await fetch("/admin/cadastrosJogo", {
+      const response = await fetch("/adm/cadastrosJogo", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -82,7 +82,7 @@ document
     event.preventDefault(); // Evita o comportamento padrão de submissão
 
     const generoInput = document.getElementById("Genero"); // Campo de input
-    const nmGenero = generoInput.value.trim(); // Valor do input (removendo espaços)
+    const nmGenero = generoInput.value; // Valor do input (removendo espaços)
 
     // Verifica se o campo está vazio
     if (!nmGenero) {
@@ -117,6 +117,44 @@ document
     }
   });
 
+
+  document
+  .getElementById("CadastrarDesenvolvedora")
+  .addEventListener("submit", async function (event) {
+    event.preventDefault();
+  
+    const desenvolvedoraInput = document.getElementById("Desenvolvedora");
+    const nmDesenvolvedora= desenvolvedoraInput.value;
+  
+    if (!nmDesenvolvedora) {
+      alert("É necessário digitar uma desenvolvedora");
+      return;
+    }
+  
+    try {
+      const response = await fetch("/adm/cadastroDesenvolvedora", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nmDesenvolvedora }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        document.getElementById("mensagem").textContent = data.message;
+        desenvolvedoraInput.value = "";
+      } else {
+        document.getElementById("mensagem").textContent = data.message;
+      }
+    } catch (error) {
+      console.error("Erro ao enviar requisição:", error);
+      document.getElementById("mensagem").textContent =
+        "Erro ao cadastrar desenvolvedora.";
+    }
+  });
+
   // Cadastro de Distribuidoras
 document
 .getElementById("CadastrarDistribuidora")
@@ -124,7 +162,7 @@ document
   event.preventDefault();
 
   const distribuidoraInput = document.getElementById("Distribuidora");
-  const nmDistribuidora = distribuidoraInput.value.trim();
+  const nmDistribuidora = distribuidoraInput.value;
 
   if (!nmDistribuidora) {
     alert("É necessário digitar uma distribuidora");
@@ -132,7 +170,7 @@ document
   }
 
   try {
-    const response = await fetch("/admin/cadastroDistribuidora", {
+    const response = await fetch("/adm/cadastroDistribuidora", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
