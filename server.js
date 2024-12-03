@@ -35,6 +35,7 @@ app.get("/lista/:idLista", verificarToken, (req, res) =>BuscarJogosLista(req, re
 app.get("/jogos", (req, res) => BuscarJogos(req, res));
 app.get("/jogos/rank", (req, res) => BuscarJogosRankeados(req, res));
 app.get("/adm/modos", (req, res) => BuscarModos(req, res));
+app.get('/nomeListas', (req, res) => NomeListas(req, res));
 app.get("/adm/plataformas", (req, res) => BuscarPlataformas(req, res));
 
 //Rotas Registro, Login, Avaliação e AdicionarNaLista
@@ -368,9 +369,8 @@ async function Avaliacao(req, res) {
 }
 
 async function AdicionarNaLista(req, res) {
-  const { idLista, idUsuario, idJogo } = req.body;
+  let { idLista, idUsuario, idJogo } = req.body;
 
-  // Logs para debug
   console.log(`Recebido: idLista=${idLista}, idUsuario=${idUsuario}, idJogo=${idJogo}`);
 
   if (!idLista || !idUsuario || !idJogo) {
@@ -380,26 +380,65 @@ async function AdicionarNaLista(req, res) {
   }
 
   try {
-    // Adiciona item à lista do usuário
-    const queryInsertListaUsuario = `
-      INSERT INTO t_lista_usuario (
-        id_lista,
-        id_usuario
-      ) VALUES (?, ?)
-      ON DUPLICATE KEY UPDATE id_lista=id_lista;
+    // Obtém o ID da lista "Todos"
+    const queryBuscaListaTodos = `
+      SELECT id_lista 
+      FROM t_lista 
+      WHERE nm_lista = 'Todos' 
+      LIMIT 1;
     `;
-    await connection.promise().query(queryInsertListaUsuario, [idLista, idUsuario]);
-    console.log(`Lista ${idLista} associada ao usuário ${idUsuario}`);
+    const [rowsTodos] = await connection.promise().query(queryBuscaListaTodos);
+    if (rowsTodos.length === 0) {
+      return res.status(404).json({
+        error: "Lista padrão 'Todos' não encontrada.",
+      });
+    }
+    const idListaTodos = rowsTodos[0].id_lista;
 
-    // Adiciona o jogo à lista
-    const queryInsertJogoAdicionado = `
+    console.log(`ID da lista 'Todos': ${idListaTodos}`);
+
+    // Garante que o jogo está na lista "Todos"
+    const queryAdicionaNaListaTodos = `
       INSERT INTO t_jogo_adicionado (
         id_jogo,
         id_lista
       ) VALUES (?, ?)
       ON DUPLICATE KEY UPDATE id_jogo=id_jogo;
     `;
-    await connection.promise().query(queryInsertJogoAdicionado, [idJogo, idLista]);
+    await connection.promise().query(queryAdicionaNaListaTodos, [idJogo, idListaTodos]);
+    console.log(`Jogo ${idJogo} garantido na lista 'Todos'`);
+
+    // Verifica se o jogo já está em outra lista além de "Todos"
+    const queryBuscaListasDoJogo = `
+      SELECT id_lista 
+      FROM t_jogo_adicionado 
+      WHERE id_jogo = ? 
+      AND id_lista != ?;
+    `;
+    const [rowsOutrasListas] = await connection.promise().query(queryBuscaListasDoJogo, [idJogo, idListaTodos]);
+
+    if (rowsOutrasListas.length > 0) {
+      const idListaAtual = rowsOutrasListas[0].id_lista;
+
+      // Remove o jogo da lista atual
+      const queryRemoveJogoDeLista = `
+        DELETE FROM t_jogo_adicionado 
+        WHERE id_jogo = ? 
+        AND id_lista = ?;
+      `;
+      await connection.promise().query(queryRemoveJogoDeLista, [idJogo, idListaAtual]);
+      console.log(`Jogo ${idJogo} removido da lista ${idListaAtual}`);
+    }
+
+    // Adiciona o jogo à nova lista (além de "Todos")
+    const queryAdicionaNaNovaLista = `
+      INSERT INTO t_jogo_adicionado (
+        id_jogo,
+        id_lista
+      ) VALUES (?, ?)
+      ON DUPLICATE KEY UPDATE id_jogo=id_jogo;
+    `;
+    await connection.promise().query(queryAdicionaNaNovaLista, [idJogo, idLista]);
     console.log(`Jogo ${idJogo} adicionado à lista ${idLista}`);
 
     return res.status(200).json({
@@ -413,7 +452,7 @@ async function AdicionarNaLista(req, res) {
   }
 }
 
-app.get('/nomeListas', (req, res) => {
+async function NomeListas(req, res) {
   const query = 'SELECT id_lista, nm_lista FROM t_lista';
   connection.promise().query(query)
       .then(([rows]) => res.status(200).json(rows))
@@ -421,7 +460,7 @@ app.get('/nomeListas', (req, res) => {
           console.error('Erro ao buscar nomes das listas:', error);
           res.status(500).json({ error: 'Erro ao buscar nomes das listas.' });
       });
-});
+}
 
 async function CadastroJogo(req, res) {
   try {
