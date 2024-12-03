@@ -24,8 +24,10 @@ main {
 }
 
 .idImagem img {
-  border-radius: 50%; /* Circular */
-  height: 20vh; /* Altura fixa igual à largura */
+  border-radius: 50%;
+  /* Circular */
+  height: 20vh;
+  /* Altura fixa igual à largura */
   box-sizing: border-box;
   border: 0.3vw solid rgb(200, 197, 212);
   object-fit: cover;
@@ -81,6 +83,7 @@ main {
   align-items: center;
   height: 5vh;
 }
+
 .Barra button {
   background-color: transparent;
   box-sizing: border-box;
@@ -98,6 +101,7 @@ main {
 .Barra button:hover {
   background: #191c2c;
 }
+
 #Mensagem {
   display: flex;
   font-size: 7vh;
@@ -146,16 +150,18 @@ main {
   transition: transform 0.3s ease;
 }
 
-.jogoL img{
-    width: 20vw;
+.jogoL img {
+  width: 20vw;
 }
 
 .Lista {
-    margin: 2vh;
+  margin: 2vh;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .jogoL {
-    padding: 1vh;
-    background-color: #191c2c;
-    border-radius: 1vw;
+  padding: 1vh;
+  background-color: #191c2c;
+  border-radius: 1vw;
 }

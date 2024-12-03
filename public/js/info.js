@@ -62,47 +62,38 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Gerenciamento de Tabs (Sinopse, Avaliações, Categorias)
     const btnSinopse = document.getElementById("btnSinopse");
-    const btnAvaliacoes = document.getElementById("btnAvaliacoes");
-    const btnCategorias = document.getElementById("btnCategorias");
+    const btnInformacoes = document.getElementById("btnInformacoes");
     const sinopse = document.getElementById("sinopse");
-    const avaliacoes = document.getElementById("avaliacoes");
-    const categorias = document.getElementById("categorias");
+    const infos = document.getElementById("infos");
 
     // Função para mostrar a seção correta
     function showTab(tab) {
         // Remove a classe 'visible' de todas as seções
         sinopse.classList.remove("visible");
-        avaliacoes.classList.remove("visible");
-        categorias.classList.remove("visible");
+        infos.classList.remove("visible");
 
         // Adiciona a classe 'visible' para a aba selecionada
         if (tab === 'sinopse') {
             sinopse.classList.add("visible");
-        } else if (tab === 'avaliacoes') {
-            avaliacoes.classList.add("visible");
-        } else if (tab === 'categorias') {
-            categorias.classList.add("visible");
+        } else if (tab === 'infos') {
+            infos.classList.add("visible");
         }
 
         // Remove a classe 'active' de todos os botões
         btnSinopse.classList.remove("active");
-        btnAvaliacoes.classList.remove("active");
-        btnCategorias.classList.remove("active");
+        btnInformacoes.classList.remove("active");
 
         // Adiciona a classe 'active' ao botão da aba selecionada
         if (tab === 'sinopse') {
             btnSinopse.classList.add("active");
-        } else if (tab === 'avaliacoes') {
-            btnAvaliacoes.classList.add("active");
-        } else if (tab === 'categorias') {
-            btnCategorias.classList.add("active");
+        } else if (tab === 'infos') {
+            btnInformacoes.classList.add("active");
         }
     }
 
     // Event listeners para os botões de tabs
     btnSinopse.addEventListener("click", () => showTab('sinopse'));
-    btnAvaliacoes.addEventListener("click", () => showTab('avaliacoes'));
-    btnCategorias.addEventListener("click", () => showTab('categorias'));
+    btnInformacoes.addEventListener("click", () => showTab('infos'));
 
     // Inicializa a primeira aba visível (Sinopse)
     showTab('sinopse');
