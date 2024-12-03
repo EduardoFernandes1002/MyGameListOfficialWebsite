@@ -31,11 +31,14 @@ app.get("/adm_redirect", verificarToken, (req, res) => {
 
 // Rota para retornar as informações
 app.get("/jogo/:gameId", (req, res) => BuscarInfoJogos(req, res));
-app.get("/lista/:idLista", verificarToken, (req, res) =>BuscarJogosLista(req, res));
+app.post("/info/perfil", async (req, res) => InfoUser(req, res));
+app.get("/lista/:idLista", verificarToken, (req, res) =>
+  BuscarJogosLista(req, res)
+);
 app.get("/jogos", (req, res) => BuscarJogos(req, res));
 app.get("/jogos/rank", (req, res) => BuscarJogosRankeados(req, res));
 app.get("/adm/modos", (req, res) => BuscarModos(req, res));
-app.get('/nomeListas', (req, res) => NomeListas(req, res));
+app.get("/nomeListas", (req, res) => NomeListas(req, res));
 app.get("/adm/plataformas", (req, res) => BuscarPlataformas(req, res));
 
 //Rotas Registro, Login, Avaliação e AdicionarNaLista
@@ -44,9 +47,13 @@ app.post("/registro", async (req, res) => Registro(req, res));
 app.post("/avaliacao", async (req, res) => Avaliacao(req, res));
 app.post("/add/lista", async (req, res) => AdicionarNaLista(req, res));
 app.post("/adm/cadastrosJogo", async (req, res) => CadastroJogo(req, res));
-app.post("/adm/cadastroGenero", async (req, res) =>CadastrarGenero(req, res));
-app.post("/adm/cadastroDistribuidora", async (req, res) => CadastrarDistribuidora(req, res));
-app.post("/adm/cadastroDesenvolvedora", async (req, res) => CadastrarDesenvolvedora(req, res));
+app.post("/adm/cadastroGenero", async (req, res) => CadastrarGenero(req, res));
+app.post("/adm/cadastroDistribuidora", async (req, res) =>
+  CadastrarDistribuidora(req, res)
+);
+app.post("/adm/cadastroDesenvolvedora", async (req, res) =>
+  CadastrarDesenvolvedora(req, res)
+);
 
 function BuscarInfoJogos(req, res) {
   const gameId = req.params.gameId;
@@ -114,6 +121,38 @@ function BuscarJogosLista(req, res) {
     res.json(resultados);
   });
 }
+
+async function InfoUser(req, res) {
+  const { idUsuario } = req.body; // Certifique-se de que o campo correto está sendo enviado no body
+
+  const queryInfoUser = `
+    SELECT nm_apelido, dt_nascimento 
+    FROM t_usuario 
+    WHERE id_usuario = ?
+  `;
+
+  try {
+    const [result] = await connection.promise().query(queryInfoUser, [idUsuario]); // Retorna um array de resultados
+
+    if (result.length === 0) {
+      return res.status(404).json({ sucesso: false, mensagem: "Usuário não encontrado" });
+    }
+
+    const usuario = result[0]; // Obtém o primeiro registro retornado
+    return res.status(200).json({
+      sucesso: true,
+      dados: {
+        nome: usuario.nm_apelido, // Corrigi o nome do campo de acordo com o SELECT
+        data_nascimento: usuario.dt_nascimento,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ sucesso: false, mensagem: "Erro ao buscar usuário" });
+  }
+}
+
+
 
 function BuscarJogos(req, res) {
   const queryJogosGerais = `
@@ -371,7 +410,9 @@ async function Avaliacao(req, res) {
 async function AdicionarNaLista(req, res) {
   let { idLista, idUsuario, idJogo } = req.body;
 
-  console.log(`Recebido: idLista=${idLista}, idUsuario=${idUsuario}, idJogo=${idJogo}`);
+  console.log(
+    `Recebido: idLista=${idLista}, idUsuario=${idUsuario}, idJogo=${idJogo}`
+  );
 
   if (!idLista || !idUsuario || !idJogo) {
     return res
@@ -405,7 +446,9 @@ async function AdicionarNaLista(req, res) {
       ) VALUES (?, ?)
       ON DUPLICATE KEY UPDATE id_jogo=id_jogo;
     `;
-    await connection.promise().query(queryAdicionaNaListaTodos, [idJogo, idListaTodos]);
+    await connection
+      .promise()
+      .query(queryAdicionaNaListaTodos, [idJogo, idListaTodos]);
     console.log(`Jogo ${idJogo} garantido na lista 'Todos'`);
 
     // Verifica se o jogo já está em outra lista além de "Todos"
@@ -415,7 +458,9 @@ async function AdicionarNaLista(req, res) {
       WHERE id_jogo = ? 
       AND id_lista != ?;
     `;
-    const [rowsOutrasListas] = await connection.promise().query(queryBuscaListasDoJogo, [idJogo, idListaTodos]);
+    const [rowsOutrasListas] = await connection
+      .promise()
+      .query(queryBuscaListasDoJogo, [idJogo, idListaTodos]);
 
     if (rowsOutrasListas.length > 0) {
       const idListaAtual = rowsOutrasListas[0].id_lista;
@@ -426,7 +471,9 @@ async function AdicionarNaLista(req, res) {
         WHERE id_jogo = ? 
         AND id_lista = ?;
       `;
-      await connection.promise().query(queryRemoveJogoDeLista, [idJogo, idListaAtual]);
+      await connection
+        .promise()
+        .query(queryRemoveJogoDeLista, [idJogo, idListaAtual]);
       console.log(`Jogo ${idJogo} removido da lista ${idListaAtual}`);
     }
 
@@ -438,7 +485,9 @@ async function AdicionarNaLista(req, res) {
       ) VALUES (?, ?)
       ON DUPLICATE KEY UPDATE id_jogo=id_jogo;
     `;
-    await connection.promise().query(queryAdicionaNaNovaLista, [idJogo, idLista]);
+    await connection
+      .promise()
+      .query(queryAdicionaNaNovaLista, [idJogo, idLista]);
     console.log(`Jogo ${idJogo} adicionado à lista ${idLista}`);
 
     return res.status(200).json({
@@ -453,13 +502,15 @@ async function AdicionarNaLista(req, res) {
 }
 
 async function NomeListas(req, res) {
-  const query = 'SELECT id_lista, nm_lista FROM t_lista';
-  connection.promise().query(query)
-      .then(([rows]) => res.status(200).json(rows))
-      .catch(error => {
-          console.error('Erro ao buscar nomes das listas:', error);
-          res.status(500).json({ error: 'Erro ao buscar nomes das listas.' });
-      });
+  const query = "SELECT id_lista, nm_lista FROM t_lista";
+  connection
+    .promise()
+    .query(query)
+    .then(([rows]) => res.status(200).json(rows))
+    .catch((error) => {
+      console.error("Erro ao buscar nomes das listas:", error);
+      res.status(500).json({ error: "Erro ao buscar nomes das listas." });
+    });
 }
 
 async function CadastroJogo(req, res) {
@@ -467,13 +518,13 @@ async function CadastroJogo(req, res) {
     let {
       nmJogo,
       dsSinopse,
-       dsImagem, 
-       stStatus,
-       nmPlataforma ,
-       nmDesenvolvedora,
-       nmDistribuidora,
-       nmModo,
-       nmGenero
+      dsImagem,
+      stStatus,
+      nmPlataforma,
+      nmDesenvolvedora,
+      nmDistribuidora,
+      nmModo,
+      nmGenero,
     } = req.body;
 
     await VerificarJogo(nmJogo);
@@ -597,7 +648,15 @@ async function CadastroJogo(req, res) {
     }
   }
 
-  async function CadastrarJogo({nmJogo, dsSinopse,stStatus,dsImagem,idDistribuidora,idDesenvolvedora,idPlataforma,}) {
+  async function CadastrarJogo({
+    nmJogo,
+    dsSinopse,
+    stStatus,
+    dsImagem,
+    idDistribuidora,
+    idDesenvolvedora,
+    idPlataforma,
+  }) {
     const queryJogo = `
         INSERT INTO t_jogo (
           nm_jogo,

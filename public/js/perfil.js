@@ -72,11 +72,29 @@ document.addEventListener("DOMContentLoaded", function () {
   // Carrega a lista padrão ao carregar a página
   carregarLista(idLista);
 
-  // Exibe reviews quando o botão correspondente é clicado
-  document
-    .getElementById("btnReview")
-    .addEventListener("click", function (event) {
-      event.preventDefault();
-      listaElement.innerHTML = "<p>Não há reviews ainda.</p>";
-    });
+    async function NomeUser(idUsuario) {
+      try {
+        const response = await fetch(`/info/perfil`, {
+          method: "POST", // Alterado para POST para enviar o ID no corpo
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ idUsuario }), // Envia o ID do usuário no corpo
+        });
+    
+        if (!response.ok) {
+          throw new Error("Erro ao buscar informações do usuário.");
+        }
+    
+        const { dados } = await response.json();
+    
+        // Atualiza o span com o nome do usuário
+        const userSpan = document.getElementById("user");
+        userSpan.textContent = dados.nome;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    
+    NomeUser(idUsuario)
 });
