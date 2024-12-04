@@ -104,8 +104,8 @@ function BuscarInfoJogos(req, res) {
 }
 
 function BuscarJogosLista(req, res) {
-  const idUsuario = req.userId; // Pega o ID do usuário do token
-  const idLista = req.params.idLista; // Obtém o ID da lista da URL
+  const idUsuario = req.userId;
+  const idLista = req.params.idLista; 
 
   const queryJogos = `
       SELECT 
@@ -139,7 +139,7 @@ function BuscarJogosLista(req, res) {
 }
 
 async function InfoUser(req, res) {
-  const { idUsuario } = req.body; // Certifique-se de que o campo correto está sendo enviado no body
+  const { idUsuario } = req.body;
 
   const queryInfoUser = `
     SELECT nm_apelido, dt_nascimento 
@@ -148,17 +148,17 @@ async function InfoUser(req, res) {
   `;
 
   try {
-    const [result] = await connection.promise().query(queryInfoUser, [idUsuario]); // Retorna um array de resultados
+    const [result] = await connection.promise().query(queryInfoUser, [idUsuario]);
 
     if (result.length === 0) {
       return res.status(404).json({ sucesso: false, mensagem: "Usuário não encontrado" });
     }
 
-    const usuario = result[0]; // Obtém o primeiro registro retornado
+    const usuario = result[0];
     return res.status(200).json({
       sucesso: true,
       dados: {
-        nome: usuario.nm_apelido, // Corrigi o nome do campo de acordo com o SELECT
+        nome: usuario.nm_apelido,
         data_nascimento: usuario.dt_nascimento,
       },
     });
@@ -228,7 +228,6 @@ function BuscarJogos(req, res) {
   });
 }
 
-
 app.get('/dataNotaP/:userId/:gameId', (req, res) => {
   const { userId, gameId } = req.params;
 
@@ -256,11 +255,6 @@ app.get('/dataNotaP/:userId/:gameId', (req, res) => {
     }
   });
 });
-
-
-
-
-
 
 function BuscarJogosRankeados(req, res) {
   const queryJogos = `
@@ -297,7 +291,6 @@ async function Login(req, res) {
     WHERE ds_email = ? OR nm_apelido = ?;
     `;
 
-  // Consulta no banco para pegar o usuário com o login digitado (email/nickname)
   connection.query(queryUser, [login, login], (error, results) => {
     if (error) {
       return res
@@ -341,16 +334,26 @@ async function Registro(req, res) {
   const queryExisteUser = `
     SELECT * FROM t_usuario 
     WHERE ds_email = ? OR nm_apelido = ?;
-    `;
+  `;
 
   const queryCadastrar = `
     INSERT INTO t_usuario (
-        ds_email,
-        nm_apelido,
-        ds_senha,
-        id_permissao
+      ds_email,
+      nm_apelido,
+      ds_senha,
+      id_permissao
     ) VALUES (?, ?, ?, 1);
-    `;
+  `;
+
+  const queryListasPadrao = `
+    INSERT INTO t_lista_usuario (id_usuario, id_lista) VALUES 
+    (?, 1), 
+    (?, 2), 
+    (?, 3), 
+    (?, 4), 
+    (?, 5), 
+    (?, 6);
+  `;
 
   try {
     // Verificar se já existe um usuário com o mesmo email ou apelido
@@ -369,18 +372,24 @@ async function Registro(req, res) {
     }
 
     // Inserir novo usuário com a senha diretamente e nivel_permissao padrão de 1
-    await connection
+    const [resultadoCadastro] = await connection
       .promise()
       .query(queryCadastrar, [email, apelido, senha, 1]);
+
+    const idUsuario = resultadoCadastro.insertId;
+
+    // Inserir listas padrão para o novo usuário na tabela de relação
+    await connection
+      .promise()
+      .query(queryListasPadrao, Array(6).fill(idUsuario));
 
     res.json({ sucesso: true, mensagem: "Registro realizado com sucesso!" });
   } catch (error) {
     console.error("Erro ao registrar usuário:", error);
-    res
-      .status(500)
-      .json({ sucesso: false, mensagem: "Erro no servidor!" + error });
+    res.status(500).json({ sucesso: false, mensagem: "Erro no servidor!" + error });
   }
 }
+
 
 async function Avaliacao(req, res) {
   const { nota, data, idUsuario, jogoId } = req.body;
@@ -747,7 +756,7 @@ async function CadastroJogo(req, res) {
 
     // Executa a query
     const [result] = await connection.promise().execute(queryJogo, params);
-    return result.insertId; // Retorna o ID do jogo inserido
+    return result.insertId;
   }
 
   async function CadastrarGeneroJogo(idJogo, idGenero) {
@@ -757,10 +766,10 @@ async function CadastroJogo(req, res) {
         VALUES (?, ?);
       `;
       await connection.promise().execute(queryGeneroJogo, [idJogo, idGenero]);
-      return true; // Retorna sucesso
+      return true;
     } catch (error) {
       console.error("Erro ao associar gênero:", error);
-      return false; // Retorna falha
+      return false;
     }
   }
 
@@ -771,10 +780,10 @@ async function CadastroJogo(req, res) {
         VALUES (?, ?);
       `;
       await connection.promise().execute(queryModoJogo, [idJogo, idModo]);
-      return true; // Retorna sucesso
+      return true;
     } catch (error) {
       console.error("Erro ao associar modo:", error);
-      return false; // Retorna falha
+      return false;
     }
   }
 
@@ -850,7 +859,6 @@ async function CadastrarGenero(req, res) {
       .json({ message: "Genero cadastradado com sucesso!" });
   } catch (error) {
     console.error(error);
-    // Resposta de erro interno
     return res.status(500).json({ message: "Erro ao cadastrar genero." });
   }
 }
@@ -873,7 +881,6 @@ async function CadastrarDistribuidora(req, res) {
       .json({ message: "Distribuidora cadastrada com sucesso!" });
   } catch (error) {
     console.error(error);
-    // Resposta de erro interno
     return res
       .status(500)
       .json({ message: "Erro ao cadastrar distribuidora." });
@@ -882,27 +889,22 @@ async function CadastrarDistribuidora(req, res) {
 
 async function CadastrarDesenvolvedora(req, res) {
   try {
-    // Obter o nome da desenvolvedora do corpo da requisição
     const { nmDesenvolvedora } = req.body;
 
-    // Validação: verificar se o nome da desenvolvedora foi enviado
     if (!nmDesenvolvedora) {
       return res
         .status(400)
         .json({ message: "Nome da desenvolvedora é obrigatório." });
     }
 
-    // Query para inserir no banco de dados
     const queryDesenvolvedora = `INSERT INTO t_desenvolvedora (nm_desenvolvedora) VALUES (?);`;
     await connection.promise().execute(queryDesenvolvedora, [nmDesenvolvedora]);
 
-    // Resposta de sucesso
     return res
       .status(201)
       .json({ message: "Desenvolvedora cadastrada com sucesso!" });
   } catch (error) {
     console.error(error);
-    // Resposta de erro interno
     return res
       .status(500)
       .json({ message: "Erro ao cadastrar desenvolvedora." });

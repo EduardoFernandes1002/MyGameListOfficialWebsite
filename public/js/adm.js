@@ -79,15 +79,15 @@ document
 document
   .getElementById("CadastrarGenero")
   .addEventListener("submit", async function (event) {
-    event.preventDefault(); // Evita o comportamento padrão de submissão
+    event.preventDefault();
 
-    const generoInput = document.getElementById("Genero"); // Campo de input
-    const nmGenero = generoInput.value; // Valor do input (removendo espaços)
+    const generoInput = document.getElementById("Genero");
+    const nmGenero = generoInput.value;
 
     // Verifica se o campo está vazio
     if (!nmGenero) {
       alert("É necessário digitar um gênero");
-      return; // Sai da função e não envia a requisição
+      return; 
     }
 
     try {
@@ -95,9 +95,9 @@ document
       const response = await fetch("/adm/cadastroGenero", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", // Tipo de conteúdo enviado
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ nmGenero }), // Corpo da requisição
+        body: JSON.stringify({ nmGenero }),
       });
 
       const data = await response.json();
@@ -105,9 +105,8 @@ document
       if (response.ok) {
         // Exibe mensagem de sucesso
         alert(data.message)
-        generoInput.value = ""; // Limpa o campo do formulário
+        generoInput.value = "";
       } else {
-        // Exibe mensagem de erro
         alert(data.message)
       }
     } catch (error) {
@@ -201,16 +200,14 @@ async function buscarPlataformas() {
 
     const data = await response.json();
 
-    // Verifica se as plataformas foram encontradas
     if (data && data.plataformas) {
       const plataformaSelect = document.getElementById("plataforma");
 
-      // Preenche o select com as opções recebidas
       data.plataformas.forEach((plataforma) => {
         const option = document.createElement("option");
-        option.value = plataforma; // Valor da opção (pode ser o nome da plataforma)
-        option.textContent = plataforma; // Texto exibido ao usuário
-        plataformaSelect.appendChild(option); // Adiciona a opção ao select
+        option.value = plataforma;
+        option.textContent = plataforma;
+        plataformaSelect.appendChild(option);
       });
     } else {
       console.error("Nenhum dado encontrado ou formato inválido");
@@ -231,16 +228,14 @@ async function buscarModos() {
 
     const data = await response.json();
 
-    // Verifica se os modos de jogo foram encontrados
     if (data && data.modos) {
       const modoJogoSelect = document.getElementById("modoJogo");
 
-      // Preenche o select com as opções recebidas
       data.modos.forEach((modo) => {
         const option = document.createElement("option");
-        option.value = modo; // Valor da opção (pode ser o próprio nome do modo)
-        option.textContent = modo; // Texto exibido ao usuário
-        modoJogoSelect.appendChild(option); // Adiciona a opção ao select
+        option.value = modo;
+        option.textContent = modo;
+        modoJogoSelect.appendChild(option);
       });
     } else {
       console.error("Nenhum dado encontrado ou formato inválido");
