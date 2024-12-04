@@ -82,8 +82,8 @@ option{
 }
 textarea {
   resize: none; /* Impede o redimensionamento */
-  width: 30vh;
-  height: 5vh;
+  width: 40vh;
+  height: 10vh;
   border: none;
   background-color: #7a839c;
   border-radius: 1vw;

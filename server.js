@@ -593,6 +593,7 @@ async function CadastroJogo(req, res) {
       nmJogo,
       dsSinopse,
       dsImagem,
+      dtLancamento,
       stStatus,
       nmPlataforma,
       nmDesenvolvedora,
@@ -649,6 +650,7 @@ async function CadastroJogo(req, res) {
       nmJogo,
       dsSinopse,
       stStatus,
+      dtLancamento,
       dsImagem,
       idDistribuidora,
       idDesenvolvedora,
@@ -725,6 +727,7 @@ async function CadastroJogo(req, res) {
   async function CadastrarJogo({
     nmJogo,
     dsSinopse,
+    dtLancamento,
     stStatus,
     dsImagem,
     idDistribuidora,
@@ -735,18 +738,20 @@ async function CadastroJogo(req, res) {
         INSERT INTO t_jogo (
           nm_jogo,
           ds_sinopse,
+          dt_lancamento,
           nr_nota,
           st_game,
           ds_imagem,
           id_distribuidora,
           id_desenvolvedora,
           id_plataforma
-        ) VALUES (?, ?, 0.0, ?, ?, ?, ?, ?);
+        ) VALUES (?, ?, ?, 0.0, ?, ?, ?, ?, ?);
       `;
 
     const params = [
       nmJogo,
       dsSinopse,
+      dtLancamento,
       stStatus,
       dsImagem,
       idDistribuidora,

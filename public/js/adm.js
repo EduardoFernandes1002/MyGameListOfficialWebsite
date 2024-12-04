@@ -43,6 +43,7 @@ document
       dsSinopse: formData.get("sinopse"),
       dsImagem: formData.get("linkImagem"),
       stStatus: formData.get("statusJogo"),
+      dtLancamento: formData.get("data"),
       nmPlataforma: formData.get("plataforma"),
       nmDesenvolvedora: formData.get("desenvolvedora"),
       nmDistribuidora: formData.get("distribuidora"),

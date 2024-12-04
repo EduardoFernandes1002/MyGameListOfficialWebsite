@@ -25,9 +25,7 @@ main {
 
 .idImagem img {
   border-radius: 50%;
-  /* Circular */
   height: 20vh;
-  /* Altura fixa igual à largura */
   box-sizing: border-box;
   border: 0.3vw solid rgb(200, 197, 212);
   object-fit: cover;
