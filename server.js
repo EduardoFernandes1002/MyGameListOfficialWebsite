@@ -168,8 +168,6 @@ async function InfoUser(req, res) {
   }
 }
 
-
-
 function BuscarJogos(req, res) {
   const queryJogosGerais = `
     SELECT 
@@ -229,6 +227,40 @@ function BuscarJogos(req, res) {
     });
   });
 }
+
+
+app.get('/dataNotaP/:userId/:gameId', (req, res) => {
+  const { userId, gameId } = req.params;
+
+  const query = `
+    SELECT nr_usuario_nota AS nota, dt_envio AS data 
+    FROM t_avaliacao 
+    WHERE id_usuario = ? AND id_jogo = ?;
+  `;
+
+  connection.query(query, [userId, gameId], (error, results) => {
+    if (error) {
+      return res
+        .status(500)
+        .json({ sucesso: false, mensagem: "Erro no servidor!" });
+    }
+    if (results.length > 0) {
+      return res.json({
+        sucesso: true,
+        notaPessoal: results[0],
+      });
+    } else {
+      return res
+        .status(404)
+        .json({ sucesso: false, mensagem: "Nota pessoal não encontrada!" });
+    }
+  });
+});
+
+
+
+
+
 
 function BuscarJogosRankeados(req, res) {
   const queryJogos = `

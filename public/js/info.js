@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     const decodedToken = JSON.parse(atob(token.split(".")[1]));
     idUsuario = decodedToken.id;
     console.log("ID do usuário:", idUsuario);
+
+    document.querySelector(".notaPessoal").style.display = "flex"; 
   }
 
   const gameId = window.location.pathname.split("/").pop();
@@ -111,6 +113,30 @@ document.addEventListener("DOMContentLoaded", async function () {
   notaSlider.addEventListener("input", () => {
     notaDinamica.textContent = notaSlider.value;
   });
+
+
+    // Buscar nota pessoal e data
+    try {
+      const responseNota = await fetch(`/dataNotaP/${idUsuario}/${gameId}`);
+      if (!responseNota.ok) {
+        throw new Error(`Erro HTTP: ${responseNota.status}`);
+      }
+  
+      const dataNota = await responseNota.json();
+      if (dataNota.sucesso) {
+        // Atualizar elementos com os dados recebidos
+        const notaP = document.getElementById("notaP");
+        const dataP = document.querySelector(".data");
+  
+        notaP.textContent = dataNota.notaPessoal.nota || "Sem nota";
+        dataP.textContent = dataNota.notaPessoal.data || "Sem data";
+      } else {
+        console.error("Erro ao carregar nota pessoal:", dataNota.mensagem);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar nota pessoal:", error.message);
+    }
+  
 
   // Salvar nota e adicionar jogo à lista
   salvarNota.addEventListener("click", async function () {

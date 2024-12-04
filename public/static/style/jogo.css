@@ -40,7 +40,6 @@ main {
   display: flex;
   height: 100%;
   align-items: center;
-  justify-content: center;
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -50,7 +49,11 @@ main {
 }
 
 .game h3 {
+  position: absolute
+  ;
   margin: 0;
+  left: 10vw;
+  top: 15vh;
 }
 
 #gameImagem {
@@ -104,7 +107,7 @@ input[type="range"] {
 }
 
 .Informacoes {
-  margin: 0 auto;
+  margin: 4vh auto;
   width: 90vw;
   font-size: 2vh;
 }
@@ -156,13 +159,25 @@ input[type="range"] {
 
 .notas {
   display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 68vw;
+  bottom: 2vh;
+  gap: 1vh;
 }
+
 .notaPessoal {
   display: flex;
   font-size: 3vh;
-  margin: 2vh;
   color: white;
+  flex-direction: column;
 }
+
+.notaPessoal div {
+  display: flex;
+  gap: 0.5vh;
+}
+
 .notaPessoal p {
   margin: 0;
 }
@@ -183,12 +198,10 @@ input[type="range"] {
 }
 .notaTotal {
   display: flex;
-  position: absolute;
   justify-self: flex-end;
   justify-self: end;
-  font-size: 3vh;
-  margin-left: 97%;
-  color: #f39c12;
+  font-size: 5vh;
+  color: #ffffff;
 }
 
 #salvarNota {
