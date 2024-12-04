@@ -32,7 +32,9 @@
                     </div>
                     <div class="notaPessoal">
                         <span class="data"></span>
-                        <span id="notaP"></span>
+                        <p>
+                           Sua nota: <span id="notaP"></span>
+                        </p>
                         <button id="notaPessoalEditar">
                             <i class="fa-solid fa-marker"></i>
                         </button>
@@ -45,12 +47,23 @@
                         <button id="btnInformacoes" class="botao">Informações</button>
                     </div>
                     
-                    <div id="sinopse" class="secao">
+                    <div id="sinopse" class="secao hidden">
                         <p id="sinopseJogo">Descrição do jogo...</p>
                     </div>
-                    <div id="infos" class="secao hidden">
-                        <p>informações Gerais do jogo...</p>
-                    </div>
+                    <div id="infos" class="secao">
+                        <p>
+                            Distribuidora: <span id="nmDistribuidora"></span>
+                        </p>
+                        <p
+                        >Desenvolvedora: <span id="nmDesenvolvedora"></span>
+                    </p> <p>Plataforma: <span id="nmPlataforma"></span></p>
+                    <p>
+                        Gêneros: <span id="generos"></span>
+                    </p>
+                    <p>
+                        Modos: <span id="modos"></span>
+                    </p>
+                </div>
                 </section>
             <section>
             <div id="notaModal" class="modal hidden">

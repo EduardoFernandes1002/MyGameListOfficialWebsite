@@ -63,8 +63,13 @@ main {
   grid-row-end: 3;
 }
 .hidden {
-  display: none; /* Garante que o modal não apareça */
+  display: none; /* Garante que o elemento não apareça */
 }
+
+.visible {
+  display: block; /* Exibe o elemento quando a classe 'visible' for aplicada */
+}
+
 
 .modal {
   position: fixed;
@@ -136,9 +141,6 @@ input[type="range"] {
   display: none; /* Todas as seções começam ocultas */
 }
 
-#sinopse.visible, #avaliacoes.visible, #categorias.visible {
-  display: block; /* Exibe a seção quando a classe 'visible' for aplicada */
-}
 .notas{
 
   display: flex;

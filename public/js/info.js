@@ -3,33 +3,16 @@ document.addEventListener("DOMContentLoaded", async function () {
     let idUsuario = '';
     if (token) {
         const decodedToken = JSON.parse(atob(token.split(".")[1]));
-        idUsuario = decodedToken.id; // Pega o idUsuario do payload
+        idUsuario = decodedToken.id;
         console.log("ID do usuário:", idUsuario);
     }
 
-    const gameId = window.location.pathname.split('/').pop(); // A variável gameId agora é global
-
-    const selectElement = document.getElementById('listasSelect');
-
-    // Pega os nomes das listas e preenche o select
-    try {
-        const listas = await pegarNomesListas();
-        if (listas && Array.isArray(listas)) {
-            for (let i = 2; i <= 6; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = listas.find(lista => lista.id_lista === i)?.nm_lista || `Lista ${i}`;
-                selectElement.appendChild(option);
-            }
-        }
-    } catch (error) {
-        console.error('Erro ao preencher o select:', error);
-    }
+    const gameId = window.location.pathname.split('/').pop();
 
     if (!gameId) {
         console.error('Erro: gameId não encontrado na URL');
         alert('Erro ao carregar o jogo. Tente novamente mais tarde.');
-        return; // Não prosseguir se não tiver gameId
+        return;
     }
 
     // Faz a requisição para pegar os dados do jogo
@@ -39,64 +22,63 @@ document.addEventListener("DOMContentLoaded", async function () {
             throw new Error(`Erro HTTP: ${response.status}`);
         }
 
-        // Recebe dados da resposta e adiciona elementos no HTML. Caso contrário, ativa um erro
         const data = await response.json();
         if (data.sucesso) {
             const jogo = data.jogo;
 
-            // Atualiza os elementos do HTML com os dados do jogo
             document.getElementById('gameImagem').src = jogo.ds_imagem;
             document.getElementById('nomeJogo').textContent = jogo.nm_jogo;
             document.getElementById('nota').textContent = jogo.nr_nota;
             document.getElementById('sinopseJogo').textContent = jogo.ds_sinopse;
-            document.getElementById('notaP').textContent = 'Nota Pessoal: ';
+
+            // Adiciona informações adicionais
+            document.getElementById('nmDistribuidora').textContent = jogo.nm_distribuidora;
+            document.getElementById('nmDesenvolvedora').textContent = jogo.nm_desenvolvedora;
+            document.getElementById('nmPlataforma').textContent = jogo.nm_plataforma;
+            document.getElementById('generos').textContent = jogo.generos.split(',').join(', ');
+            document.getElementById('modos').textContent = jogo.modos.split(',').join(', ');
+
             document.querySelector('.gridGame1').style.backgroundImage = `url(${jogo.ds_imagem})`;
         } else {
             console.error('Erro ao carregar informações do jogo:', data.mensagem);
-            alert('Erro ao carregar as informações do jogo.'); // Exibir erro para o usuário
+            alert('Erro ao carregar as informações do jogo.');
         }
     } catch (error) {
         console.error('Erro ao carregar as informações do jogo:', error.message);
         alert('Erro ao carregar as informações do jogo. Tente novamente mais tarde.');
     }
 
-    // Gerenciamento de Tabs (Sinopse, Avaliações, Categorias)
     const btnSinopse = document.getElementById("btnSinopse");
     const btnInformacoes = document.getElementById("btnInformacoes");
     const sinopse = document.getElementById("sinopse");
     const infos = document.getElementById("infos");
 
-    // Função para mostrar a seção correta
     function showTab(tab) {
-        // Remove a classe 'visible' de todas as seções
-        sinopse.classList.remove("visible");
-        infos.classList.remove("visible");
-
-        // Adiciona a classe 'visible' para a aba selecionada
         if (tab === 'sinopse') {
-            sinopse.classList.add("visible");
+            sinopse.style.display = 'block';
+            infos.style.display = 'none';
         } else if (tab === 'infos') {
-            infos.classList.add("visible");
+            sinopse.style.display = 'none';
+            infos.style.display = 'block';
         }
-
-        // Remove a classe 'active' de todos os botões
+    
         btnSinopse.classList.remove("active");
         btnInformacoes.classList.remove("active");
-
-        // Adiciona a classe 'active' ao botão da aba selecionada
+    
         if (tab === 'sinopse') {
             btnSinopse.classList.add("active");
         } else if (tab === 'infos') {
             btnInformacoes.classList.add("active");
         }
     }
+    
 
-    // Event listeners para os botões de tabs
+    
     btnSinopse.addEventListener("click", () => showTab('sinopse'));
     btnInformacoes.addEventListener("click", () => showTab('infos'));
-
-    // Inicializa a primeira aba visível (Sinopse)
+    
     showTab('sinopse');
+    
 
     // Modal de Avaliação
     const notaPessoalEditar = document.getElementById("notaPessoalEditar");

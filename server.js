@@ -58,17 +58,33 @@ app.post("/adm/cadastroDesenvolvedora", async (req, res) =>
 function BuscarInfoJogos(req, res) {
   const gameId = req.params.gameId;
 
-  const queryLista = `
-        SELECT
-            id_jogo,
-            nm_jogo,
-            ds_imagem,
-            nr_nota,
-            ds_sinopse
-        FROM t_jogo WHERE id_jogo = ?;
-        `;
+  const query = `
+    SELECT
+      j.id_jogo,
+      j.nm_jogo,
+      j.ds_sinopse,
+      j.nr_nota,
+      j.dt_lancamento,
+      j.st_game,
+      j.ds_imagem,
+      d.nm_distribuidora,
+      dev.nm_desenvolvedora,
+      p.nm_plataforma,
+      GROUP_CONCAT(DISTINCT g.nm_genero ORDER BY g.nm_genero) AS generos,
+      GROUP_CONCAT(DISTINCT m.nm_modo ORDER BY m.nm_modo) AS modos
+    FROM t_jogo j
+    LEFT JOIN t_distribuidora d ON j.id_distribuidora = d.id_distribuidora
+    LEFT JOIN t_desenvolvedora dev ON j.id_desenvolvedora = dev.id_desenvolvedora
+    LEFT JOIN t_plataforma p ON j.id_plataforma = p.id_plataforma
+    LEFT JOIN t_genero_do_jogo gj ON j.id_jogo = gj.id_jogo
+    LEFT JOIN t_genero g ON gj.id_genero = g.id_genero
+    LEFT JOIN t_modo_de_jogo mj ON j.id_jogo = mj.id_jogo
+    LEFT JOIN t_modo m ON mj.id_modo = m.id_modo
+    WHERE j.id_jogo = ?
+    GROUP BY j.id_jogo;
+  `;
 
-  connection.query(queryLista, [gameId], (error, results) => {
+  connection.query(query, [gameId], (error, results) => {
     if (error) {
       return res
         .status(500)
