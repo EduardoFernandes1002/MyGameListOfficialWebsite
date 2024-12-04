@@ -58,6 +58,7 @@
     color: red;
     padding: 1vw;
     border-radius: 1vw;
+    font-size: 2vh;
 }
 
 .admin-link:hover {

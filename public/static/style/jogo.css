@@ -2,7 +2,7 @@ html {
   height: 100%;
 }
 
-*{
+* {
   box-sizing: border-box;
 }
 
@@ -63,13 +63,11 @@ main {
   grid-row-end: 3;
 }
 .hidden {
-  display: none; /* Garante que o elemento não apareça */
+  display: none;
 }
-
 .visible {
-  display: block; /* Exibe o elemento quando a classe 'visible' for aplicada */
+  display: block;
 }
-
 
 .modal {
   position: fixed;
@@ -78,18 +76,27 @@ main {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
-  display: none; /* Por padrão, o modal não é exibido */
+  display: none;
   justify-content: center;
   align-items: center;
 }
 
 .modal-content {
-  background-color:#272c44;
-  padding: 20px;
-  border-radius: 10px;
+  background-color: #272c44;
+  padding: 1vw;
+  border-radius: 1vh;
   text-align: center;
-  width: 300px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  width: 20vw;
+  height: 40vh;
+  font-size: 3vh;
+  display: flex;
+  flex-direction: column;
+  gap: 3vh;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content p, .modal-content h3 {
+  margin: 0;
 }
 
 input[type="range"] {
@@ -99,15 +106,21 @@ input[type="range"] {
 .Informacoes {
   margin: 0 auto;
   width: 90vw;
+  font-size: 2vh;
+}
+
+.botoes-container button {
+    width: 20vh;
+    font-size: 2vh;
 }
 
 .secao {
   padding: 0.3vh 3vh 0.3vh 3vh;
-  margin: 0 auto; /* Centraliza e cria espaçamento */
-  background-color: #202438; /* Fundo semitransparente */
-  color: white; /* Texto claro */
+  margin: 0 auto;
+  background-color: #202438;
+  color: white;
   border-radius: 1vh;
-  text-align: justify; /* Alinhamento para leitura */
+  text-align: justify;
   margin-bottom: 6vh;
 }
 
@@ -116,7 +129,7 @@ input[type="range"] {
   margin-left: 1vw;
   display: flex;
   gap: 0.3vh;
-  margin-bottom: 0; /* Adiciona espaço abaixo dos botões */
+  margin-bottom: 0;
 }
 
 .botao {
@@ -130,22 +143,21 @@ input[type="range"] {
 
 .botao:hover {
   background-color: #202438;
-  transition: 0.2s ease-in; /* Efeito hover para os botões */
+  transition: 0.2s ease-in;
 }
 
 .botao.active {
-  background-color: #202438; /* Cor ativa para o botão selecionado */
+  background-color: #202438; 
 }
 
-#sinopse, #avaliacoes, #categorias {
-  display: none; /* Todas as seções começam ocultas */
+#sinopse {
+  display: none;
 }
 
-.notas{
-
+.notas {
   display: flex;
 }
-.notaPessoal{
+.notaPessoal {
   display: flex;
   font-size: 3vh;
   margin: 2vh;
@@ -155,19 +167,21 @@ input[type="range"] {
   margin: 0;
 }
 
-#notaPessoalEditar{
+#notaPessoalEditar {
   display: flex;
   background-color: transparent;
-  font-size: 1.3vh;
+  font-size: 1.8vh;
+  margin: 0;
   align-items: start;
   justify-content: flex-end;
   color: white;
   border: none;
   cursor: pointer;
-  width: 2vw;
+  width: 1vw;
   height: 2vh;
+  padding: 0;
 }
-.notaTotal{
+.notaTotal {
   display: flex;
   position: absolute;
   justify-self: flex-end;
@@ -178,88 +192,120 @@ input[type="range"] {
 }
 
 #salvarNota {
-  background-color: #5d975d; /* Verde suave */
-  color: white; /* Texto branco */
-  border: none; /* Remove a borda padrão */
-  border-radius: 2vh; /* Bordas arredondadas */
-  padding: 1vh 2vh; /* Espaçamento interno */
-  font-size: 2vh; /* Tamanho do texto */
-  font-weight: bold; /* Texto em negrito */
-  cursor: pointer; /* Cursor de ponteiro ao passar */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Transições suaves */
+  background-color: #202438;
+  color: white; 
+  border: none; 
+  border-radius: 2vh;
+  padding: 1vh 2vh;
+  font-size: 2vh;
+  font-weight: bold;
+  cursor: pointer; 
+  transition: background-color 0.3s ease, transform 0.2s ease; 
 }
 
 #salvarNota:hover {
-  background-color: #4b7d4b; /* Escurece o verde ao passar o mouse */
-  transform: scale(1.05); /* Aumenta ligeiramente o botão */
+  background-color: #181b2b; 
+  transform: scale(1.05);
+}
+#fecharModal {
+  background-color: #202438; 
+  color: white;
+  border: none; 
+  border-radius: 2vh;
+  padding: 1vh 2vh;
+  font-size: 2vh; 
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-#fecharModal {
-  background-color: #a56363; /* Vermelho suave */
-  color: white; /* Texto branco */
-  border: none; /* Remove a borda padrão */
-  border-radius: 2vh; /* Bordas arredondadas */
-  padding: 1vh 2vh; /* Espaçamento interno */
-  font-size: 2vh; /* Tamanho do texto */
-  font-weight: bold; /* Texto em negrito */
-  cursor: pointer; /* Cursor de ponteiro ao passar */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Transições suaves */
+.btnModal {
+  display: flex;
+  gap: 2vw;
 }
 
 #fecharModal:hover {
-  background-color: #8c5252; /* Escurece o vermelho ao passar o mouse */
-  transform: scale(1.05); /* Aumenta ligeiramente o botão */
+  background-color: #181b2b;
+  transform: scale(1.05);
 }
 
-#notaSlider{
-  color: #f39c12;
-}
 [type="range"] {
-  -webkit-appearance: none; /* Remove o estilo padrão */
+  -webkit-appearance: none;
   appearance: none;
-  width: 100%; /* Define a largura total do elemento */
-  height: 15px; /* Altura da trilha */
-  background: #3c4157; /* Cor sólida da trilha */
-  border-radius: 6px; /* Borda arredondada na trilha */
-  outline: none; /* Remove o contorno ao focar */
-  cursor: pointer; /* Cursor de interação */
+  width: 100%; 
+  height: 2vh;
+  background: #3c4157; 
+  border-radius: 1vh; 
+  outline: none; 
+  cursor: pointer; 
+  margin: 0;
 }
 
 [type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Remove o estilo padrão */
+  -webkit-appearance: none;
   appearance: none;
-  width: 20px; /* Largura do botão */
-  height: 20px; /* Altura do botão */
-  background: #3c4157; /* Cor sólida do botão */
-  border: 2px solid #ffffff; /* Borda branca ao redor do botão */
+  width: 2.6vh;
+  height: 2.6vh;
+  background: #3c4157; 
+  border: 0.3vh solid #ffffff;
   border-radius: 50%; /* Formato circular */
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3); /* Sombra para efeito 3D */
-  position: relative; /* Permite ajustes visuais */
-  margin-top: -4px; /* Alinha o botão no centro da trilha */
+  box-shadow: 0vw 0vw 1vw rgba(0, 0, 0, 0.4);
+  position: relative;
 }
 
 [type="range"]::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: 1vw;
+  height: 2vh;
   background: #f39c12;
-  border: 2px solid #ffffff;
+  border: 0.3vh solid #ffffff;
   border-radius: 50%;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0vw 0vw 0.8vw rgba(0, 0, 0, 0.4);
 }
 
 [type="range"]:hover {
-  background: #2e334a; /* Altere a trilha ao passar o mouse */
+  background: #ffffff26;
 }
 
 [type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.2); /* Amplie o botão ao passar o mouse */
-  background: #494c57; /* Alteração visual ao passar o mouse */
+  transform: scale(1.2);
+  background: #34363f;
 }
 
 [type="range"]:focus::-webkit-slider-thumb {
-  box-shadow: 0px 0px 10px #fffffe; /* Destaque o botão ao focar */
+  box-shadow: 0px 0px 0.8vw rgba(0, 0, 0, 0.557);
 }
 
-.modal p , h3{
+.modal p,
+h3 {
   color: #ffffff;
+}
+
+select {
+  background-color: #1a1e2f;
+  color: #ffffff;
+  padding: 0.5vh 1vw;
+  border: none;
+  border-radius: 0.5vh;
+  font-size: 1.5vh;
+  font-weight: bold;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  display: flex;
+  text-align: center;
+  align-self: center;
+}
+
+select:hover {
+  background-color: #202438;
+}
+
+select:focus {
+  outline: none;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.564);
+}
+
+select option[disabled][selected] {
+  color: #888;
 }

@@ -535,7 +535,7 @@ async function AdicionarNaLista(req, res) {
 }
 
 async function NomeListas(req, res) {
-  const query = "SELECT id_lista, nm_lista FROM t_lista";
+  const query = "SELECT id_lista, nm_lista FROM t_lista ORDER BY id_lista";
   connection
     .promise()
     .query(query)

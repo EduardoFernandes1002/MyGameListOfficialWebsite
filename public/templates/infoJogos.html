@@ -71,14 +71,17 @@
               step="0.1"
               value="5"
             />
-            <p>Sua Nota: <span id="notaDinamica">5.0</span></p>
+            <p><span>Sua Nota:</span> <span id="notaDinamica">5.0</span></p>
 
             <select id="listasSelect">
-              <option value="1">Lista Inicial</option>
+              <option value="" disabled selected>
+                - Selecione uma lista -
+              </option>
             </select>
-
-            <button id="salvarNota">Salvar</button>
-            <button id="fecharModal">Fechar</button>
+            <div class="btnModal">
+              <button id="salvarNota">Salvar</button>
+              <button id="fecharModal">Fechar</button>
+            </div>
           </div>
         </div>
       </div>
