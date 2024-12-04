@@ -146,19 +146,26 @@ input[type="range"] {
   display: flex;
 }
 .notaPessoal{
-
   display: flex;
   font-size: 3vh;
   margin: 2vh;
   color: white;
-
 }
+.notaPessoal p {
+  margin: 0;
+}
+
 #notaPessoalEditar{
   display: flex;
-  background-color: #f39c12;
-  font-size: 3vh;
-  width: 5vh;
-  border-radius: 1vh;
+  background-color: transparent;
+  font-size: 1.3vh;
+  align-items: start;
+  justify-content: flex-end;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 2vw;
+  height: 2vh;
 }
 .notaTotal{
   display: flex;

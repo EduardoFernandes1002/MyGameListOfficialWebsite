@@ -1,90 +1,91 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/style/header.css">
-    <link rel="stylesheet" href="/static/style/jogo.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/style/header.css" />
+    <link rel="stylesheet" href="/static/style/jogo.css" />
     <link rel="stylesheet" href="../static/style/footer.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
 
     <title>Informações de Jogo</title>
-</head>
-<body>
-
+  </head>
+  <body>
     <header id="header-placeholder"></header>
 
     <main>
-        <div class="controle">
-            <section class="gridGame">
-            <div class="gridGame1">
-                <img id="gameImagem" src="" alt="Imagem do jogo">
-                <div class="game">
-                    <h3 id="nomeJogo"></h3>
-                </div>
+      <div class="controle">
+        <section class="gridGame">
+          <div class="gridGame1">
+            <img id="gameImagem" src="" alt="Imagem do jogo" />
+            <div class="game">
+              <h3 id="nomeJogo"></h3>
             </div>
-            </section>
+          </div>
+        </section>
 
-            <section class="Notas">
-                <div class="notas">
-                    <div class="notaTotal">
-                        <span id="nota"></span>
-                    </div>
-                    <div class="notaPessoal">
-                        <span class="data"></span>
-                        <p>
-                           Sua nota: <span id="notaP"></span>
-                        </p>
-                        <button id="notaPessoalEditar">
-                            <i class="fa-solid fa-marker"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <section class="Informacoes">
-                    <div class="botoes-container">
-                        <button id="btnSinopse" class="botao">Sinopse</button>
-                        <button id="btnInformacoes" class="botao">Informações</button>
-                    </div>
-                    
-                    <div id="sinopse" class="secao hidden">
-                        <p id="sinopseJogo">Descrição do jogo...</p>
-                    </div>
-                    <div id="infos" class="secao">
-                        <p>
-                            Distribuidora: <span id="nmDistribuidora"></span>
-                        </p>
-                        <p
-                        >Desenvolvedora: <span id="nmDesenvolvedora"></span>
-                    </p> <p>Plataforma: <span id="nmPlataforma"></span></p>
-                    <p>
-                        Gêneros: <span id="generos"></span>
-                    </p>
-                    <p>
-                        Modos: <span id="modos"></span>
-                    </p>
-                </div>
-                </section>
-            <section>
-            <div id="notaModal" class="modal hidden">
-                <div class="modal-content">
-                    <h3 >Avalie o Jogo</h3>
-                    <input type="range" id="notaSlider" min="0" max="10" step="0.1" value="5" > 
-                    <p>Sua Nota: <span id="notaDinamica">5.0</span></p>
-                    
-                    <select id="listasSelect">
-                        <option value="1">Lista Inicial</option>
-                    </select>
-
-                    <button id="salvarNota">Salvar</button>
-                    <button id="fecharModal">Fechar</button>
-                </div>
+        <section class="Notas">
+          <div class="notas">
+            <div class="notaTotal">
+              <span id="nota"></span>
             </div>
+            <div class="notaPessoal">
+              <span class="data"></span>
+              <p>Sua nota: <span id="notaP"></span></p>
+              <button id="notaPessoalEditar">
+                <i class="fa-solid fa-marker"></i>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="Informacoes">
+          <div class="botoes-container">
+            <button id="btnSinopse" class="botao">Sinopse</button>
+            <button id="btnInformacoes" class="botao">Informações</button>
+          </div>
+
+          <div id="sinopse" class="secao hidden">
+            <p id="sinopseJogo">Descrição do jogo...</p>
+          </div>
+          <div id="infos" class="secao">
+            <p>Distribuidora: <span id="nmDistribuidora"></span></p>
+            <p>Desenvolvedora: <span id="nmDesenvolvedora"></span></p>
+            <p>Plataforma: <span id="nmPlataforma"></span></p>
+            <p>Gêneros: <span id="generos"></span></p>
+            <p>Modos: <span id="modos"></span></p>
+          </div>
+        </section>
+
+        <div id="notaModal" class="modal hidden">
+          <div class="modal-content">
+            <h3>Avalie o Jogo</h3>
+            <input
+              type="range"
+              id="notaSlider"
+              min="0"
+              max="10"
+              step="0.1"
+              value="5"
+            />
+            <p>Sua Nota: <span id="notaDinamica">5.0</span></p>
+
+            <select id="listasSelect">
+              <option value="1">Lista Inicial</option>
+            </select>
+
+            <button id="salvarNota">Salvar</button>
+            <button id="fecharModal">Fechar</button>
+          </div>
         </div>
+      </div>
     </main>
     <footer id="footer-placeholder"></footer>
 
     <script src="../js/info.js"></script>
     <script src="../js/header_footer.js"></script>
-</body>
+  </body>
 </html>
