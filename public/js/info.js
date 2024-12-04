@@ -140,16 +140,22 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // Salvar nota e adicionar jogo à lista
   salvarNota.addEventListener("click", async function () {
+    const idLista = document.getElementById("listasSelect").value; // Obtém o valor selecionado
+  
+    if (!idLista) { // Verifica se nenhuma lista foi selecionada
+      alert("Por favor, selecione uma lista antes de salvar a nota!");
+      return; // Interrompe a execução se nenhuma lista foi selecionada
+    }
+  
     notaP.textContent = notaSlider.value;
     document.querySelector(".data").innerHTML = dataH;
-
-    // Verifica se o gameId está disponível
+  
     const gameId = window.location.pathname.split("/").pop();
     if (!gameId) {
       alert("Erro: gameId não encontrado.");
       return;
     }
-
+  
     // Envia a avaliação para o backend
     console.log(
       `Enviando avaliação para o jogo ${gameId} com nota ${notaSlider.value} e data ${dataH}`
@@ -174,9 +180,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       alert("Erro no servidor. Tente novamente mais tarde.");
       console.error("Erro ao registrar:", error);
     }
-
+  
     // Adiciona o jogo à lista
-    const idLista = selectElement.value;
     try {
       const response = await fetch("/add/lista", {
         method: "POST",
@@ -192,11 +197,12 @@ document.addEventListener("DOMContentLoaded", async function () {
       alert("Erro no servidor. Tente novamente mais tarde.");
       console.error("Erro ao adicionar item:", error);
     }
-
+  
     // Fecha o modal após salvar
     notaModal.style.display = "none";
     notaModal.classList.add("hidden");
   });
+  
 
   // Fechar modal
   fecharModal.addEventListener("click", () => {
