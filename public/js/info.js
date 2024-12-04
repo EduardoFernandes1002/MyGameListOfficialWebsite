@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     salvarNota.addEventListener("click", async function () {
         // Atualiza a nota pessoal exibida
         notaP.textContent = notaSlider.value;
-        document.querySelector('.data').innerHTML = dataH;  // Atualiza a data exibida
+        document.querySelector('.data').innerHTML = dataH;// Atualiza a data exibida
 
         // Verifica se o gameId está disponível
         const gameId = window.location.pathname.split('/').pop();  // Recuperando novamente o gameId

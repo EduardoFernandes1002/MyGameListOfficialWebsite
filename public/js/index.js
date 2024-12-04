@@ -7,9 +7,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         // Variaveis que coletam os dados de cada comando sql separadamente
         const jogosGerais = data.jogosGerais;
         const jogosAcao = data.jogosAcao;
+        const jogosAventura = data.jogosAventura;
 
         const jogosContainer = document.getElementById('jogosRecomendados');
         const acaoContainer = document.getElementById('recomendadoAcao');
+        const AventuraContainer = document.getElementById('recomandadoAventura');
 
         // Espera por JogoGerais ou jogosAcao, alem de esperar os containers acima
         const adicionarJogos = (jogos, container) => {
@@ -52,6 +54,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // Adicionar os jogos de ação à div "recomendadoAcao"
         adicionarJogos(jogosAcao, acaoContainer);
+
+        adicionarJogos(jogosAventura, AventuraContainer);
+
       } else {
         console.log('Nenhum jogo encontrado.');
       }

@@ -173,6 +173,15 @@ function BuscarJogos(req, res) {
         LIMIT 10;
     `;
 
+    const queryJogosAventura = `
+        SELECT j.id_jogo, j.nm_jogo, j.ds_imagem, j.nr_nota 
+        FROM t_jogo j
+        JOIN t_genero_do_jogo gj ON j.id_jogo = gj.id_jogo
+        WHERE gj.id_genero = 9
+        ORDER BY j.nr_nota DESC
+        LIMIT 10;
+    `;
+
   // Executar as duas consultas paralelamente
   connection.query(queryJogosGerais, (errorGerais, resultadosGerais) => {
     if (errorGerais) {
@@ -188,10 +197,18 @@ function BuscarJogos(req, res) {
           .json({ sucesso: false, mensagem: "Erro ao buscar jogos de ação!" });
       }
 
-      res.json({
-        sucesso: true,
-        jogosGerais: resultadosGerais,
-        jogosAcao: resultadosAcao,
+      connection.query(queryJogosAventura, (errorAventura, resultadosAventura) =>{
+        if(errorAventura){
+          return res
+            .status(500)
+            .json({ sucesso: false, mensagem: "Erro ao buscar jogos de aventura!"})
+        }
+        res.json({
+          sucesso: true,
+          jogosGerais: resultadosGerais,
+          jogosAcao: resultadosAcao,
+          jogosAventura: resultadosAventura
+        });
       });
     });
   });

@@ -18,7 +18,7 @@ h2 {
   padding: 0;
 }
 
-.JogosRecomendados, .RecomendadosAcao {
+.JogosRecomendados, .RecomendadosAcao, .RecomendadosAventura {
   display: flex;
   overflow-x: hidden; /* Esconde a barra de rolagem inicialmente */
   overflow-y: hidden;
@@ -35,19 +35,19 @@ h2 {
 }
 
 /* Aparecer a barra de rolagem ao passar o mouse */
-.JogosRecomendados:hover, .RecomendadosAcao:hover {
+.JogosRecomendados:hover, .RecomendadosAcao:hover, .RecomendadosAventura:hover {
   overflow-x: scroll; /* Mostra a barra de rolagem quando o mouse está sobre */
   padding-bottom: 0.7vh;
 }
 
 /* Estilo da barra de rolagem (para navegadores baseados em WebKit como Chrome e Edge) */
-.JogosRecomendados::-webkit-scrollbar, .RecomendadosAcao::-webkit-scrollbar {
+.JogosRecomendados::-webkit-scrollbar, .RecomendadosAcao::-webkit-scrollbar, .RecomendadosAventura::-webkit-scrollbar {
   box-sizing: border-box;
   height: 1.4vh;
 }
 
 /* Fundo da barra de rolagem */
-.JogosRecomendados::-webkit-scrollbar-track, .RecomendadosAcao::-webkit-scrollbar-track {
+.JogosRecomendados::-webkit-scrollbar-track, .RecomendadosAcao::-webkit-scrollbar-track,  .RecomendadosAventura::-webkit-scrollbar-track {
   box-sizing: border-box;
   background: transparent;
   border-radius: 5vh;
@@ -55,13 +55,13 @@ h2 {
 }
 
 /* "Thumb" da barra de rolagem */
-.JogosRecomendados::-webkit-scrollbar-thumb, .RecomendadosAcao::-webkit-scrollbar-thumb {
+.JogosRecomendados::-webkit-scrollbar-thumb, .RecomendadosAcao::-webkit-scrollbar-thumb, .RecomendadosAventura::-webkit-scrollbar-thumb {
   background: #ffffff25;
   border-radius: 4vh;
 }
 
 
-.JogosRecomendados img, .RecomendadosAcao img {
+.JogosRecomendados img, .RecomendadosAcao img, .RecomendadosAventura img{
   border-radius: 2vh;
   width: 30vh;
   aspect-ratio: 9 / 10;
