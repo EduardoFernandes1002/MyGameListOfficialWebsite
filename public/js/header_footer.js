@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const token = localStorage.getItem("token");
 
-      // Elementos do DOM
       const perfilLink = document.getElementById("perfil");
       const deslogarButton = document.getElementById("deslogar");
       const loginLink = document.getElementById("login");
