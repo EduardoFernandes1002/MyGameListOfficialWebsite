@@ -343,16 +343,6 @@ async function Registro(req, res) {
     ) VALUES (?, ?, ?, 1);
   `;
 
-  const queryListasPadrao = `
-    INSERT INTO t_lista_usuario (id_usuario, id_lista) VALUES 
-    (?, 1), 
-    (?, 2), 
-    (?, 3), 
-    (?, 4), 
-    (?, 5), 
-    (?, 6);
-  `;
-
   try {
     // Verificar se já existe um usuário com o mesmo email ou apelido
     const [existeUser] = await connection
@@ -376,18 +366,12 @@ async function Registro(req, res) {
 
     const idUsuario = resultadoCadastro.insertId;
 
-    // Inserir listas padrão para o novo usuário na tabela de relação
-    await connection
-      .promise()
-      .query(queryListasPadrao, Array(6).fill(idUsuario));
-
     res.json({ sucesso: true, mensagem: "Registro realizado com sucesso!" });
   } catch (error) {
     console.error("Erro ao registrar usuário:", error);
     res.status(500).json({ sucesso: false, mensagem: "Erro no servidor!" + error });
   }
 }
-
 
 async function Avaliacao(req, res) {
   const { nota, data, idUsuario, jogoId } = req.body;
