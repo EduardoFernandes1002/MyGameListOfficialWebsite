@@ -20,7 +20,7 @@ h2 {
 
 .JogosRecomendados, .RecomendadosAcao, .RecomendadosAventura {
   display: flex;
-  overflow-x: hidden; /* Esconde a barra de rolagem inicialmente */
+  overflow-x: hidden;
   overflow-y: hidden;
   align-items: center;
   gap: 0.8vw;
@@ -30,17 +30,17 @@ h2 {
   position: relative;
   box-sizing: border-box;
   padding: 1.4vh;
-  padding-bottom: calc(0.8vh + 1.3vh); /* Reserva espaço para a barra de rolagem */
+  padding-bottom: calc(0.8vh + 1.3vh);
   outline: 0.3vh solid #191b27;
 }
 
 /* Aparecer a barra de rolagem ao passar o mouse */
 .JogosRecomendados:hover, .RecomendadosAcao:hover, .RecomendadosAventura:hover {
-  overflow-x: scroll; /* Mostra a barra de rolagem quando o mouse está sobre */
+  overflow-x: scroll;
   padding-bottom: 0.7vh;
 }
 
-/* Estilo da barra de rolagem (para navegadores baseados em WebKit como Chrome e Edge) */
+/* Estilo da barra de rolagem */
 .JogosRecomendados::-webkit-scrollbar, .RecomendadosAcao::-webkit-scrollbar, .RecomendadosAventura::-webkit-scrollbar {
   box-sizing: border-box;
   height: 1.4vh;

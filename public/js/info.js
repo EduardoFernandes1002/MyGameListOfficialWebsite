@@ -143,10 +143,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.error("Erro ao buscar nota pessoal:", error.message);
     }
 
-    atualizarCorNota(notaP)
-
-
-
     // Salvar nota e adicionar jogo à lista
     salvarNota.addEventListener("click", async function () {
         const idLista = document.getElementById("listasSelect").value;

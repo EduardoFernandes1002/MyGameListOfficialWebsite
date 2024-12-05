@@ -17,17 +17,17 @@ main{
 }
 
 img {
-  width: 14vw; /* Ajustando a largura da imagem para 8vw */
-  height: 14vh; /* Ajustando a altura da imagem para 6vh */
-  border-radius: 1.5vw; /* Borda arredondada nas imagens */
-  object-fit: cover; /* Garantir que a imagem se ajuste bem ao tamanho */
+  width: 14vw;
+  height: 14vh;
+  border-radius: 1.5vw;
+  object-fit: cover;
 }
 
 .ranking {
   display: flex;
   align-items: center;
   padding: 1.4vh;
-  background-color: #191b27; /* Fundo escuro para o ranking */
+  background-color: #191b27;
   border-radius: 2vw;
   margin-bottom: 2vh;
   max-width: 60vw;
@@ -37,21 +37,21 @@ img {
 
 .jogo {
   display: flex;
-  background-color: #343c53; /* Cor de destaque ao passar o mouse */
+  background-color: #343c53;
   width: 100%;
   border-radius: 2vw;
   padding: 1.4vh;
 }
 
 .jogo:hover {
-  background-color: #292f42; /* Cor de destaque ao passar o mouse */
+  background-color: #292f42;
 }
 
 .rank {
   list-style-type: none;
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Garante 2 itens por linha */
-  gap: 2vw; /* Espaçamento entre os itens */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2vw;
   align-items: center;
   justify-items: center;
   padding: 2vw;
@@ -59,7 +59,7 @@ img {
 
 .posicao {
   display: flex;
-  background-color: #373e44; /* Cor de fundo para os itens não clicáveis */
+  background-color: #373e44;
   margin: 1.5vh;
   border-radius: 50%;
   width: 3.2vw;
@@ -83,14 +83,14 @@ img {
   align-items: start;
   font-weight: bold;
   font-size: 2.5vh;
-  color: aliceblue; /* Texto claro */
+  color: aliceblue;
   justify-content: space-between;
   width: 100%;
 }
 
 .jogo .score {
-  font-size: 2vh;
-  color: #f39c12; /* Pontuação destacada com cor laranja */
+  font-size: 2.3vh;
+  color: #15ff00;
 }
 
 .jogo .score span {
