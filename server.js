@@ -118,10 +118,8 @@ function BuscarJogosLista(req, res) {
           ON j.id_jogo = ja.id_jogo
       INNER JOIN t_lista AS l
           ON ja.id_lista = l.id_lista
-      INNER JOIN t_lista_usuario AS lu
-          ON l.id_lista = lu.id_lista
       WHERE 
-          l.id_lista = ? AND lu.id_usuario = ?;
+          ja.id_lista = ? AND ja.id_usuario = ?;
   `;
 
   connection.query(queryJogos, [idLista, idUsuario], (err, resultados) => {
@@ -512,56 +510,61 @@ async function AdicionarNaLista(req, res) {
 
     console.log(`ID da lista 'Todos': ${idListaTodos}`);
 
-    // Garante que o jogo está na lista "Todos"
+    // Garante que o jogo está na lista "Todos" para o usuário atual
     const queryAdicionaNaListaTodos = `
       INSERT INTO t_jogo_adicionado (
         id_jogo,
-        id_lista
-      ) VALUES (?, ?)
+        id_lista,
+        id_usuario
+      ) VALUES (?, ?, ?)
       ON DUPLICATE KEY UPDATE id_jogo=id_jogo;
     `;
     await connection
       .promise()
-      .query(queryAdicionaNaListaTodos, [idJogo, idListaTodos]);
+      .query(queryAdicionaNaListaTodos, [idJogo, idListaTodos, idUsuario]);
     console.log(`Jogo ${idJogo} garantido na lista 'Todos'`);
 
-    // Verifica se o jogo já está em outra lista além de "Todos"
+    // Verifica se o jogo já está em outras listas do usuário, exceto "Todos"
     const queryBuscaListasDoJogo = `
       SELECT id_lista 
       FROM t_jogo_adicionado 
       WHERE id_jogo = ? 
-      AND id_lista != ?;
+      AND id_lista != ? 
+      AND id_usuario = ?;
     `;
     const [rowsOutrasListas] = await connection
       .promise()
-      .query(queryBuscaListasDoJogo, [idJogo, idListaTodos]);
+      .query(queryBuscaListasDoJogo, [idJogo, idListaTodos, idUsuario]);
 
+    // Remove o jogo de outras listas do usuário, exceto "Todos"
     if (rowsOutrasListas.length > 0) {
-      const idListaAtual = rowsOutrasListas[0].id_lista;
-
-      // Remove o jogo da lista atual
-      const queryRemoveJogoDeLista = `
-        DELETE FROM t_jogo_adicionado 
-        WHERE id_jogo = ? 
-        AND id_lista = ?;
-      `;
-      await connection
-        .promise()
-        .query(queryRemoveJogoDeLista, [idJogo, idListaAtual]);
-      console.log(`Jogo ${idJogo} removido da lista ${idListaAtual}`);
+      for (let row of rowsOutrasListas) {
+        const idListaAtual = row.id_lista;
+        const queryRemoveJogoDeLista = `
+          DELETE FROM t_jogo_adicionado 
+          WHERE id_jogo = ? 
+          AND id_lista = ? 
+          AND id_usuario = ?;
+        `;
+        await connection
+          .promise()
+          .query(queryRemoveJogoDeLista, [idJogo, idListaAtual, idUsuario]);
+        console.log(`Jogo ${idJogo} removido da lista ${idListaAtual} do usuário ${idUsuario}`);
+      }
     }
 
     // Adiciona o jogo à nova lista (além de "Todos")
     const queryAdicionaNaNovaLista = `
       INSERT INTO t_jogo_adicionado (
         id_jogo,
-        id_lista
-      ) VALUES (?, ?)
+        id_lista,
+        id_usuario
+      ) VALUES (?, ?, ?)
       ON DUPLICATE KEY UPDATE id_jogo=id_jogo;
     `;
     await connection
       .promise()
-      .query(queryAdicionaNaNovaLista, [idJogo, idLista]);
+      .query(queryAdicionaNaNovaLista, [idJogo, idLista, idUsuario]);
     console.log(`Jogo ${idJogo} adicionado à lista ${idLista}`);
 
     return res.status(200).json({
